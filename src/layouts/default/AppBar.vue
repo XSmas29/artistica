@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar flat color="#F4F4F4">
+	<v-app-bar flat color="#EEF0F0">
 		<v-col class="col-4"></v-col>
 		<v-col class="col-4">
 			<router-link to="/">
@@ -13,7 +13,7 @@
 						<fa-icon icon="fa-cart-shopping"></fa-icon>
 					</v-btn>
 					<v-btn icon>
-						<fa-icon icon="fa-user"></fa-icon>
+						<fa-icon icon="instagram"></fa-icon>
 					</v-btn>
 				</div>
 			</div>
