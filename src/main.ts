@@ -21,5 +21,6 @@ import { registerPlugins } from '@/plugins';
 const app = createApp(App);
 
 registerPlugins(app);
+
 app.component('fa-icon', FontAwesomeIcon);
 app.mount('#app');
