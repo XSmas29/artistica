@@ -2,7 +2,7 @@ import { apolloClient } from "@/vue-apollo"
 import { ref } from "vue"
 import { register as signUp } from "@graphql/mutations"
 import Vue from "vue"
-import { toast } from "@/helpers/util"
+import { toast } from "@/helpers/utils"
 
 const useUser = () => {
   const loadingRegister = ref(false)

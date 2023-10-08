@@ -28,6 +28,7 @@ export default defineConfig({
 			'@views': fileURLToPath(new URL('./src/views', import.meta.url)),
 			'@composables': fileURLToPath(new URL('./src/composables', import.meta.url)),
 			'@graphql': fileURLToPath(new URL('./src/graphql', import.meta.url)),
+			'@helpers': fileURLToPath(new URL('./src/helpers', import.meta.url)),
 		},
 		extensions: [
 			'.js',

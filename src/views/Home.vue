@@ -1,11 +1,14 @@
 <template>
-	<v-carousel show-arrows="true" cycle height="auto" eager>
-		<template v-for="(item, index) in carouselItem" :key="index">
-			<v-carousel-item eager>
-				<v-img :src="item" />
-			</v-carousel-item>
-		</template>
-	</v-carousel>
+	<XyzTransition appear-visible xyz="fade left-5">
+
+		<v-carousel cycle height="auto" eager>
+			<template v-for="(item, index) in carouselItem" :key="index">
+				<v-carousel-item eager>
+					<v-img :src="item" />
+				</v-carousel-item>
+			</template>
+		</v-carousel>
+	</XyzTransition>
 </template>
 
 <script lang="ts">

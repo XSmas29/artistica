@@ -6,8 +6,12 @@
 
 // Components
 import App from './App.vue';
+
+//PLUG IN
 import Toast, { PluginOptions, POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import VueAnimXYZ from '@animxyz/vue3'
+import '@animxyz/core'
 // Composables
 import { createApp, provide, h} from 'vue';
 
@@ -38,6 +42,7 @@ const toastDefault : PluginOptions = {
   transition: "Vue-Toastification__fade"
 };
 app.use(Toast, toastDefault)
+app.use(VueAnimXYZ)
 
 app.component('fa-icon', FontAwesomeIcon);
 app.mount('#app');
