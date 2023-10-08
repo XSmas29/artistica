@@ -17,10 +17,10 @@
 		</div> -->
 		<div class="d-flex justify-center my-5">
 
-			<v-btn size="large" icon class="mx-2" target="_blank" href="https://www.facebook.com/ArtisticaJewelry">
+			<v-btn size="large" icon class="mx-3" target="_blank" href="https://www.facebook.com/ArtisticaJewelry">
 				<fa-icon size="xl" :icon="['fab', 'facebook']"></fa-icon>
 			</v-btn>
-			<v-btn size="large" icon class="mx-2" target="_blank" href="https://www.instagram.com/artisticajewelry">
+			<v-btn size="large" icon class="mx-3" target="_blank" href="https://www.instagram.com/artisticajewelry">
 				<fa-icon size="xl" :icon="['fab', 'instagram']"></fa-icon>
 			</v-btn>
 		</div>

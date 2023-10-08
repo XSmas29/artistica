@@ -24,7 +24,10 @@ export default defineConfig({
 	resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url)),
-			'@assets': fileURLToPath(new URL('./src/assets', import.meta.url))
+			'@assets': fileURLToPath(new URL('./src/assets', import.meta.url)),
+			'@views': fileURLToPath(new URL('./src/views', import.meta.url)),
+			'@composables': fileURLToPath(new URL('./src/composables', import.meta.url)),
+			'@graphql': fileURLToPath(new URL('./src/graphql', import.meta.url)),
 		},
 		extensions: [
 			'.js',
@@ -37,6 +40,6 @@ export default defineConfig({
 		],
 	},
 	server: {
-		port: 3000,
+		port: 8080,
 	},
 });

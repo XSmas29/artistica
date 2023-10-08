@@ -12,9 +12,11 @@
 					<v-btn icon>
 						<fa-icon icon="fa-cart-shopping"></fa-icon>
 					</v-btn>
-					<v-btn icon>
-						<fa-icon icon="instagram"></fa-icon>
-					</v-btn>
+					<router-link :to="{ name: 'register' }" style="color: inherit;">
+						<v-btn icon>
+							<fa-icon icon="fa-user"></fa-icon>
+						</v-btn>
+					</router-link>
 				</div>
 			</div>
 		</v-col>
