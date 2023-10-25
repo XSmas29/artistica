@@ -34,8 +34,30 @@ const validEmail = (value: string) => {
   return re.test(String(value)) || 'Email tidak valid'
 }
 
+const min = (value: string, min: number) => {
+  if (isEmpty(value)) {
+    return true
+  }
+
+  if (Array.isArray(value)) {
+    return value.every(val => val.length >= min) || `Minimal ${min} karakter`
+  }
+
+  return value.length >= min || `Minimal ${min} karakter`
+}
+
+const passwordEqual = (value: string, target: string) => {
+  if (isEmpty(value)) {
+    return true
+  }
+
+  return value === target || 'Tidak sama dengan password'
+}
+
 export {
   required,
   validEmail,
   isEmpty,
+  min,
+  passwordEqual,
 }

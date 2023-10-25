@@ -12,8 +12,9 @@ import Toast, { PluginOptions, POSITION } from "vue-toastification";
 import "vue-toastification/dist/index.css";
 import VueAnimXYZ from '@animxyz/vue3'
 import '@animxyz/core'
+
 // Composables
-import { createApp, provide, h} from 'vue';
+import { createApp, h, Plugin} from 'vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -41,6 +42,7 @@ const toastDefault : PluginOptions = {
   showCloseButtonOnHover: true,
   transition: "Vue-Toastification__fade"
 };
+
 app.use(Toast, toastDefault)
 app.use(VueAnimXYZ)
 

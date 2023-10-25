@@ -1,6 +1,6 @@
 <template>
-	<v-footer height="200" color="#EEF0F0" class="text-center d-flex flex-column">
-		<div class="text-h5 font-weight-bold my-4">
+	<v-footer height="180" color="#EEF0F0" class="text-center d-flex flex-column">
+		<div class="text-h6 font-weight-bold my-3">
 			Tetap Terhubung
 		</div>
 		<!-- <div>
@@ -15,12 +15,12 @@
 			</v-responsive>
 			<v-btn size="large" color="black">Submit</v-btn>
 		</div> -->
-		<div class="d-flex justify-center my-5">
+		<div class="d-flex justify-center my-2">
 
-			<v-btn size="large" icon class="mx-3" target="_blank" href="https://www.facebook.com/ArtisticaJewelry">
+			<v-btn icon class="mx-2" target="_blank" href="https://www.facebook.com/ArtisticaJewelry">
 				<fa-icon size="xl" :icon="['fab', 'facebook']"></fa-icon>
 			</v-btn>
-			<v-btn size="large" icon class="mx-3" target="_blank" href="https://www.instagram.com/artisticajewelry">
+			<v-btn icon class="mx-2" target="_blank" href="https://www.instagram.com/artisticajewelry">
 				<fa-icon size="xl" :icon="['fab', 'instagram']"></fa-icon>
 			</v-btn>
 		</div>
