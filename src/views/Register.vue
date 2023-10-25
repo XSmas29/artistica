@@ -14,6 +14,12 @@
               <v-btn type="submit" @click="submit" variant="flat" color="black" size="large" block
                 :loading="loadingRegister" :disabled="loadingRegister">Register</v-btn>
             </v-card-actions>
+            <div class="d-flex flex-column align-center justify-center mt-4">
+              <div>Sudah punya akun?</div>
+              <router-link :to="{ name: 'login' }" style="text-decoration: none;">
+                Login disini
+              </router-link>
+            </div>
           </v-card>
         </XyzTransition>
       </v-form>

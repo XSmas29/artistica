@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="my-6 text-center">Masukkan data akun anda</h1>
+    <h1 class="my-6 text-center">Lengkapi data akun anda</h1>
     <div class="mx-3">
       <v-form ref="registerForm" v-model="isRegisterValid" @submit.prevent fast-fail>
         <XyzTransition appear-visible xyz="fade left-5">
@@ -33,6 +33,12 @@
               <v-btn @click="submit" variant="flat" color="black" size="large" block :loading="loadingVerify"
                 :disabled="loadingVerify">Buat akun</v-btn>
             </v-card-actions>
+            <div class="d-flex flex-column align-center justify-center mt-4">
+              <div>Sudah punya akun?</div>
+              <router-link :to="{ name: 'login' }" style="text-decoration: none;">
+                Login disini
+              </router-link>
+            </div>
           </v-card>
         </XyzTransition>
       </v-form>
@@ -68,13 +74,7 @@ export default {
     const submit = async () => {
       const valid = (await (registerForm.value as any).validate()).valid
       if (valid) {
-        const data = {
-          first_name: formData.value.first_name,
-          last_name: formData.value.last_name,
-          phone: formData.value.phone,
-          password: formData.value.password,
-        }
-        verifyAccount(+user.value.id, data).then(() => {
+        verifyAccount(+user.value.id, formData.value).then(() => {
           router.push({
             name: 'login'
           });

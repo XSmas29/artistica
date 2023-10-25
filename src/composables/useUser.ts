@@ -1,6 +1,6 @@
 import { apolloClient } from "@/vue-apollo"
 import { ref } from "vue"
-import { register as signUp, verifyUser } from "@graphql/mutations"
+import { login, register as signUp, verifyUser } from "@graphql/mutations"
 import { checkVerifyCode } from "@graphql/queries"
 import Vue from "vue"
 import { toast } from "@/helpers/utils"
@@ -11,6 +11,7 @@ const useUser = () => {
   const loadingRegister = ref(false)
   const loadingVerify = ref(false)
   const loadingUser = ref(false)
+  const loadingLogin = ref(false)
 
   const register = async (email: string) => {
     loadingRegister.value = true
@@ -76,6 +77,28 @@ const useUser = () => {
     })
   }
 
+  const signIn = (email: string, password: string) => {
+    loadingLogin.value = true
+
+    return new Promise((resolve, reject) => {
+      apolloClient.mutate({
+        mutation: login,
+        variables: {
+          email,
+          password,
+        },
+      }).then(({ data }: any) => {
+        toast.success(data.login.message)
+        resolve(data)
+      }).catch((error: any) => {
+        reject(error)
+        toast.error(error.message)
+      }).finally(() => {
+        loadingLogin.value = false
+      })
+    })
+  }
+
   return {
     loadingRegister,
     register,
@@ -86,6 +109,9 @@ const useUser = () => {
 
     verifyAccount,
     loadingVerify,
+
+    signIn,
+    loadingLogin,
   }
 }
 
