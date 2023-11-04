@@ -23,6 +23,7 @@
       "@graphql/*": ["src/graphql/*"],
       "@composables/*": ["src/composables/*"],
       "@helpers/*": ["src/helpers/*"],
+      "@utils/*": ["src/utils/*"],
       "@/*": ["src/*"],
     },
   },

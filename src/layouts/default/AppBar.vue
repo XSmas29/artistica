@@ -12,7 +12,18 @@
 					<v-btn icon>
 						<fa-icon icon="fa-cart-shopping"></fa-icon>
 					</v-btn>
-					<router-link :to="{ name: 'login' }" style="color: inherit;">
+					<v-menu v-if="userData">
+						<template v-slot:activator="{ props }">
+							<v-btn icon>
+								<fa-icon icon="fa-user"></fa-icon>
+							</v-btn>
+							<v-list-item class="px-0" :title="userData.email" :subtitle="userData.first_name">
+							</v-list-item>
+
+						</template>
+
+					</v-menu>
+					<router-link v-else :to="{ name: 'login' }" style="color: inherit;">
 						<v-btn icon>
 							<fa-icon icon="fa-user"></fa-icon>
 						</v-btn>
@@ -43,10 +54,14 @@
 
 <script lang="ts">
 import { ref } from 'vue';
+import { useAuthStore } from '@/store/modules';
+
 export default {
 	setup() {
 		const logo = ref(new URL('@assets/logo_main.png', import.meta.url).href);
+		const { userData } = useAuthStore();
 		return {
+			userData,
 			logo
 		};
 	},
