@@ -36,10 +36,12 @@
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.22.15",
     "@babel/types": "^7.21.4",
     "@types/node": "^18.15.0",
     "@types/webfontloader": "^1.6.35",
     "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/eslint-config-airbnb-with-typescript": "^7.0.0",
     "@vue/eslint-config-typescript": "^11.0.0",
     "eslint": "^8.37.0",
     "eslint-plugin-vue": "^9.17.0",

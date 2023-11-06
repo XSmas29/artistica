@@ -1,145 +1,171 @@
-import { apolloClient } from "@/vue-apollo"
-import { ref } from "vue"
-import { login, register as signUp, verifyUser } from "@graphql/mutations"
-import { checkVerifyCode, profileInfo } from "@graphql/queries"
-import Vue from "vue"
-import { toast } from "@/helpers/utils"
-import { useAuthStore } from "@/store/modules/authStore"
+import { apolloClient } from '@/vue-apollo'
+import { ref } from 'vue'
+import { login, register as signUp, verifyUser } from '@graphql/mutations'
+import { checkVerifyCode, profileInfo } from '@graphql/queries'
+import { toast } from '@/helpers/utils'
+import { useAuthStore } from '@/store/modules/authStore'
+import editProfile from '@graphql/mutation/editProfile'
 
 const useUser = () => {
-  const authStore = useAuthStore()
-  const user = ref(null as any)
+	const authStore = useAuthStore()
+	const user = ref(null as any)
 
-  const loadingRegister = ref(false)
-  const loadingVerify = ref(false)
-  const loadingUser = ref(false)
-  const loadingLogin = ref(false)
-  const loadingProfile = ref(false)
+	const loadingRegister = ref(false)
+	const loadingVerify = ref(false)
+	const loadingUser = ref(false)
+	const loadingLogin = ref(false)
+	const loadingProfile = ref(false)
+	const loadingEditProfile = ref(false)
 
-  const register = async (email: string) => {
-    loadingRegister.value = true
+	const register = async (email: string) => {
+		loadingRegister.value = true
 
-    return new Promise((resolve, reject) => {
-      apolloClient.mutate({
-        mutation: signUp,
-        variables: {
-          email,
-        },
-      }).then(({ data }: any) => {
-        toast.success(data.register.message)
-        resolve(data)
-      }).catch((error: any) => {
-        reject(error)
-        toast.error(error.message)
-      }).finally(() => {
-        loadingRegister.value = false
-      })
-    })
-  }
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: signUp,
+				variables: {
+					email,
+				},
+			}).then(({ data }: any) => {
+				toast.success(data.register.message)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingRegister.value = false
+			})
+		})
+	}
 
-  const checkVerify = (code: string) => {
-    loadingUser.value = true
+	const checkVerify = (code: string) => {
+		loadingUser.value = true
 
-    return new Promise((resolve, reject) => {
-      apolloClient.query({
-        query: checkVerifyCode,
-        fetchPolicy: 'no-cache',
-        variables: {
-          code,
-        },
-      }).then(({ data }: any) => {
-        resolve(data)
-        user.value = data.checkVerifyCode
-      }).catch((error: any) => {
-        reject(error)
-        toast.error(error.message)
-      }).finally(() => {
-        loadingUser.value = false
-      })
-    })
-  }
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: checkVerifyCode,
+				fetchPolicy: 'no-cache',
+				variables: {
+					code,
+				},
+			}).then(({ data }: any) => {
+				resolve(data)
+				user.value = data.checkVerifyCode
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingUser.value = false
+			})
+		})
+	}
 
-  const verifyAccount = (id: number, data: any) => {
-    loadingVerify.value = true
+	const verifyAccount = (id: number, data: any) => {
+		loadingVerify.value = true
 
-    return new Promise((resolve, reject) => {
-      apolloClient.mutate({
-        mutation: verifyUser,
-        variables: {
-          id,
-          data,
-        },
-      }).then(({ data }: any) => {
-        toast.success(data.verifyUser.message)
-        resolve(data)
-      }).catch((error: any) => {
-        reject(error)
-        toast.error(error.message)
-      }).finally(() => {
-        loadingVerify.value = false
-      })
-    })
-  }
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: verifyUser,
+				variables: {
+					id,
+					data,
+				},
+			}).then(({ data }: any) => {
+				toast.success(data.verifyUser.message)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingVerify.value = false
+			})
+		})
+	}
 
-  const getProfileInfo = () => {
-    loadingProfile.value = true
+	const getProfileInfo = (): any => {
+		loadingProfile.value = true
 
-    return new Promise((resolve, reject) => {
-      apolloClient.query({
-        query: profileInfo,
-        fetchPolicy: 'no-cache',
-      }).then(({ data }: any) => {
-        resolve(data)
-        user.value = data.profileInfo
-        authStore.set(data.profileInfo)
-      }).catch((error: any) => {
-        reject(error)
-        authStore.reset()
-      }).finally(() => {
-        loadingProfile.value = false
-      })
-    })
-  }
-  const signIn = (email: string, password: string) => {
-    loadingLogin.value = true
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: profileInfo,
+				fetchPolicy: 'no-cache',
+			}).then(({ data }: any) => {
+				resolve(data)
+				user.value = data.profileInfo
+				authStore.set(data.profileInfo)
+			}).catch((error: any) => {
+				reject(error)
+				authStore.reset()
+			}).finally(() => {
+				loadingProfile.value = false
+			})
+		})
+	}
 
-    return new Promise((resolve, reject) => {
-      apolloClient.mutate({
-        mutation: login,
-        variables: {
-          email,
-          password,
-        },
-      }).then(({ data }: any) => {
-        toast.success(data.login.message)
-        localStorage.setItem('token', data.login.data)
-        resolve(data)
-      }).catch((error: any) => {
-        reject(error)
-        toast.error(error.message)
-      }).finally(() => {
-        loadingLogin.value = false
-      })
-    })
-  }
+	const updateProfile = (data: any) => {
+		loadingEditProfile.value = true
 
-  return {
-    loadingRegister,
-    register,
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: editProfile,
+				variables: {
+					data,
+				},
+			}).then(({ data }: any) => {
+				toast.success(data.editProfile.message)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingEditProfile.value = false
+			})
+		})
+	}
 
-    checkVerify,
-    loadingUser,
-    user,
+	const signIn = (email: string, password: string) => {
+		loadingLogin.value = true
 
-    verifyAccount,
-    loadingVerify,
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: login,
+				variables: {
+					email,
+					password,
+				},
+			}).then(({ data }) => {
+				toast.success(data.login.message)
+				localStorage.setItem('token', data.login.data)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingLogin.value = false
+			})
+		})
+	}
 
-    signIn,
-    loadingLogin,
+	return {
+		loadingRegister,
+		register,
 
-    getProfileInfo,
-    loadingProfile,
-  }
+		checkVerify,
+		loadingUser,
+		user,
+
+		verifyAccount,
+		loadingVerify,
+
+		signIn,
+		loadingLogin,
+
+		getProfileInfo,
+		loadingProfile,
+
+		updateProfile,
+		loadingEditProfile,
+	}
 }
 
 export default useUser

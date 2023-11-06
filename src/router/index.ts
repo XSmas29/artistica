@@ -1,6 +1,6 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router';
-import useUser from '@/composables/useUser';
+import { createRouter, createWebHistory } from 'vue-router'
+import useUser from '@/composables/useUser'
 const routes = [
 	{
 		path: '',
@@ -9,6 +9,7 @@ const routes = [
 			{
 				path: '',
 				name: 'home',
+
 				// route level code-splitting
 				// this generates a separate chunk (about.[hash].js) for this route
 				// which is lazy-loaded when the route is visited.
@@ -21,6 +22,7 @@ const routes = [
 			{
 				path: '/register',
 				name: 'register',
+
 				// route level code-splitting
 				// this generates a separate chunk (about.[hash].js) for this route
 				// which is lazy-loaded when the route is visited.
@@ -33,6 +35,7 @@ const routes = [
 			{
 				path: '/verify',
 				name: 'verify',
+
 				// route level code-splitting
 				// this generates a separate chunk (about.[hash].js) for this route
 				// which is lazy-loaded when the route is visited.
@@ -45,6 +48,7 @@ const routes = [
 			{
 				path: '/login',
 				name: 'login',
+
 				// route level code-splitting
 				// this generates a separate chunk (about.[hash].js) for this route
 				// which is lazy-loaded when the route is visited.
@@ -54,8 +58,22 @@ const routes = [
 				},
 				component: () => import('@views/Login.vue'),
 			},
+			{
+				path: '/profile',
+				name: 'profile',
+
+				// route level code-splitting
+				// this generates a separate chunk (about.[hash].js) for this route
+				// which is lazy-loaded when the route is visited.
+				meta: {
+					pageTitle: 'Profil',
+					public: false,
+				},
+				component: () => import('@views/Profile.vue'),
+			},
 		],
 	},
+
 	// {
 	// 	path: '/register',
 	// 	component: () => import('@/layouts/default/Default.vue'),
@@ -70,10 +88,10 @@ const routes = [
 	// 		},
 	// 	],
 	// },
-];
+]
 
 const router = createRouter({
-	history: createWebHistory(process.env.BASE_URL),
+	history: createWebHistory(import.meta.env.VITE_GRAPHQL_HTTP_URL),
 	routes,
 	scrollBehavior(to, from, savedPosition) {
 		if (to.hash) {
@@ -90,12 +108,12 @@ const router = createRouter({
 			}, 500)
 		})
 	},
-});
+})
 
 router.beforeEach(async (to, from, next) => {
 	window.document.title = to.meta && to.meta.pageTitle
-    ? `${to.meta.pageTitle} | Artistica Jewelry`
-    : 'Artistica Jewelry'
+		? `${to.meta.pageTitle} | Artistica Jewelry`
+		: 'Artistica Jewelry'
 
 	// if (to.name === 'login' || to.name === 'register') {
 	// 	const hasToken = localStorage.getItem('token')
@@ -111,6 +129,7 @@ router.beforeEach(async (to, from, next) => {
 			await getProfileInfo()
 		} catch {
 			console.log('get profile error')
+
 			// localStorage.removeItem('token')
 			return next()
 		}
@@ -123,4 +142,4 @@ router.beforeEach(async (to, from, next) => {
 	return next()
 })
 
-export default router;
+export default router

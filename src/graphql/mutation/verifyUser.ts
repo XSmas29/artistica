@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 const verifyUser = gql`
   mutation verifyUser($id: Float!, $data: VerifyData!) {
@@ -8,6 +8,6 @@ const verifyUser = gql`
       data
     }
   }
-`;
+`
 
-export default verifyUser;
+export default verifyUser
