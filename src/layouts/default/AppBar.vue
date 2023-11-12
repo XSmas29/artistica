@@ -75,6 +75,7 @@
                 </v-list-item-title>
                 <v-dialog
                   v-model="dialogLogout"
+                  persistent
                   activator="parent"
                   width="auto"
                 >
@@ -94,6 +95,7 @@
                       <v-btn
                         color="error"
                         @click="logout"
+                        :loading="loadingLogout"
                         text="Logout"
                       />  
                     </v-card-actions>
@@ -150,13 +152,15 @@ export default {
 		const logo = ref(new URL('@assets/logo_main.png', import.meta.url).href)
 		const authStore = useAuthStore()
 		const { userData, isLoggedIn } = storeToRefs(authStore)
-		const {signOut, loadingLogout} = useUser()
+		const {signOut, loadingLogout } = useUser()
 
 		const dialogLogout = ref(false)
 
-		const logout = async () => {
-			await signOut().then(() => {
-				router.push({ name: 'home' })
+		const logout = () => {
+			signOut().then(() => {
+				router.push({ name: 'home' }).then(() => {
+					location.reload()
+				})
 			})
 		}
 		

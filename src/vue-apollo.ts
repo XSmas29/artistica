@@ -1,20 +1,27 @@
-import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
+import { ApolloClient, ApolloLink, createHttpLink, from, InMemoryCache } from '@apollo/client/core'
 import VueApollo from 'vue-apollo'
 
 // HTTP connection to the API
-const token = localStorage.getItem('token')
-console.log('token di vue-apollo:', token)
 const httpLink = createHttpLink({
 	// You should use an absolute URL here
 	uri: import.meta.env.VITE_GRAPHQL_HTTP_URL,
-	headers: {
-		Authorization: token ? token : '',
-	}
+})
+
+const authMiddleware = new ApolloLink((operation, forward) => {
+	// add the authorization to the headers
+	operation.setContext(({ headers = {} }) => ({
+		headers: {
+			...headers,
+			authorization: localStorage.getItem('token') || null,
+		}
+	}))
+
+	return forward(operation)
 })
 
 // Create the apollo client
 export const apolloClient = new ApolloClient({
-	link: httpLink,
+	link: from([authMiddleware, httpLink]),
 	cache: new InMemoryCache(),
 })
 

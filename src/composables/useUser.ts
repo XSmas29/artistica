@@ -160,7 +160,8 @@ const useUser = () => {
 			}).then(({ data }) => {
 				toast.success(data.login.message)
 				localStorage.setItem('token', data.login.data)
-				getProfileInfo()
+
+				// getProfileInfo()
 				resolve(data)
 			}).catch((error: any) => {
 				reject(error)

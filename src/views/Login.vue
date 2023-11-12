@@ -91,7 +91,7 @@ export default {
 			const valid = (await (loginForm.value as any).validate()).valid
 			if (valid) {
 				signIn(formData.value.email, formData.value.password).then(() => {
-					router.push({ name: 'home' })
+					router.push({ name: 'home'})
 				})
 			}
 		}
