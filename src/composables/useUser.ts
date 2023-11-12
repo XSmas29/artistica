@@ -14,8 +14,10 @@ const useUser = () => {
 	const loadingVerify = ref(false)
 	const loadingUser = ref(false)
 	const loadingLogin = ref(false)
+	const loadingLogout = ref(false)
 	const loadingProfile = ref(false)
 	const loadingEditProfile = ref(false)
+	const loadingEditPassword = ref(false)
 
 	const register = async (email: string) => {
 		loadingRegister.value = true
@@ -38,7 +40,7 @@ const useUser = () => {
 		})
 	}
 
-	const checkVerify = (code: string) => {
+	const checkVerify = async (code: string) => {
 		loadingUser.value = true
 
 		return new Promise((resolve, reject) => {
@@ -60,7 +62,7 @@ const useUser = () => {
 		})
 	}
 
-	const verifyAccount = (id: number, data: any) => {
+	const verifyAccount = async (id: number, data: any) => {
 		loadingVerify.value = true
 
 		return new Promise((resolve, reject) => {
@@ -82,7 +84,7 @@ const useUser = () => {
 		})
 	}
 
-	const getProfileInfo = (): any => {
+	const getProfileInfo = async (): Promise<any> => {
 		loadingProfile.value = true
 
 		return new Promise((resolve, reject) => {
@@ -102,7 +104,7 @@ const useUser = () => {
 		})
 	}
 
-	const updateProfile = (data: any) => {
+	const updateProfile = async (data: any) => {
 		loadingEditProfile.value = true
 
 		return new Promise((resolve, reject) => {
@@ -123,7 +125,29 @@ const useUser = () => {
 		})
 	}
 
-	const signIn = (email: string, password: string) => {
+	const updatePassword = async (data: any) => {
+		loadingEditPassword.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: editProfile,
+				variables: {
+					data,
+				},
+			}).then(({ data }: any) => {
+				toast.success(data.editProfile.message)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingEditPassword.value = false
+			})
+		})
+	
+	}
+
+	const signIn = async (email: string, password: string) => {
 		loadingLogin.value = true
 
 		return new Promise((resolve, reject) => {
@@ -136,6 +160,7 @@ const useUser = () => {
 			}).then(({ data }) => {
 				toast.success(data.login.message)
 				localStorage.setItem('token', data.login.data)
+				getProfileInfo()
 				resolve(data)
 			}).catch((error: any) => {
 				reject(error)
@@ -144,6 +169,15 @@ const useUser = () => {
 				loadingLogin.value = false
 			})
 		})
+	}
+
+	const signOut = async () => {
+		loadingLogout.value = true
+
+		authStore.logout()
+		toast.success('Berhasil Log Out')
+
+		loadingLogout.value = false
 	}
 
 	return {
@@ -165,6 +199,12 @@ const useUser = () => {
 
 		updateProfile,
 		loadingEditProfile,
+
+		updatePassword,
+		loadingEditPassword,
+
+		signOut,
+		loadingLogout,
 	}
 }
 

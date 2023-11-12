@@ -91,7 +91,7 @@ const routes = [
 ]
 
 const router = createRouter({
-	history: createWebHistory(import.meta.env.VITE_GRAPHQL_HTTP_URL),
+	history: createWebHistory(),
 	routes,
 	scrollBehavior(to, from, savedPosition) {
 		if (to.hash) {
@@ -125,10 +125,10 @@ router.beforeEach(async (to, from, next) => {
 	else {
 		const {getProfileInfo} = useUser()
 		try {
-			console.log(hasToken)
+			// console.log(hasToken)
 			await getProfileInfo()
 		} catch {
-			console.log('get profile error')
+			// console.log('get profile error')
 
 			// localStorage.removeItem('token')
 			return next()

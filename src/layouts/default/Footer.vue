@@ -26,9 +26,9 @@
         target="_blank"
         href="https://www.facebook.com/ArtisticaJewelry"
       >
-        <fa-icon
-          size="xl"
-          :icon="['fab', 'facebook']"
+        <v-icon
+          icon="mdi-facebook"
+          size="30"
         />
       </v-btn>
       <v-btn
@@ -37,9 +37,9 @@
         target="_blank"
         href="https://www.instagram.com/artisticajewelry"
       >
-        <fa-icon
-          size="xl"
-          :icon="['fab', 'instagram']"
+        <v-icon
+          icon="mdi-instagram"
+          size="30"
         />
       </v-btn>
     </div>

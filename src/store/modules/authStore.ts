@@ -4,6 +4,11 @@ export const useAuthStore = defineStore('auth', {
 	state: () => ({
 		userData: null as UserData | null,
 	}),
+	getters: {
+		isLoggedIn(state) {
+			return !!state.userData
+		}
+	},
 	actions: {
 		set(userData: UserData) {
 			this.userData = userData
@@ -11,6 +16,10 @@ export const useAuthStore = defineStore('auth', {
 		reset() {
 			this.userData = null
 		},
+		logout() {
+			this.reset()
+			localStorage.removeItem('token')
+		}
 	}
 })
 

@@ -12,11 +12,11 @@ import router from '../router'
 
 // Types
 import type { App } from 'vue'
-
+console.log('init')
 export function registerPlugins (app: App) {
-  loadFonts()
-  app
-    .use(vuetify)
-    .use(router)
-    .use(pinia)
+	loadFonts()
+	app
+		.use(vuetify)
+		.use(router)
+		.use(pinia)
 }

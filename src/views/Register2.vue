@@ -71,7 +71,7 @@
                     v-model="formData.password_confirmation"
                     type="password"
                     hint="Minimal 8 karakter"
-                    :rules="[required, min(formData.password, 8), passwordEqual(formData.password_confirmation, formData.password_confirmation)]"
+                    :rules="[required, min(formData.password_confirmation, 8), passwordEqual(formData.password_confirmation, formData.password_confirmation)]"
                   />
                 </v-col>
               </v-row>
