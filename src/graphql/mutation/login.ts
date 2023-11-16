@@ -5,7 +5,8 @@ const login = gql`
     login(email: $email, password: $password) {
       success
       message
-      data
+      token
+      refresh_token
     }
   }
 `

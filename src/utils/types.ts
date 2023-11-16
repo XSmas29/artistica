@@ -4,9 +4,9 @@ type UserData = {
   first_name: string
   last_name: string
   phone: string
-  createdAt: Date
+  created_at: Date
   is_verified: boolean
-  isAdmin: boolean
+  is_admin: boolean
   hash: string
 }
 

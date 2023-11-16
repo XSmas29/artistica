@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 const profileInfo = gql`
   query profileInfo {
@@ -8,12 +8,12 @@ const profileInfo = gql`
       first_name
       last_name
       phone
-      createdAt
+      created_at
       is_verified
-      isAdmin
+      is_admin
       hash
     }
   }
-`;
+`
 
-export default profileInfo;
+export default profileInfo

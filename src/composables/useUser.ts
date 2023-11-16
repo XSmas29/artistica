@@ -1,7 +1,7 @@
 import { apolloClient } from '@/vue-apollo'
 import { ref } from 'vue'
 import { login, register as signUp, verifyUser } from '@graphql/mutations'
-import { checkVerifyCode, profileInfo } from '@graphql/queries'
+import { checkVerifyCode, profileInfo, refreshToken } from '@graphql/queries'
 import { toast } from '@/helpers/utils'
 import { useAuthStore } from '@/store/modules/authStore'
 import editProfile from '@graphql/mutation/editProfile'
@@ -13,6 +13,7 @@ const useUser = () => {
 	const loadingRegister = ref(false)
 	const loadingVerify = ref(false)
 	const loadingUser = ref(false)
+	const loadingAuth = ref(false)
 	const loadingLogin = ref(false)
 	const loadingLogout = ref(false)
 	const loadingProfile = ref(false)
@@ -159,9 +160,8 @@ const useUser = () => {
 				},
 			}).then(({ data }) => {
 				toast.success(data.login.message)
-				localStorage.setItem('token', data.login.data)
-
-				// getProfileInfo()
+				localStorage.setItem('token', data.login.token)
+				localStorage.setItem('refresh_token', data.login.refresh_token)
 				resolve(data)
 			}).catch((error: any) => {
 				reject(error)
@@ -179,6 +179,30 @@ const useUser = () => {
 		toast.success('Berhasil Log Out')
 
 		loadingLogout.value = false
+	}
+
+	const refreshAuthToken = async (refresh_token: string) => {
+		loadingAuth.value = true
+		localStorage.removeItem('token')
+		localStorage.removeItem('refresh_token')
+		
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: refreshToken,
+				fetchPolicy: 'no-cache',
+				variables: {
+					refresh_token,
+				},
+			}).then(({ data }: any) => {
+				localStorage.setItem('token', data.refreshToken.token)
+				localStorage.setItem('refresh_token', data.refreshToken.refresh_token)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+			}).finally(() => {
+				loadingAuth.value = false
+			})
+		})
 	}
 
 	return {
@@ -206,6 +230,9 @@ const useUser = () => {
 
 		signOut,
 		loadingLogout,
+
+		refreshAuthToken,
+		loadingAuth,
 	}
 }
 

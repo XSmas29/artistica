@@ -19,6 +19,7 @@ export const useAuthStore = defineStore('auth', {
 		logout() {
 			this.reset()
 			localStorage.removeItem('token')
+			localStorage.removeItem('refresh_token')
 		}
 	}
 })

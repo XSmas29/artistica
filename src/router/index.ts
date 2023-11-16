@@ -68,6 +68,7 @@ const routes = [
 				meta: {
 					pageTitle: 'Profil',
 					public: false,
+					user: true,
 				},
 				component: () => import('@views/Profile.vue'),
 			},
@@ -115,31 +116,25 @@ router.beforeEach(async (to, from, next) => {
 		? `${to.meta.pageTitle} | Artistica Jewelry`
 		: 'Artistica Jewelry'
 
-	// if (to.name === 'login' || to.name === 'register') {
-	// 	const hasToken = localStorage.getItem('token')
-	// 	if (hasToken) return next({ name: 'home' })
-	// }
-
 	const hasToken = localStorage.getItem('token')
 	if (!hasToken && !to.meta.public) return next({ name: 'login' })
-	else {
-		const {getProfileInfo} = useUser()
-		try {
-			// console.log(hasToken)
-			await getProfileInfo()
-		} catch {
-			// console.log('get profile error')
+	if (hasToken) {
+		if (to.name === 'login' || to.name === 'register') return next({ name: 'home' })
+	}
 
-			// localStorage.removeItem('token')
-			return next()
-		}
-	}
-	
-	if (to.meta.public) {
-		return next()
-	}
+	// else if (to.meta.public) {
+	// 	return next()
+	// }
 
 	return next()
+})
+
+router.afterEach(async () => {
+	const hasToken = localStorage.getItem('token')
+	if (hasToken) {
+		const {getProfileInfo} = useUser()
+		await getProfileInfo()
+	}
 })
 
 export default router
