@@ -72,6 +72,19 @@ const routes = [
 				},
 				component: () => import('@views/Profile.vue'),
 			},
+			{
+				path: '/products',
+				name: 'products',
+
+				// route level code-splitting
+				// this generates a separate chunk (about.[hash].js) for this route
+				// which is lazy-loaded when the route is visited.
+				meta: {
+					pageTitle: 'Daftar Produk',
+					public: true,
+				},
+				component: () => import('@views/Product/Products.vue'),
+			},
 		],
 	},
 

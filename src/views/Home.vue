@@ -1,18 +1,27 @@
 <template>
-	<XyzTransition appear-visible xyz="fade left-5">
-
-		<v-carousel cycle height="auto" eager>
-			<template v-for="(item, index) in carouselItem" :key="index">
-				<v-carousel-item eager>
-					<v-img :src="item" />
-				</v-carousel-item>
-			</template>
-		</v-carousel>
-	</XyzTransition>
+  <XyzTransition
+    appear-visible
+    xyz="fade left-5"
+  >
+    <v-carousel
+      cycle
+      height="auto"
+      eager
+    >
+      <template
+        v-for="(item, index) in carouselItem"
+        :key="index"
+      >
+        <v-carousel-item eager>
+          <v-img :src="item" />
+        </v-carousel-item>
+      </template>
+    </v-carousel>
+  </XyzTransition>
 </template>
 
 <script lang="ts">
-import { ref } from 'vue';
+import { ref } from 'vue'
 export default {
 	setup() {
 		// const file = (path: string) => {
@@ -27,10 +36,11 @@ export default {
 			new URL('@assets/carousel/carousel-5.webp', import.meta.url).href,
 			new URL('@assets/carousel/carousel-6.webp', import.meta.url).href,
 			new URL('@assets/carousel/carousel-7.webp', import.meta.url).href,
-		]);
+		])
+		
 		return {
 			carouselItem
-		};
+		}
 	},
-};
+}
 </script>

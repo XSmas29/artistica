@@ -123,19 +123,48 @@
     
     <template #extension>
       <v-tabs
+        v-model="currentTab"
+        hide-slider
         align-tabs="center"
         grow
         show-arrows
       >
-        <v-tab>BEST SELLER</v-tab>
-        <v-tab>SHOP</v-tab>
-        <v-tab>ABOUT US</v-tab>
-        <v-tab>CUSTOM MANUFACTURE</v-tab>
-        <v-tab>WEDDING RING CUSTOM</v-tab>
-        <v-tab>SILVER COURSE</v-tab>
-        <v-tab>SUPPORT</v-tab>
-        <v-tab>SUPPORT SILVERSMITH</v-tab>
-        <v-tab>BLOG</v-tab>
+        <v-tab
+          :value="1"
+          @click="goTo('home')"
+          text="Home"
+        />
+        <v-tab
+          :value="2" 
+          @click="goTo('products')"
+          text="Shop"
+        />
+        <v-tab
+          :value="3"
+          text="About Us"
+          @click="goTo('about')"
+        />
+        <v-tab 
+          :value="4"
+          text="Custom Manufacture"
+          @click="goTo('custom-manufacture')"
+        />
+        <v-tab
+          :value="5"
+          text="Silver Course"
+        />
+        <v-tab 
+          :value="6"
+          text="Support"
+        />
+        <v-tab 
+          :value="7"
+          text="Support Silversmith"
+        />
+        <v-tab 
+          :value="8"
+          text="Blog"
+        />
       </v-tabs>
     </template>
   </v-app-bar>
@@ -143,17 +172,17 @@
 
 <script lang="ts">
 import { ref } from 'vue'
-import { useAuthStore } from '@/store/modules'
+import { useAuthStore, usePageStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
 import useUser from '@/composables/useUser'
 import router from '@/router'
 export default {
 	setup() {
 		const logo = ref(new URL('@assets/logo_main.png', import.meta.url).href)
-		const authStore = useAuthStore()
-		const { userData, isLoggedIn } = storeToRefs(authStore)
-		const {signOut, loadingLogout } = useUser()
+		const  { userData, isLoggedIn }  = storeToRefs(useAuthStore())
+		const { currentTab } = storeToRefs(usePageStore())
 
+		const {signOut, loadingLogout } = useUser()
 		const dialogLogout = ref(false)
 
 		const logout = () => {
@@ -163,6 +192,9 @@ export default {
 				})
 			})
 		}
+		const goTo = (name: string) => {
+			router.push({ name })
+		}
 		
 		return {
 			userData,
@@ -171,6 +203,8 @@ export default {
 			logout,
 			loadingLogout,
 			dialogLogout,
+			currentTab,
+			goTo,
 		}
 	},
 }

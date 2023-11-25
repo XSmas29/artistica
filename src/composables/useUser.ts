@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import { login, register as signUp, verifyUser } from '@graphql/mutations'
 import { checkVerifyCode, profileInfo, refreshToken } from '@graphql/queries'
 import { toast } from '@/helpers/utils'
-import { useAuthStore } from '@/store/modules/authStore'
+import { useAuthStore } from '@/store/modules'
 import editProfile from '@graphql/mutation/editProfile'
 
 const useUser = () => {

@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import AppBar from './AppBar.vue';
-import View from './View.vue';
-import Footer from './Footer.vue';
+import AppBar from './AppBar.vue'
+import View from './View.vue'
+import Footer from './Footer.vue'
 </script>
