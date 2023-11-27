@@ -1,7 +1,8 @@
 // Composables
-import { createRouter, createWebHistory } from 'vue-router'
+import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import { MyRouteRecord } from './type'
 import useUser from '@/composables/useUser'
-const routes = [
+const routes: MyRouteRecord[] = [
 	{
 		path: '',
 		component: () => import('@/layouts/default/Default.vue'),
@@ -16,6 +17,11 @@ const routes = [
 				meta: {
 					pageTitle: 'Home',
 					public: true,
+					breadcrumbs: [{
+						title: 'Home',
+						to: { name: 'home' },
+						disabled: true,
+					}],
 				},
 				component: () => import('@views/Home.vue'),
 			},
@@ -29,6 +35,18 @@ const routes = [
 				meta: {
 					pageTitle: 'Register',
 					public: true,
+					breadcrumbs: [
+						{
+							title: 'Home',
+							to: { name: 'home' },
+							disabled: false,
+						},
+						{
+							title: 'Register',
+							to: {name: 'register' },
+							disabled: true,
+						},
+					],
 				},
 				component: () => import('@views/Register.vue'),
 			},
@@ -42,6 +60,18 @@ const routes = [
 				meta: {
 					pageTitle: 'Verify',
 					public: true,
+					breadcrumbs: [
+						{
+							title: 'Home',
+							to: {name: 'home' },
+							disabled: false,
+						},
+						{
+							title: 'Verify',
+							to: {name: 'verify' },
+							disabled: true,
+						},
+					],
 				},
 				component: () => import('@views/Register2.vue'),
 			},
@@ -55,6 +85,18 @@ const routes = [
 				meta: {
 					pageTitle: 'Login',
 					public: true,
+					breadcrumbs: [
+						{
+							title: 'Home',
+							to: {name: 'home' },
+							disabled: false,
+						},
+						{
+							title: 'Login',
+							to: {name: 'login' },
+							disabled: true,
+						},
+					],
 				},
 				component: () => import('@views/Login.vue'),
 			},
@@ -69,6 +111,18 @@ const routes = [
 					pageTitle: 'Profil',
 					public: false,
 					user: true,
+					breadcrumbs: [
+						{
+							title: 'Home',
+							to: {name: 'home' },
+							disabled: false,
+						},
+						{
+							title: 'Profil',
+							to: {name: 'profile' },
+							disabled: true,
+						},
+					],
 				},
 				component: () => import('@views/Profile.vue'),
 			},
@@ -82,6 +136,19 @@ const routes = [
 				meta: {
 					pageTitle: 'Daftar Produk',
 					public: true,
+					user: true,
+					breadcrumbs: [
+						{
+							title: 'Home',
+							to: { name: 'home' },
+							disabled: false,
+						},
+						{
+							title: 'Daftar Produk',
+							to: {name: 'products' },
+							disabled: true,
+						},
+					],
 				},
 				component: () => import('@views/Product/Products.vue'),
 			},
@@ -106,7 +173,7 @@ const routes = [
 
 const router = createRouter({
 	history: createWebHistory(),
-	routes,
+	routes: routes as RouteRecordRaw[],
 	scrollBehavior(to, from, savedPosition) {
 		if (to.hash) {
 			return new Promise(resolve => {
