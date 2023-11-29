@@ -1,6 +1,6 @@
 // Composables
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import { MyRouteRecord } from './type'
+import { MyRouteRecord } from './types'
 import useUser from '@/composables/useUser'
 const routes: MyRouteRecord[] = [
 	{
