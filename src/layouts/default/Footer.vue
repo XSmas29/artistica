@@ -1,7 +1,7 @@
 <template>
   <v-footer
     height="180"
-    color="#EEF0F0"
+    color="primary"
     class="text-center d-flex flex-column"
   >
     <div class="text-h6 font-weight-bold my-3">

@@ -1,7 +1,7 @@
 <template>
   <v-app-bar
     flat
-    color="#EEF0F0"
+    color="primary"
   >
     <v-col class="col-4" />
     <v-col class="col-4">

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 const checkVerifyCode = gql`
   query checkVerifyCode($code: String!) {
@@ -8,6 +8,6 @@ const checkVerifyCode = gql`
       hash
     }
   }
-`;
+`
 
-export default checkVerifyCode;
+export default checkVerifyCode
