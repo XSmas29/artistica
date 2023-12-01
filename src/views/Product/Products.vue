@@ -347,40 +347,60 @@
               size="64"
             />
           </v-overlay>
-          <v-card
-            rounded
-            width="250"
+          <v-hover
+            v-slot="{ isHovering, props }"
             v-for="(item, index) in productList"
             :key="index"
-            class="ma-2 flex-fill"
           >
-            <v-img
-              :src="item.images[0]?.path"
-              cover
-              class="text-white"
-              aspect-ratio="1"
+            <v-card
               rounded
-              eager
-              :alt="item.slug"
-            />
-            <v-tooltip
-              location="top center"
-              eager
-              :text="item.name"
+              v-bind="props"
+              width="250"
+              class="ma-2 flex-fill no-decoration"
             >
-              <template #activator="{ props }">
-                <v-card-title
-                  class="text-body-1 font-weight-bold pb-0 px-3 mb-1 product-title"
-                  v-bind="props"
+              <router-link
+                class="link"
+                :to="{
+                  name: 'product-detail',
+                  params: {
+                    id: item.id
+                  }
+                }"
+              >
+                <v-img
+                  :src="item.images[0]?.path"
+                  cover
+                  class="text-white"
+                  aspect-ratio="1"
+                  rounded
+                  eager
+                  :alt="item.slug"
+                />
+                <v-tooltip
+                  location="top center"
+                  eager
+                  :text="item.name"
                 >
-                  {{ item.name }}
-                </v-card-title>
-              </template>
-            </v-tooltip>
-            <v-card-subtitle class="text-subtitle-1 font-weight-bold px-3 mb-3">
-              {{ item.single_variant ? formatCurrency(item.variants[0].price) : priceRange(item.variants) }}
-            </v-card-subtitle>
-          </v-card>
+                  <template #activator="tooltipProps">
+                    <v-card-title
+                      class="text-body-1 font-weight-bold pb-0 px-3 mb-1 product-title"
+                      v-bind="tooltipProps.props"
+                    >
+                      {{ item.name }}
+                    </v-card-title>
+                  </template>
+                </v-tooltip>
+                <v-card-subtitle class="text-subtitle-1 font-weight-bold px-3 mb-3">
+                  {{ item.single_variant ? formatCurrency(item.variants[0].price) : priceRange(item.variants) }}
+                </v-card-subtitle>
+                <v-overlay
+                  :model-value="isHovering"
+                  contained
+                  scrim="true"
+                />
+              </router-link>
+            </v-card>
+          </v-hover>
         </v-card>
         <v-pagination
           v-model="productListPagination.page"
@@ -568,4 +588,8 @@ export default {
 }
 </script>
 <style scoped>
+.link {
+  text-decoration: none; 
+  color: inherit;
+}
 </style>

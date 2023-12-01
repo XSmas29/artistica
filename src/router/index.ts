@@ -136,7 +136,6 @@ const routes: MyRouteRecord[] = [
 				meta: {
 					pageTitle: 'Daftar Produk',
 					public: true,
-					user: true,
 					breadcrumbs: [
 						{
 							title: 'Home',
@@ -152,6 +151,31 @@ const routes: MyRouteRecord[] = [
 				},
 				component: () => import('@views/Product/Products.vue'),
 			},
+			{
+				path: '/products/:id',
+				name: 'product-detail',
+				meta: {
+					pageTitle: 'Detail Produk',
+					public: true,
+					breadcrumbs: [
+						{
+							title: 'Home',
+							to: { name: 'home' },
+							disabled: false,
+						},
+						{
+							title: 'Daftar Produk',
+							to: {name: 'products' },
+							disabled: false,
+						},
+						{
+							title: 'Detail Produk',
+							to: {name: 'product-detail' },
+							disabled: true,
+						},
+					],
+				},
+			}
 		],
 	},
 
