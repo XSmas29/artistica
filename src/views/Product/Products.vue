@@ -349,24 +349,20 @@
           </v-overlay>
           <v-card
             rounded
-            height="335"
-            width="258"
+            width="250"
             v-for="(item, index) in productList"
             :key="index"
-            class="ma-2"
+            class="ma-2 flex-fill"
           >
-            <v-card rounded>
-              <v-img
-                height="260"
-                :src="item.images[0]?.path"
-                cover
-                class="text-white"
-                aspect-ratio="1"
-                rounded
-                eager
-                :alt="item.slug"
-              />
-            </v-card>
+            <v-img
+              :src="item.images[0]?.path"
+              cover
+              class="text-white"
+              aspect-ratio="1"
+              rounded
+              eager
+              :alt="item.slug"
+            />
             <v-tooltip
               location="top center"
               eager
@@ -381,7 +377,7 @@
                 </v-card-title>
               </template>
             </v-tooltip>
-            <v-card-subtitle class="text-subtitle-1 font-weight-bold px-3">
+            <v-card-subtitle class="text-subtitle-1 font-weight-bold px-3 mb-3">
               {{ item.single_variant ? formatCurrency(item.variants[0].price) : priceRange(item.variants) }}
             </v-card-subtitle>
           </v-card>
