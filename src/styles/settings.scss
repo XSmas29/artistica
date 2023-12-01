@@ -8,3 +8,29 @@
 // @use 'vuetify/settings' with (
 //   $color-pack: false
 // );
+
+::-webkit-scrollbar {
+  width: 14px;
+  height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #BFBFBF; 
+  border-radius: 100px;
+  background-clip: padding-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888; 
+  border-radius: 100px;
+  background-clip: padding-box;
+  border: 3px solid rgba(0, 0, 0, 0);
+}

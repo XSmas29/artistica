@@ -19,7 +19,10 @@ const useUser = () => {
 				variables: {
 					filter,
 					pagination,
-					sort,
+					sort: {
+						field: sort.field,
+						sort: sort.sort,
+					},
 				},
 			}).then(({ data }: any) => {
 				resolve(data)

@@ -1,9 +1,10 @@
 import { defineStore } from 'pinia'
 export const useProductStore = defineStore('product', {
 	state: () => ({
+		productListCount: 0,
 		productListPagination: {
-			limit: 10,
-			offset: 0,
+			limit: 12,
+			page: 1,
 		},
 		productListFilter: {
 			category_ids: [] as number[],
@@ -13,8 +14,11 @@ export const useProductStore = defineStore('product', {
 			search: null as string | null,
 		},
 		productListSort: {
+			id: 1,
+			name: 'Name (A-Z)',
 			field: 'name',
 			sort: 'ASC' as 'ASC' | 'DESC',
+			icon: 'mdi-sort-ascending',
 		}
 	}),
 	getters: {
@@ -26,16 +30,19 @@ export const useProductStore = defineStore('product', {
 		},
 		getProductListSort(state) {
 			return state.productListSort
+		},
+		getProductListCount(state) {
+			return state.productListCount
 		}
 	},
 	actions: {
 		changePage(page: number) {
-			this.productListPagination.offset = page
+			this.productListPagination.page = page
 		},
 		changeLimit(limit: number) {
 			this.productListPagination = {
 				limit,
-				offset: 0,
+				page: 1,
 			}
 		}
 	}

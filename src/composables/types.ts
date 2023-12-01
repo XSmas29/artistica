@@ -1,6 +1,6 @@
 type pagination = {
-  offset: number,
   limit: number,
+  page: number,
 }
 
 type sort = {

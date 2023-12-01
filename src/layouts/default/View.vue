@@ -36,12 +36,11 @@ export default {
 	setup() {
 		const route = useRoute()
 		const breadcrumbs: any = computed(() => route.meta.breadcrumbs)
-		const { mdAndDown, name } = useDisplay()
+		const { mdAndDown } = useDisplay()
 		
 		return {
 			breadcrumbs,
 			mdAndDown,
-			name
 		}
 	}
 }
