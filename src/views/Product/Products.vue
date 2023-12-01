@@ -3,7 +3,6 @@
     class="d-flex"
   >
     <div>
-      <div>Filter</div>
       <v-card
         rounded
         variant="flat"
@@ -20,7 +19,7 @@
           variant="solo-filled"
           prepend-inner-icon="mdi-magnify"
         />
-        <div class="text-h6 mb-2">
+        <div class="text-h6 mt-3 mb-2">
           Harga
         </div>
         <div class="d-flex align-center mb-1">
@@ -92,7 +91,7 @@
         </v-select>
         <v-select
           v-model="productListFilter.material_ids"
-          class="mb-3"
+          class="mb-2"
           :items="materialList"
           label="Jenis Material"
           multiple
@@ -122,60 +121,96 @@
         </v-select>
       </v-card>
     </div>
-    <v-card
-      class="d-flex flex-wrap justify-center"
-      flat
-    >
-      <v-overlay
-        :model-value="loadingProductList"
-        class="align-center justify-center"
-        contained
-      >
-        <v-progress-circular
-          color="primary"
-          indeterminate
-          size="64"
-        />
-      </v-overlay>
-      <v-card
-        rounded
-        height="335"
-        width="260"
-        v-for="(item, index) in productList"
-        :key="index"
-        class="ma-2"
-      >
-        <v-card rounded>
-          <v-img
-            height="260"
-            :src="item.images[0]?.path"
-            cover
-            class="text-white"
-            aspect-ratio="1"
-            rounded
-            eager
-            :alt="item.slug"
-          />
-        </v-card>
-        <v-tooltip
-          location="top center"
-          eager
-          :text="item.name"
+    <v-divider
+      vertical
+      class="mx-2"
+    />
+    <div>
+      <v-row>
+        <v-col
+          cols="12"
+          md="6"
+          offset="0"
+          offset-md="6"
         >
-          <template #activator="{ props }">
-            <v-card-title
-              class="text-body-1 font-weight-bold pb-0 px-3 mb-1 product-title"
-              v-bind="props"
-            >
-              {{ item.name }}
-            </v-card-title>
-          </template>
-        </v-tooltip>
-        <v-card-subtitle class="text-subtitle-1 font-weight-bold px-3">
-          {{ item.single_variant ? formatCurrency(item.variants[0].price) : priceRange(item.variants) }}
-        </v-card-subtitle>
+          <v-select
+            v-model="selectedSort"
+            class="mb-3"
+            :items="productListSortOptions"
+            label="Urutkan Berdasarkan"
+            hide-details="auto"
+            :loading="loadingCategoryList"
+            item-title="name"
+            item-id="id"
+            density="comfortable"
+            prepend-inner-icon="mdi-sort"
+            return-object
+            @update:model-value="setSort"
+          >
+            <template #item="{ props, item }">
+              <v-list-item
+                v-bind="props"
+                :prepend-icon="item.props.value.icon"
+              />
+            </template>
+          </v-select>
+        </v-col>
+      </v-row>
+      <v-card
+        class="d-flex flex-wrap justify-center"
+        flat
+      >
+        <v-overlay
+          :model-value="loadingProductList"
+          class="align-center justify-center"
+          contained
+        >
+          <v-progress-circular
+            color="primary"
+            indeterminate
+            size="64"
+          />
+        </v-overlay>
+        <v-card
+          rounded
+          height="335"
+          width="258"
+          v-for="(item, index) in productList"
+          :key="index"
+          class="ma-2"
+        >
+          <v-card rounded>
+            <v-img
+              height="260"
+              :src="item.images[0]?.path"
+              cover
+              class="text-white"
+              aspect-ratio="1"
+              rounded
+              eager
+              :alt="item.slug"
+            />
+          </v-card>
+          <v-tooltip
+            location="top center"
+            eager
+            :text="item.name"
+          >
+            <template #activator="{ props }">
+              <v-card-title
+                class="text-body-1 font-weight-bold pb-0 px-3 mb-1 product-title"
+                v-bind="props"
+              >
+                {{ item.name }}
+              </v-card-title>
+            </template>
+          </v-tooltip>
+          <v-card-subtitle class="text-subtitle-1 font-weight-bold px-3">
+            {{ item.single_variant ? formatCurrency(item.variants[0].price) : priceRange(item.variants) }}
+          </v-card-subtitle>
+        </v-card>
       </v-card>
-    </v-card>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -190,12 +225,50 @@ import { useDebounceFn } from '@vueuse/core'
 export default {
 	setup() {
 		const { getProductListPagination, getProductListFilter, getProductListSort } = useProductStore()
-		const { productListPagination, productListFilter } = storeToRefs(useProductStore())
+		const { productListPagination, productListFilter, productListSort } = storeToRefs(useProductStore())
 		const { getProductList, loadingProductList, productList } = useProduct()
 
 		const { getCategoryList, loadingCategoryList, categoryList } = useCategory()
 		const { getMaterialList, loadingMaterialList, materialList } = useMaterial()
 
+		const productListSortOptions = ref([
+			{
+				id: 1,
+				name: 'Name (A-Z)',
+				field: 'name',
+				sort: 'ASC',
+				icon: 'mdi-sort-ascending',
+			},
+			{
+				id: 2,
+				name: 'Name (Z-A)',
+				field: 'name',
+				sort: 'DESC',
+				icon: 'mdi-sort-descending',
+			},
+			{
+				id: 3,
+				name: 'Price (Low-High)',
+				field: 'price',
+				sort: 'ASC',
+				icon: 'mdi-sort-ascending',
+			},
+			{
+				id: 4,
+				name: 'Price (High-Low)',
+				field: 'price',
+				sort: 'DESC',
+				icon: 'mdi-sort-descending',
+			}
+		])
+
+		const selectedSort = ref({
+			id: 1,
+			name: 'Name (A-Z)',
+			field: 'name',
+			sort: 'ASC',
+			icon: 'mdi-sort-ascending',
+		})
 		const price_min = ref(0)
 		const price_max = ref(0)
 
@@ -249,6 +322,12 @@ export default {
 			debouncedLoadProduct()
 		}
 
+		const setSort = (value: any) => {
+			productListSort.value.field = value.field
+			productListSort.value.sort = value.sort
+			debouncedLoadProduct()
+		}
+
 		const priceRange = (variants: any) => {
 			if (variants.length === 1) {
 				return formatCurrency(variants[0].price)
@@ -276,7 +355,11 @@ export default {
 			toggleCategory,
 			toggleMaterial,
 			priceRange,
+			productListSort,
+			setSort,
       
+			productListSortOptions,
+			selectedSort,
 			productListPagination,
 			productList,
 			getProductListFilter,
