@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 export const useProductStore = defineStore('product', {
 	state: () => ({
-		productListCount: 0,
 		productListPagination: {
 			limit: 12,
 			page: 1,
@@ -31,9 +30,6 @@ export const useProductStore = defineStore('product', {
 		getProductListSort(state) {
 			return state.productListSort
 		},
-		getProductListCount(state) {
-			return state.productListCount
-		}
 	},
 	actions: {
 		changePage(page: number) {

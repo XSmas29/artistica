@@ -4,6 +4,8 @@ import refreshToken from '@/graphql/query/refreshToken'
 import products from '@/graphql/query/products'
 import categories from '@/graphql/query/categories'
 import materials from '@/graphql/query/materials'
+import productDetail from '@/graphql/query/productDetail'
+
 export {
 	checkVerifyCode,
 	profileInfo,
@@ -11,4 +13,5 @@ export {
 	products,
 	categories,
 	materials,
+	productDetail,
 }

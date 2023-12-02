@@ -329,8 +329,8 @@
         <p class="my-2">
           Menampilkan produk 
           {{ ((productListPagination.page - 1) * productListPagination.limit) + 1 }} - 
-          {{ (productListPagination.page * productListPagination.limit > productListCount) ? productListCount : (productListPagination.page * productListPagination.limit) }} 
-          dari {{ productListCount }} produk
+          {{ (productListPagination.page * productListPagination.limit > productCount) ? productCount : (productListPagination.page * productListPagination.limit) }} 
+          dari {{ productCount }} produk
         </p>
         <v-card
           class="d-flex flex-wrap mb-4"
@@ -404,7 +404,7 @@
         </v-card>
         <v-pagination
           v-model="productListPagination.page"
-          :length="Math.ceil(productListCount / productListPagination.limit)"
+          :length="Math.ceil(productCount / productListPagination.limit)"
           @update:model-value="loadProduct(false)"
           rounded="circle"
           flat
@@ -427,8 +427,8 @@ import { useDisplay } from 'vuetify'
 export default {
 	setup() {
 		const { smAndDown } = useDisplay()
-		const { productListPagination, productListFilter, productListSort, productListCount } = storeToRefs(useProductStore())
-		const { getProductList, loadingProductList, productList } = useProduct()
+		const { productListPagination, productListFilter, productListSort } = storeToRefs(useProductStore())
+		const { getProductList, loadingProductList, productList, productCount } = useProduct()
 
 		const { getCategoryList, loadingCategoryList, categoryList } = useCategory()
 		const { getMaterialList, loadingMaterialList, materialList } = useMaterial()
@@ -510,7 +510,6 @@ export default {
 			await getProductList(productListFilter.value, productListPagination.value, productListSort.value).then(({products}: any) => {
 				price_min.value = products.price_min
 				price_max.value = products.price_max
-				productListCount.value = products.count
 			})
 		}
 
@@ -573,7 +572,7 @@ export default {
 			productListSortOptions,
 			productListPagination,
 			productList,
-			productListCount,
+			productCount,
 			filterPrice,
 			filterDialog,
 

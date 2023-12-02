@@ -1,5 +1,5 @@
 import { apolloClient } from '@/vue-apollo'
-import { products } from '@graphql/queries'
+import { productDetail, products } from '@graphql/queries'
 import { toast } from '@helpers/utils'
 import { ref } from 'vue'
 import { filterProducts, pagination, sort } from './types'
@@ -8,6 +8,9 @@ const useUser = () => {
 	const productList = ref([] as any[])
 	const productCount = ref(0)
 	const loadingProductList = ref(false)
+
+	const product = ref(null as any)
+	const loadingProductDetail = ref(false)
 
 	const getProductList = async (filter: filterProducts, pagination: pagination, sort: sort) => {
 		loadingProductList.value = true
@@ -38,10 +41,37 @@ const useUser = () => {
 		})
 	}
 
+	const getProductDetail = async (id: number) => {
+		loadingProductDetail.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: productDetail,
+				fetchPolicy: 'no-cache',
+				variables: {
+					id,
+				},
+			}).then(({ data }: any) => {
+				resolve(data)
+				product.value = data.productDetail
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingProductDetail.value = false
+			})
+		})
+	}
+
 	return {
 		productList,
+		productCount,
 		loadingProductList,
 		getProductList,
+
+		product,
+		loadingProductDetail,
+		getProductDetail,
 	}
 }
 

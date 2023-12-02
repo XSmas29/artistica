@@ -5,17 +5,15 @@
   >
     <v-carousel
       cycle
-      height="auto"
+      cover
       eager
     >
-      <template
+      <v-carousel-item
         v-for="(item, index) in carouselItem"
         :key="index"
-      >
-        <v-carousel-item eager>
-          <v-img :src="item" />
-        </v-carousel-item>
-      </template>
+        :src="item"
+        eager
+      />
     </v-carousel>
   </XyzTransition>
 </template>

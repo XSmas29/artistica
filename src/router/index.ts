@@ -175,6 +175,7 @@ const routes: MyRouteRecord[] = [
 						},
 					],
 				},
+				component: () => import('@views/Product/ProductDetail.vue'),
 			}
 		],
 	},
