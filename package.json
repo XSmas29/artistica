@@ -29,6 +29,7 @@
     "graphql-tag": "^2.12.6",
     "jwt-decode": "^4.0.0",
     "pinia": "^2.0.0",
+    "pinia-plugin-persistedstate": "^3.2.0",
     "roboto-fontface": "*",
     "vue": "^3.2.0",
     "vue-apollo": "^3.1.1",
