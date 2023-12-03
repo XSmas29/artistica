@@ -9,7 +9,7 @@ const useUser = () => {
 	const productCount = ref(0)
 	const loadingProductList = ref(false)
 
-	const product = ref(null as any)
+	const product = ref({}) as any
 	const loadingProductDetail = ref(false)
 
 	const getProductList = async (filter: filterProducts, pagination: pagination, sort: sort) => {
@@ -52,8 +52,8 @@ const useUser = () => {
 					id,
 				},
 			}).then(({ data }: any) => {
-				resolve(data)
 				product.value = data.productDetail
+				resolve(data)
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)

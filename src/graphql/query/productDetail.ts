@@ -11,14 +11,24 @@ const productDetail = gql`
       images {
         id
         path
+        variant {
+          id
+          name
+        }
       }
       variants {
         id
+        name
         price
-        images {
-          id
-          path
-        }
+        stock
+      }
+      category {
+        id
+        name
+      }
+      material {
+        id
+        name
       }
     }
   }
