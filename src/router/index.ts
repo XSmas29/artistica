@@ -176,6 +176,28 @@ const routes: MyRouteRecord[] = [
 					],
 				},
 				component: () => import('@views/Product/ProductDetail.vue'),
+			},
+			{
+				path: '/cart',
+				name: 'cart',
+				meta: {
+					pageTitle: 'Keranjang Belanja',
+					public: false,
+					user: true,
+					breadcrumbs: [
+						{
+							title: 'Home',
+							to: { name: 'home' },
+							disabled: false,
+						},
+						{
+							title: 'Keranjang',
+							to: { name: 'cart' },
+							disabled: true,
+						},
+					],
+				},
+				component: () => import('@views/Cart.vue'),
 			}
 		],
 	},

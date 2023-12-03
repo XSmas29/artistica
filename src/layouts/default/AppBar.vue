@@ -18,9 +18,34 @@
     <v-col class="col-4">
       <div>
         <div class="d-flex justify-end">
-          <v-btn icon>
-            <v-icon icon="mdi-cart" />
-          </v-btn>
+          <router-link
+            :to="{ name: 'cart' }"
+            style="color: inherit"
+          >
+            <v-btn
+              icon
+              v-if="isLoggedIn"
+              class="mx-4"
+            >
+              <v-badge
+                color="error"
+                :content="cartData.length > 99 ? '99+' : cartData.length"
+                v-if="cartData.length > 0"
+              >
+                <v-icon icon="mdi-cart" />
+              </v-badge>
+              <v-icon
+                v-else
+                icon="mdi-cart"
+              />
+              <v-tooltip
+                activator="parent"
+                location="bottom"
+              >
+                Keranjang
+              </v-tooltip>
+            </v-btn>
+          </router-link>
           <v-menu v-if="userData">
             <template #activator="{ props }">
               <v-card
@@ -36,8 +61,15 @@
                   :title="userData.email"
                   :subtitle="userData.first_name"
                 />
+                <v-tooltip
+                  activator="parent"
+                  location="bottom"
+                >
+                  Pengguna
+                </v-tooltip>
               </v-card>
             </template>
+            
             <v-list density="compact">
               <router-link
                 :to="{ name: 'profile' }"
@@ -109,6 +141,12 @@
             :to="{ name: 'login' }"
             style="color: inherit"
           >
+            <v-tooltip
+              activator="parent"
+              location="bottom"
+            >
+              Login
+            </v-tooltip>
             <v-btn icon>
               <v-icon icon="mdi-account-circle" />
             </v-btn>
@@ -172,7 +210,7 @@
 
 <script lang="ts">
 import { ref } from 'vue'
-import { useAuthStore, usePageStore } from '@/store/modules'
+import { useAuthStore, usePageStore, useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
 import useUser from '@/composables/useUser'
 import router from '@/router'
@@ -180,6 +218,7 @@ export default {
 	setup() {
 		const logo = ref(new URL('@assets/logo_main.png', import.meta.url).href)
 		const  { userData, isLoggedIn }  = storeToRefs(useAuthStore())
+		const  { cartData }  = storeToRefs(useCartStore())
 		const { currentTab } = storeToRefs(usePageStore())
 
 		const {signOut, loadingLogout } = useUser()
@@ -200,11 +239,13 @@ export default {
 			userData,
 			isLoggedIn,
 			logo,
-			logout,
 			loadingLogout,
 			dialogLogout,
 			currentTab,
+			cartData,
+      
 			goTo,
+			logout,
 		}
 	},
 }
