@@ -109,9 +109,69 @@
                       color="black"
                       prepend-icon="mdi-cart"
                       flat
+                      @click="addToCart"
                     >
                       Masukkan keranjang
                     </v-btn>
+                    <v-dialog
+                      max-width="500"
+                      v-model="dialogAddCart"
+                    >
+                      <template #default="{ isActive }">
+                        <v-card>
+                          <v-icon
+                            color="success"
+                            size="120"
+                            class="mx-auto mt-8"
+                          >
+                            mdi-check-circle
+                          </v-icon>
+                          <v-card-text class="text-center">
+                            <div class="text-h5">
+                              Berhasil Memasukkan Barang ke keranjang
+                            </div>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-row class="px-4 mt-2 mb-1">
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                class="pa-2"
+                              >
+                                <v-btn
+                                  flat
+                                  variant="flat"
+                                  color="primary"
+                                  @click="isActive.value = false"
+                                  block
+                                >
+                                  Lanjut belanja
+                                </v-btn>
+                              </v-col>
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                class="pa-2"
+                              >
+                                <router-link
+                                  :to="{ name: 'cart' }"
+                                  style="text-decoration: none;"
+                                >
+                                  <v-btn
+                                    flat
+                                    color="black"
+                                    variant="flat"
+                                    block
+                                  >
+                                    Lihat keranjang
+                                  </v-btn>
+                                </router-link>
+                              </v-col>
+                            </v-row>
+                          </v-card-actions>
+                        </v-card>
+                      </template>
+                    </v-dialog>
                   </v-col>
                 </template>
                 <template v-else>
@@ -149,17 +209,19 @@ import useProduct from '@composables/useProduct'
 import { useRoute } from 'vue-router'
 import ImageGallery from '@components/ImageGallery.vue'
 import { formatCurrency } from '@utils/filter'
-import { useAuthStore } from '@/store/modules'
-
+import { useAuthStore, useCartStore } from '@/store/modules'
+import { storeToRefs } from 'pinia'
 export default {
 	components: {
 		ImageGallery
 	},
 	setup() {
 		const route = useRoute()
-		const { isLoggedIn } = useAuthStore()
+		const { isLoggedIn } = storeToRefs(useAuthStore())
+		const { cartData } = storeToRefs(useCartStore())
 		const { getProductDetail, loadingProductDetail, product } = useProduct()
 		const amount = ref(1)
+		const dialogAddCart = ref(false)
 
 		onMounted(() => {
 			const id = +(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
@@ -185,6 +247,16 @@ export default {
 				amount.value = product.value.variants[selectedVariant.value].stock
 			}
 		}
+
+		const addToCart = () => {
+			cartData.value.push({
+				product_id: product.value.id,
+				variant_id: product.value.variants[selectedVariant.value].id,
+				amount: amount.value
+			})
+      
+			dialogAddCart.value = true
+		}
     
 		const selectedVariant = ref(0)
     
@@ -193,13 +265,15 @@ export default {
 			product,
 			selectedVariant,
 			amount,
+			dialogAddCart,
+			isLoggedIn,
 
 			formatCurrency,
 			reduceAmount,
 			increaseAmount,
 			checkAmount,
+			addToCart,
 
-			isLoggedIn
 		}
 	},
 }
