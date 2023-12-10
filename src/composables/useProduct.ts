@@ -1,5 +1,5 @@
 import { apolloClient } from '@/vue-apollo'
-import { productDetail, products } from '@graphql/queries'
+import { cartData, productDetail, products } from '@graphql/queries'
 import { toast } from '@helpers/utils'
 import { ref } from 'vue'
 import { filterProducts, pagination, sort } from './types'
@@ -8,6 +8,9 @@ const useUser = () => {
 	const productList = ref([] as any[])
 	const productCount = ref(0)
 	const loadingProductList = ref(false)
+
+	const cartItems = ref([] as any[])
+	const loadingCartItems = ref(false)
 
 	const product = ref({}) as any
 	const loadingProductDetail = ref(false)
@@ -63,6 +66,29 @@ const useUser = () => {
 		})
 	}
 
+	const getCartData = async (data: any[]) => {
+		loadingCartItems.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: cartData,
+				fetchPolicy: 'no-cache',
+				variables: {
+					data,
+				},
+			}).then(({ data }: any) => {
+				cartItems.value = data.cartData
+				console.log(cartItems)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingCartItems.value = false
+			})
+		})
+	}
+
 	return {
 		productList,
 		productCount,
@@ -72,6 +98,10 @@ const useUser = () => {
 		product,
 		loadingProductDetail,
 		getProductDetail,
+
+		cartItems,
+		loadingCartItems,
+		getCartData,
 	}
 }
 

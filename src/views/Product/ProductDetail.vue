@@ -30,7 +30,7 @@
                 v-if="!product.single_variant"
                 class="my-2"
                 v-model="selectedVariant"
-                @update:model-value="checkAmount"
+                @update:model-value="checkQuantity"
               >
                 <v-chip
                   v-for="(item, i) in product.variants"
@@ -57,16 +57,16 @@
                   hide-details="auto"
                   hide-spin-buttons
                   density="compact"
-                  v-model="amount"
+                  v-model="quantity"
                   class="centered-input"
-                  @update:model-value="checkAmount"
+                  @update:model-value="checkQuantity"
                 >
                   <template #prepend-inner>
                     <v-btn
                       icon
                       density="compact"
                       variant="text"
-                      @click="reduceAmount"
+                      @click="reduceQuantity"
                     >
                       <v-icon>mdi-minus</v-icon>
                     </v-btn>
@@ -76,7 +76,7 @@
                       icon
                       density="compact"
                       variant="text"
-                      @click="increaseAmount"
+                      @click="increaseQuantity"
                     >
                       <v-icon>mdi-plus</v-icon>
                     </v-btn>
@@ -95,6 +95,7 @@
                       color="primary"
                       prepend-icon="mdi-cash"
                       flat
+                      :disabled="product.variants[selectedVariant].stock <= 0"
                     >
                       Beli sekarang
                     </v-btn>
@@ -110,6 +111,7 @@
                       prepend-icon="mdi-cart"
                       flat
                       @click="addToCart"
+                      :disabled="product.variants[selectedVariant].stock <= 0"
                     >
                       Masukkan keranjang
                     </v-btn>
@@ -220,7 +222,7 @@ export default {
 		const { isLoggedIn } = storeToRefs(useAuthStore())
 		const { cartData } = storeToRefs(useCartStore())
 		const { getProductDetail, loadingProductDetail, product } = useProduct()
-		const amount = ref(1)
+		const quantity = ref(1)
 		const dialogAddCart = ref(false)
 
 		onMounted(() => {
@@ -228,32 +230,42 @@ export default {
 			getProductDetail(id)
 		})
 
-		const reduceAmount = () => {
-			if (amount.value > 1) {
-				amount.value -= 1
+		const reduceQuantity = () => {
+			if (quantity.value > 1) {
+				quantity.value -= 1
 			}
 		}
 
-		const increaseAmount = () => {
-			if (amount.value < product.value.variants[selectedVariant.value].stock) {
-				amount.value += 1
+		const increaseQuantity = () => {
+			if (quantity.value < product.value.variants[selectedVariant.value].stock) {
+				quantity.value += 1
 			}
 		}
 
-		const checkAmount = () => {
-			if (amount.value < 1) {
-				amount.value = 1
-			} else if (amount.value > product.value.variants[selectedVariant.value].stock) {
-				amount.value = product.value.variants[selectedVariant.value].stock
+		const checkQuantity = () => {
+			if (quantity.value < 1) {
+				quantity.value = 1
+			} else if (quantity.value > product.value.variants[selectedVariant.value].stock) {
+				quantity.value = product.value.variants[selectedVariant.value].stock
 			}
 		}
 
 		const addToCart = () => {
-			cartData.value.push({
-				product_id: product.value.id,
-				variant_id: product.value.variants[selectedVariant.value].id,
-				amount: amount.value
-			})
+			if (cartData.value.filter((item: any) => item.variant_id === product.value.variants[selectedVariant.value].id).length > 0) {
+				cartData.value = cartData.value.map((item: any) => {
+					if (item.variant_id === product.value.variants[selectedVariant.value].id) {
+						item.quantity += quantity.value
+					}
+					
+					return item
+				})
+			} else {
+				cartData.value.push({
+					product_id: product.value.id,
+					variant_id: product.value.variants[selectedVariant.value].id,
+					quantity: quantity.value
+				})
+			}
       
 			dialogAddCart.value = true
 		}
@@ -264,16 +276,15 @@ export default {
 			loadingProductDetail,
 			product,
 			selectedVariant,
-			amount,
+			quantity,
 			dialogAddCart,
 			isLoggedIn,
 
 			formatCurrency,
-			reduceAmount,
-			increaseAmount,
-			checkAmount,
+			reduceQuantity,
+			increaseQuantity,
+			checkQuantity,
 			addToCart,
-
 		}
 	},
 }

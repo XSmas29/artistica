@@ -5,6 +5,7 @@ import products from '@/graphql/query/products'
 import categories from '@/graphql/query/categories'
 import materials from '@/graphql/query/materials'
 import productDetail from '@/graphql/query/productDetail'
+import cartData from '@/graphql/query/cartData'
 
 export {
 	checkVerifyCode,
@@ -14,4 +15,5 @@ export {
 	categories,
 	materials,
 	productDetail,
+	cartData,
 }
