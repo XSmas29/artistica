@@ -164,13 +164,18 @@
           </v-card-text>
           <v-divider />
           <v-card-actions>
-            <v-btn
-              block
-              variant="tonal"
-              :disabled="cartItems.length < 1"
+            <router-link
+              :to="{ name: 'purchase-information' }"
+              style="text-decoration: none; color: inherit;"
             >
-              Checkout
-            </v-btn>
+              <v-btn
+                block
+                variant="tonal"
+                :disabled="cartItems.length < 1"
+              >
+                Checkout
+              </v-btn>
+            </router-link>
           </v-card-actions>
         </v-card>
       </v-col>

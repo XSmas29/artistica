@@ -2,6 +2,8 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { MyRouteRecord } from './types'
 import useUser from '@/composables/useUser'
+import { cartBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
+
 const routes: MyRouteRecord[] = [
 	{
 		path: '',
@@ -10,42 +12,22 @@ const routes: MyRouteRecord[] = [
 			{
 				path: '',
 				name: 'home',
-
-				// route level code-splitting
-				// this generates a separate chunk (about.[hash].js) for this route
-				// which is lazy-loaded when the route is visited.
 				meta: {
 					pageTitle: 'Home',
 					public: true,
-					breadcrumbs: [{
-						title: 'Home',
-						to: { name: 'home' },
-						disabled: true,
-					}],
+					breadcrumbs: [homeBreadCrumb],
 				},
 				component: () => import('@views/Home.vue'),
 			},
 			{
 				path: '/register',
 				name: 'register',
-
-				// route level code-splitting
-				// this generates a separate chunk (about.[hash].js) for this route
-				// which is lazy-loaded when the route is visited.
 				meta: {
 					pageTitle: 'Register',
 					public: true,
 					breadcrumbs: [
-						{
-							title: 'Home',
-							to: { name: 'home' },
-							disabled: false,
-						},
-						{
-							title: 'Register',
-							to: {name: 'register' },
-							disabled: true,
-						},
+						homeBreadCrumb,
+						registerBreadcrumb,
 					],
 				},
 				component: () => import('@views/Register.vue'),
@@ -53,24 +35,12 @@ const routes: MyRouteRecord[] = [
 			{
 				path: '/verify',
 				name: 'verify',
-
-				// route level code-splitting
-				// this generates a separate chunk (about.[hash].js) for this route
-				// which is lazy-loaded when the route is visited.
 				meta: {
 					pageTitle: 'Verify',
 					public: true,
 					breadcrumbs: [
-						{
-							title: 'Home',
-							to: {name: 'home' },
-							disabled: false,
-						},
-						{
-							title: 'Verify',
-							to: {name: 'verify' },
-							disabled: true,
-						},
+						homeBreadCrumb,
+						verifyBreadcrumb,
 					],
 				},
 				component: () => import('@views/Register2.vue'),
@@ -78,24 +48,12 @@ const routes: MyRouteRecord[] = [
 			{
 				path: '/login',
 				name: 'login',
-
-				// route level code-splitting
-				// this generates a separate chunk (about.[hash].js) for this route
-				// which is lazy-loaded when the route is visited.
 				meta: {
 					pageTitle: 'Login',
 					public: true,
 					breadcrumbs: [
-						{
-							title: 'Home',
-							to: {name: 'home' },
-							disabled: false,
-						},
-						{
-							title: 'Login',
-							to: {name: 'login' },
-							disabled: true,
-						},
+						homeBreadCrumb,
+						loginBreadcrumb,
 					],
 				},
 				component: () => import('@views/Login.vue'),
@@ -103,25 +61,13 @@ const routes: MyRouteRecord[] = [
 			{
 				path: '/profile',
 				name: 'profile',
-
-				// route level code-splitting
-				// this generates a separate chunk (about.[hash].js) for this route
-				// which is lazy-loaded when the route is visited.
 				meta: {
 					pageTitle: 'Profil',
 					public: false,
 					user: true,
 					breadcrumbs: [
-						{
-							title: 'Home',
-							to: {name: 'home' },
-							disabled: false,
-						},
-						{
-							title: 'Profil',
-							to: {name: 'profile' },
-							disabled: true,
-						},
+						homeBreadCrumb,
+						profileBreadcrumb,
 					],
 				},
 				component: () => import('@views/Profile.vue'),
@@ -129,24 +75,12 @@ const routes: MyRouteRecord[] = [
 			{
 				path: '/products',
 				name: 'products',
-
-				// route level code-splitting
-				// this generates a separate chunk (about.[hash].js) for this route
-				// which is lazy-loaded when the route is visited.
 				meta: {
 					pageTitle: 'Daftar Produk',
 					public: true,
 					breadcrumbs: [
-						{
-							title: 'Home',
-							to: { name: 'home' },
-							disabled: false,
-						},
-						{
-							title: 'Daftar Produk',
-							to: {name: 'products' },
-							disabled: true,
-						},
+						homeBreadCrumb,
+						productListBreadcrumb,
 					],
 				},
 				component: () => import('@views/Product/Products.vue'),
@@ -158,21 +92,9 @@ const routes: MyRouteRecord[] = [
 					pageTitle: 'Detail Produk',
 					public: true,
 					breadcrumbs: [
-						{
-							title: 'Home',
-							to: { name: 'home' },
-							disabled: false,
-						},
-						{
-							title: 'Daftar Produk',
-							to: {name: 'products' },
-							disabled: false,
-						},
-						{
-							title: 'Detail Produk',
-							to: {name: 'product-detail' },
-							disabled: true,
-						},
+						homeBreadCrumb,
+						productListBreadcrumb,
+						productDetailBreadcrumb,
 					],
 				},
 				component: () => import('@views/Product/ProductDetail.vue'),
@@ -185,19 +107,26 @@ const routes: MyRouteRecord[] = [
 					public: false,
 					user: true,
 					breadcrumbs: [
-						{
-							title: 'Home',
-							to: { name: 'home' },
-							disabled: false,
-						},
-						{
-							title: 'Keranjang',
-							to: { name: 'cart' },
-							disabled: true,
-						},
+						homeBreadCrumb,
+						cartBreadcrumb,
 					],
 				},
-				component: () => import('@views/Cart.vue'),
+				component: () => import('@views/Transaction/Cart.vue'),
+			},
+			{
+				path: '/purchase-information',
+				name: 'purchase-information',
+				meta: {
+					pageTitle: 'Informasi Pembelian',
+					public: false,
+					user: true,
+					breadcrumbs: [
+						homeBreadCrumb,
+						cartBreadcrumb,
+						purchaseInfoBreadcrumb,
+					],
+				},
+				component: () => import('@views/Transaction/Cart.vue'),
 			}
 		],
 	},
