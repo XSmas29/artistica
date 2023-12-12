@@ -155,7 +155,7 @@
           <v-card-text>
             <div class="d-flex justify-space-between text-body-1">
               <div>
-                Total
+                Subtotal
               </div>
               <div>
                 {{ formatCurrency(cartItems.reduce((a, b) => a + (b.variant.price * b.quantity), 0)) }}
@@ -163,7 +163,7 @@
             </div>
           </v-card-text>
           <v-divider />
-          <v-card-actions>
+          <div class="pa-2">
             <router-link
               :to="{ name: 'purchase-information' }"
               style="text-decoration: none; color: inherit;"
@@ -171,12 +171,12 @@
               <v-btn
                 block
                 variant="tonal"
-                :disabled="cartItems.length < 1"
+                size="large"
               >
                 Checkout
               </v-btn>
             </router-link>
-          </v-card-actions>
+          </div>
         </v-card>
       </v-col>
     </v-row>
@@ -246,7 +246,7 @@ export default {
 }
 </script>
 <style scoped>
-    .centered-input >>> input {
+    .centered-input :deep() input {
       text-align: center
     }
 </style>

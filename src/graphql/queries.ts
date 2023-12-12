@@ -6,6 +6,8 @@ import categories from '@/graphql/query/categories'
 import materials from '@/graphql/query/materials'
 import productDetail from '@/graphql/query/productDetail'
 import cartData from '@/graphql/query/cartData'
+import provinces from '@/graphql/query/provinces'
+import cities from '@/graphql/query/cities'
 
 export {
 	checkVerifyCode,
@@ -16,4 +18,6 @@ export {
 	materials,
 	productDetail,
 	cartData,
+	provinces,
+	cities,
 }

@@ -290,7 +290,7 @@ export default {
 }
 </script>
 <style scoped>
-    .centered-input >>> input {
+    .centered-input :deep() input {
       text-align: center
     }
 </style>

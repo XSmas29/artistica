@@ -1,7 +1,7 @@
 import { apolloClient } from '@/vue-apollo'
 import { ref } from 'vue'
 import { login, register as signUp, verifyUser } from '@graphql/mutations'
-import { checkVerifyCode, profileInfo, refreshToken } from '@graphql/queries'
+import { checkVerifyCode, cities, profileInfo, provinces, refreshToken } from '@graphql/queries'
 import { toast } from '@/helpers/utils'
 import { useAuthStore } from '@/store/modules'
 import editProfile from '@graphql/mutation/editProfile'
@@ -19,6 +19,11 @@ const useUser = () => {
 	const loadingProfile = ref(false)
 	const loadingEditProfile = ref(false)
 	const loadingEditPassword = ref(false)
+	const loadingCities = ref(false)
+	const loadingProvinces = ref(false)
+
+	const provincesList = ref([] as any[])
+	const citiesList = ref([] as any[])
 
 	const register = async (email: string) => {
 		loadingRegister.value = true
@@ -205,6 +210,47 @@ const useUser = () => {
 		})
 	}
 
+	const getProvinces = async () => {
+		loadingProvinces.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: provinces,
+				fetchPolicy: 'no-cache',
+			}).then(({ data }: any) => {
+				resolve(data)
+				provincesList.value = data.provinces
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingProvinces.value = false
+			})
+		})
+	}
+
+	const getCities = async (provinceId: number) => {
+		loadingCities.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: cities,
+				fetchPolicy: 'no-cache',
+				variables: {
+					provinceId,
+				},
+			}).then(({ data }: any) => {
+				resolve(data)
+				citiesList.value = data.cities
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingCities.value = false
+			})
+		})
+	}
+
 	return {
 		loadingRegister,
 		register,
@@ -233,6 +279,14 @@ const useUser = () => {
 
 		refreshAuthToken,
 		loadingAuth,
+
+		getProvinces,
+		loadingProvinces,
+		provincesList,
+
+		getCities,
+		loadingCities,
+		citiesList,
 	}
 }
 

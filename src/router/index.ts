@@ -126,7 +126,7 @@ const routes: MyRouteRecord[] = [
 						purchaseInfoBreadcrumb,
 					],
 				},
-				component: () => import('@views/Transaction/Cart.vue'),
+				component: () => import('@views/Transaction/PurchaseInformation.vue'),
 			}
 		],
 	},
