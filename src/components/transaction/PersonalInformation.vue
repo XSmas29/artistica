@@ -134,6 +134,10 @@ export default {
 			type: Object,
 			default: () => {},
 		},
+		valid: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	emits: ['update:modelValue'],
 	setup(props, { emit }) {
@@ -141,6 +145,7 @@ export default {
 			provincesList, loadingProvinces, getProvinces,
 			citiesList, loadingCities, getCities,
 		} = useUser()
+
 		const infoFormData = computed({
 			get() {
 				return props.modelValue
@@ -158,10 +163,17 @@ export default {
 		const loadCities = (province: any) => {
 			infoFormData.value.city = null
 			getCities(+province)
+			validate()
 		}
 
 		const isInfoValid = ref(false)
-		const infoForm = ref(null)
+		const infoForm = ref(null as any)
+
+		const validate = () => {
+			infoForm.value.validate() 
+			
+			return isInfoValid.value
+		}
     
 		return {
 			infoFormData,
@@ -169,6 +181,7 @@ export default {
 			infoForm,
 			required,
 			validEmail,
+			validate,
 
 			provincesList,
 			loadingProvinces,

@@ -13,6 +13,7 @@
           border
           elevation="0"
           bg-color="primary"
+          class="mb-6"
         >
           <template #default="{ prev, next }">
             <v-stepper-header class="elevation-0">
@@ -21,7 +22,7 @@
                 :key="index"
               >
                 <v-stepper-item
-                  :complete="purchaseStep > index"
+                  :complete="purchaseStep > index + 1"
                   :value="index + 1"
                 >
                   {{ item }}
@@ -37,10 +38,13 @@
               <v-stepper-window-item
                 :value="1"
               >
-                <personal-information v-model="personalInfoData" />
+                <personal-information
+                  v-model="personalInfoData"
+                  ref="personalInfo"
+                />
                 <v-stepper-actions
                   @click:prev="prev"
-                  @click:next="next"
+                  @click:next="completePersonalInfo"
                 />
               </v-stepper-window-item>
               <v-stepper-window-item
@@ -137,6 +141,14 @@ export default {
 			province: '',
 			postal_code: '',
 		})
+		const personalInfo = ref(null as any)
+
+		const completePersonalInfo = () => {
+			if (personalInfo.value.validate()) {
+				purchaseStep.value = 2
+			}
+		}
+
 		onMounted(() => {
 			loadCartData()
 		})
@@ -152,6 +164,8 @@ export default {
 			purchaseStep,
 			stepItems,
 			personalInfoData,
+			personalInfo,
+			completePersonalInfo,
 		}
 	}
 }
