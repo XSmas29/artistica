@@ -50,6 +50,10 @@
               <v-stepper-window-item
                 :value="2"
               >
+                <delivery-information
+                  v-model="deliveryInfoData"
+                  ref="deliveryInfo"
+                />
                 <v-stepper-actions
                   @click:prev="prev"
                   @click:next="next"
@@ -121,10 +125,12 @@ import { useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import PersonalInformation from '@components/transaction/PersonalInformation.vue'
+import DeliveryInformation from '@components/transaction/DeliveryInformation.vue'
 
 export default {
 	components: {
-		PersonalInformation
+		PersonalInformation,
+		DeliveryInformation,
 	},
 	setup() {
 		const { cartItems, loadingCartItems, getCartData } = useProduct()
@@ -141,6 +147,7 @@ export default {
 			province: '',
 			postal_code: '',
 		})
+		const deliveryInfoData = ref({})
 		const personalInfo = ref(null as any)
 
 		const completePersonalInfo = () => {
@@ -163,9 +170,11 @@ export default {
 			loadingCartItems,
 			purchaseStep,
 			stepItems,
-			personalInfoData,
 			personalInfo,
 			completePersonalInfo,
+      
+			personalInfoData,
+			deliveryInfoData,
 		}
 	}
 }
