@@ -33,7 +33,7 @@
                 label="Minimal"
                 type="number"
                 hide-details="auto"
-                density="compact"
+                density="comfortable"
                 readonly
                 prefix="IDR"
               />
@@ -45,7 +45,7 @@
                 label="Maksimal"
                 type="number"
                 readonly
-                density="compact"
+                density="comfortable"
                 hide-details="auto"
                 prefix="IDR"
               />
@@ -326,7 +326,7 @@
             </v-select>
           </v-col>
         </v-row>
-        <p class="my-2">
+        <p class="ma-2">
           Menampilkan produk 
           {{ ((productListPagination.page - 1) * productListPagination.limit) + 1 }} - 
           {{ (productListPagination.page * productListPagination.limit > productCount) ? productCount : (productListPagination.page * productListPagination.limit) }} 
@@ -347,6 +347,7 @@
               size="64"
             />
           </v-overlay>
+          
           <v-hover
             v-slot="{ isHovering, props }"
             v-for="(item, index) in productList"

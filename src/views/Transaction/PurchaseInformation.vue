@@ -14,6 +14,8 @@
           elevation="0"
           bg-color="primary"
           class="mb-6"
+          :mobile="smAndDown"
+          min-width="280"
         >
           <template #default="{ prev, next }">
             <v-stepper-header class="elevation-0">
@@ -52,6 +54,7 @@
               >
                 <delivery-information
                   v-model="deliveryInfoData"
+                  :destination="personalInfoData.city"
                   ref="deliveryInfo"
                 />
                 <v-stepper-actions
@@ -78,7 +81,7 @@
         <v-card
           variant="tonal"
           rounded
-          min-width="300"
+          min-width="280"
         >
           <v-card-title>
             <h3
@@ -94,11 +97,27 @@
                 Subtotal
               </div>
               <div>
-                {{ formatCurrency(cartItems.reduce((a, b) => a + (b.variant.price * b.quantity), 0)) }}
+                {{ formatCurrency(subtotal) }}
+              </div>
+            </div>
+            <div class="d-flex justify-space-between text-body-1">
+              <div>
+                Ongkos Kirim
+              </div>
+              <div>
+                {{ formatCurrency(deliveryCost) }}
               </div>
             </div>
           </v-card-text>
           <v-divider />
+          <div class="d-flex justify-space-between text-body-1 font-weight-bold pa-4">
+            <div>
+              Total
+            </div>
+            <div>
+              {{ formatCurrency(subtotal + deliveryCost) }}
+            </div>
+          </div>
           <div class="pa-2">
             <router-link
               :to="{ name: 'purchase-information' }"
@@ -108,6 +127,7 @@
                 block
                 variant="tonal"
                 size="large"
+                :disabled="!canCheckout()"
               >
                 Checkout
               </v-btn>
@@ -123,20 +143,21 @@ import useProduct from '@/composables/useProduct'
 import { formatCurrency } from '@utils/filter'
 import { useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import PersonalInformation from '@components/transaction/PersonalInformation.vue'
 import DeliveryInformation from '@components/transaction/DeliveryInformation.vue'
-
+import { useDisplay } from 'vuetify/lib/framework.mjs'
 export default {
 	components: {
 		PersonalInformation,
 		DeliveryInformation,
 	},
 	setup() {
+		const {smAndDown} = useDisplay()
 		const { cartItems, loadingCartItems, getCartData } = useProduct()
 		const { cartData } = storeToRefs(useCartStore())
 		const purchaseStep = ref(0)
-		const stepItems = ['Informasi Pembeli', 'Pengiriman', 'Pembayaran']
+		const stepItems = ['Informasi Pembeli', 'Pengiriman']
 		const personalInfoData = ref({
 			first_name: '',
 			last_name: '',
@@ -147,13 +168,33 @@ export default {
 			province: '',
 			postal_code: '',
 		})
-		const deliveryInfoData = ref({})
+		const deliveryInfoData = ref({
+			provider_code: '',
+			service: null as any,
+		})
 		const personalInfo = ref(null as any)
+		const deliveryInfo = ref(null as any)
+
+		const subtotal = computed(() => {
+			return cartItems.value.reduce((a, b) => a + (b.variant.price * b.quantity), 0)
+		})
+
+		const deliveryCost = computed(() => {
+			if (!deliveryInfoData.value.service) return 0
+
+			return deliveryInfoData.value.service.cost || 0
+		})
 
 		const completePersonalInfo = () => {
 			if (personalInfo.value.validate()) {
 				purchaseStep.value = 2
 			}
+		}
+
+		const canCheckout = () => {
+			if (!personalInfo.value || !deliveryInfo.value) return false
+			
+			return personalInfo.value.validate() && deliveryInfo.value.validate()
 		}
 
 		onMounted(() => {
@@ -171,10 +212,16 @@ export default {
 			purchaseStep,
 			stepItems,
 			personalInfo,
+			deliveryInfo,
 			completePersonalInfo,
-      
+			smAndDown,
+
 			personalInfoData,
 			deliveryInfoData,
+			subtotal,
+			deliveryCost,
+
+			canCheckout,
 		}
 	}
 }

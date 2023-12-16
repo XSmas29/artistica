@@ -1,10 +1,10 @@
 <template>
   <v-footer
-    height="180"
+    height="175"
     color="primary"
-    class="text-center d-flex flex-column"
+    class="text-center d-flex flex-column mt-4"
   >
-    <div class="text-h6 font-weight-bold my-3">
+    <div class="text-h6 font-weight-bold my-2">
       Tetap Terhubung
     </div>
     <!-- <div>

@@ -16,7 +16,7 @@
             variant="tonal"
             rounded
             class="my-2"
-            min-width="300"
+            min-width="280"
           >
             <router-link 
               :to="{ name: 'product-detail', params: { id: item.variant.product.id } }"
@@ -106,7 +106,7 @@
             variant="text"
             rounded
             class="my-2"
-            min-width="300"
+            min-width="280"
           >
             <v-card-title>
               <h3
@@ -142,7 +142,7 @@
           variant="tonal"
           rounded
           class="my-2"
-          min-width="300"
+          min-width="280"
         >
           <v-card-title>
             <h3
@@ -173,7 +173,7 @@
                 variant="tonal"
                 size="large"
               >
-                Checkout
+                Beli
               </v-btn>
             </router-link>
           </div>
