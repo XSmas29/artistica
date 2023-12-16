@@ -8,7 +8,7 @@ import productDetail from '@/graphql/query/productDetail'
 import cartData from '@/graphql/query/cartData'
 import provinces from '@/graphql/query/provinces'
 import cities from '@/graphql/query/cities'
-
+import deliveryProviders from '@/graphql/query/deliveryProviders'
 export {
 	checkVerifyCode,
 	profileInfo,
@@ -20,4 +20,5 @@ export {
 	cartData,
 	provinces,
 	cities,
+	deliveryProviders,
 }

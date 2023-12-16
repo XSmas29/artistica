@@ -126,7 +126,7 @@
 <script lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { required, validEmail } from '@helpers/validations'
-import useUser from '@composables/useUser'
+import useDelivery from '@composables/useDelivery'
 
 export default {
 	props: {
@@ -144,7 +144,7 @@ export default {
 		const { 
 			provincesList, loadingProvinces, getProvinces,
 			citiesList, loadingCities, getCities,
-		} = useUser()
+		} = useDelivery()
 
 		const infoFormData = computed({
 			get() {
