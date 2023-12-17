@@ -1,7 +1,9 @@
 <template>
   <div>
-    <h1>About</h1>
-    <h3 class="mb-4 mt-8">
+    <h1 class="mt-4">
+      About
+    </h1>
+    <h3 class="mb-4 mt-6">
       ARTISTICA JEWELRY
     </h3>
     <p class="text-body-1 my-4">
@@ -24,7 +26,7 @@
       We provide one stop purchasing to make your own logo on the jewelry and Barcode number.
       To deliver the artistic soul of our jewelry, we have joined exhibitions in Hongkong, Holland, Italy, Thailand, USA, Japan, South Korea, Singapore and local fairs in Indonesia.
     </p>
-    <h3 class="mb-4 mt-8">
+    <h3 class="mb-4 mt-6">
       HERMOSA JEWELRY
     </h3>
 
