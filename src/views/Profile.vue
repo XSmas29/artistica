@@ -256,7 +256,7 @@ export default {
 		} = useUser()
 
 		const loadProfile = () => {
-			getProfileInfo().then(({ profileInfo }: any) => {
+			getProfileInfo().then((profileInfo: any) => {
 				profileFormData.value.first_name = profileInfo.first_name
 				profileFormData.value.last_name = profileInfo.last_name
 				profileFormData.value.phone = profileInfo.phone

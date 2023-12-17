@@ -39,7 +39,7 @@
                   v-model="formData.password"
                   type="password"
                   hint="Minimal 8 karakter"
-                  :rules="[required, min(formData.password, 8)]"
+                  :rules="[required]"
                 />
               </v-col>
             </v-row>
@@ -76,7 +76,7 @@
 <script lang="ts">
 import useUser from '@composables/useUser'
 import { ref } from 'vue'
-import { required, validEmail, min } from '@helpers/validations'
+import { required, validEmail } from '@helpers/validations'
 import router from '@/router'
 export default {
 	setup() {
@@ -104,7 +104,6 @@ export default {
 			loginForm,
 			required,
 			validEmail,
-			min,
 		}
 	},
 }

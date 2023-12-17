@@ -142,8 +142,16 @@ const routes: MyRouteRecord[] = [
 	},
 	{
 		path: '/admin',
+		name: 'admin-dashboard',
+		meta: {
+			pageTitle: 'Dashboard Admin',
+			public: false,
+			admin: true,
+		},
 		component: () => import('@/layouts/admin/Admin.vue'),
+		children: [
 
+		]
 	}
 ]
 
@@ -171,11 +179,15 @@ router.beforeEach(async (to, from, next) => {
 	window.document.title = to.meta && to.meta.pageTitle
 		? `${to.meta.pageTitle} | Artistica Jewelry`
 		: 'Artistica Jewelry'
-
+	
 	const hasToken = localStorage.getItem('token')
 	if (!hasToken && !to.meta.public) return next({ name: 'login' })
 	if (hasToken) {
+		const {getProfileInfo} = useUser()
+		const userData = await getProfileInfo()
+		
 		if (to.name === 'login' || to.name === 'register') return next({ name: 'home' })
+		if (userData.is_admin && !to.meta.admin) return next({ name: 'admin-dashboard' })
 	}
 
 	// else if (to.meta.public) {
@@ -186,11 +198,11 @@ router.beforeEach(async (to, from, next) => {
 })
 
 router.afterEach(async () => {
-	const hasToken = localStorage.getItem('token')
-	if (hasToken) {
-		const {getProfileInfo} = useUser()
-		await getProfileInfo()
-	}
+	// const hasToken = localStorage.getItem('token')
+	// if (hasToken) {
+	// 	const {getProfileInfo} = useUser()
+	// 	await getProfileInfo()
+	// }
 })
 
 export default router

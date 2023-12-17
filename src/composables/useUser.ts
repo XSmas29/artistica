@@ -93,7 +93,7 @@ const useUser = () => {
 				query: profileInfo,
 				fetchPolicy: 'no-cache',
 			}).then(({ data }: any) => {
-				resolve(data)
+				resolve(data.profileInfo)
 				user.value = data.profileInfo
 				authStore.set(data.profileInfo)
 			}).catch((error: any) => {
