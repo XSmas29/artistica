@@ -15,9 +15,7 @@ export const formatETD = (value: string) => {
 	})
 
 	const arr = value.split('-')
-	console.log(arr)
 	if (arr.length === 2 && arr[0] === arr[1]) arr.pop()
-	console.log(arr)
 	const formatted = arr.map(item => {
 		if (item === '0') return 'hari ini'
 		if (item === '1') return 'besok'

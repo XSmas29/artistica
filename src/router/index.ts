@@ -2,7 +2,7 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { MyRouteRecord } from './types'
 import useUser from '@/composables/useUser'
-import { cartBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
+import { aboutBreadcrumb, cartBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
 
 const routes: MyRouteRecord[] = [
 	{
@@ -71,6 +71,16 @@ const routes: MyRouteRecord[] = [
 					],
 				},
 				component: () => import('@views/Profile.vue'),
+			},
+			{
+				path: '/about',
+				name: 'about',
+				meta: {
+					pageTitle: 'Home',
+					public: true,
+					breadcrumbs: [homeBreadCrumb, aboutBreadcrumb],
+				},
+				component: () => import('@views/About.vue'),
 			},
 			{
 				path: '/products',

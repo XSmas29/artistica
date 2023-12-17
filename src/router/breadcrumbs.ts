@@ -1,55 +1,61 @@
 const homeBreadCrumb = {
 	title: 'Home',
 	to: { name: 'home' },
-	disabled: true,
+	disabled: false,
 }
 
 const registerBreadcrumb = {
 	title: 'Register',
 	to: {name: 'register' },
-	disabled: true,
+	disabled: false,
 }
 
 const verifyBreadcrumb = {
 	title: 'Verify',
 	to: {name: 'verify' },
-	disabled: true,
+	disabled: false,
 }
 
 const loginBreadcrumb = {
 	title: 'Login',
 	to: {name: 'login' },
-	disabled: true,
+	disabled: false,
 }
 
 const profileBreadcrumb = {
 	title: 'Profil',
 	to: {name: 'profile' },
-	disabled: true,
+	disabled: false,
 }
 
 const productListBreadcrumb = {
 	title: 'Daftar Produk',
 	to: {name: 'products' },
-	disabled: true,
+	disabled: false,
 }
 
 const productDetailBreadcrumb = {
 	title: 'Detail Produk',
 	to: {name: 'product-detail' },
-	disabled: true,
+	disabled: false,
 }
 
 const cartBreadcrumb = {
 	title: 'Keranjang',
 	to: { name: 'cart' },
-	disabled: true,
+	disabled: false,
 }
 
 const purchaseInfoBreadcrumb = {
 	title: 'Informasi Pembelian',
 	to: { name: 'cart' },
-	disabled: true,
+	disabled: false,
+}
+
+const aboutBreadcrumb = {
+	title: 'About Us',
+	to: { name: 'about' },
+	disabled: false,
 }
 
 export {
@@ -62,4 +68,5 @@ export {
 	productDetailBreadcrumb,
 	cartBreadcrumb,
 	purchaseInfoBreadcrumb,
+	aboutBreadcrumb,
 }
