@@ -51,7 +51,7 @@ const passwordEqual = (value: string, target: string) => {
 		return true
 	}
 
-	return value === target || 'Tidak sama dengan password'
+	return value === target || 'Konfirmasi password tidak sesuai'
 }
 
 export {

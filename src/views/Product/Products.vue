@@ -332,7 +332,80 @@
           {{ (productListPagination.page * productListPagination.limit > productCount) ? productCount : (productListPagination.page * productListPagination.limit) }} 
           dari {{ productCount }} produk
         </p>
-        <v-card
+        <v-row class="mx-0 mt-1">
+          <v-col
+            cols="12"
+            lg="4"
+            sm="6"
+            :key="index"
+            v-for="(item, index) in productList"
+            class="pa-0"
+          >
+            <v-overlay
+              :model-value="loadingProductList"
+              class="align-center justify-center"
+              contained
+            >
+              <v-progress-circular
+                color="primary"
+                indeterminate
+                size="64"
+              />
+            </v-overlay>
+            <v-hover
+              v-slot="{ isHovering, props }"
+            >
+              <v-card
+                rounded
+                v-bind="props"
+                class="ma-2 flex-fill no-decoration"
+              >
+                <router-link
+                  class="link"
+                  :to="{
+                    name: 'product-detail',
+                    params: {
+                      id: item.id
+                    }
+                  }"
+                >
+                  <v-img
+                    :src="item.images[0]?.path"
+                    cover
+                    class="text-white"
+                    aspect-ratio="1"
+                    rounded
+                    eager
+                    :alt="item.slug"
+                  />
+                  <v-tooltip
+                    location="top center"
+                    eager
+                    :text="item.name"
+                  >
+                    <template #activator="tooltipProps">
+                      <v-card-title
+                        class="text-body-1 font-weight-bold pb-0 px-3 mb-1 product-title"
+                        v-bind="tooltipProps.props"
+                      >
+                        {{ item.name }}
+                      </v-card-title>
+                    </template>
+                  </v-tooltip>
+                  <v-card-subtitle class="text-subtitle-1 font-weight-bold px-3 mb-3">
+                    {{ item.single_variant ? formatCurrency(item.variants[0].price) : priceRange(item.variants) }}
+                  </v-card-subtitle>
+                  <v-overlay
+                    :model-value="isHovering"
+                    contained
+                    scrim="true"
+                  />
+                </router-link>
+              </v-card>
+            </v-hover>
+          </v-col>
+        </v-row>
+        <!-- <v-card
           class="d-flex flex-wrap mb-4"
           flat
         >
@@ -347,7 +420,7 @@
               size="64"
             />
           </v-overlay>
-          
+              
           <v-hover
             v-slot="{ isHovering, props }"
             v-for="(item, index) in productList"
@@ -402,7 +475,7 @@
               </router-link>
             </v-card>
           </v-hover>
-        </v-card>
+        </v-card> -->
         <v-pagination
           v-model="productListPagination.page"
           :length="Math.ceil(productCount / productListPagination.limit)"

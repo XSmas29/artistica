@@ -5,6 +5,7 @@ import { checkVerifyCode, profileInfo, refreshToken } from '@graphql/queries'
 import { toast } from '@/helpers/utils'
 import { useAuthStore } from '@/store/modules'
 import editProfile from '@graphql/mutation/editProfile'
+import editPassword from '@graphql/mutation/editPassword'
 
 const useUser = () => {
 	const authStore = useAuthStore()
@@ -131,12 +132,12 @@ const useUser = () => {
 
 		return new Promise((resolve, reject) => {
 			apolloClient.mutate({
-				mutation: editProfile,
+				mutation: editPassword,
 				variables: {
 					data,
 				},
 			}).then(({ data }: any) => {
-				toast.success(data.editProfile.message)
+				toast.success(data.editPassword.message)
 				resolve(data)
 			}).catch((error: any) => {
 				reject(error)

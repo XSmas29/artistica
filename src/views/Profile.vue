@@ -18,7 +18,6 @@
           grow
           show-arrows
           mandatory
-          color="primary"
         >
           <v-tab value="0">
             <v-icon
@@ -155,11 +154,13 @@
                 <v-row>
                   <v-col
                     cols="12"
+                    md="12"
                     sm="6"
                   >
                     <v-text-field
                       hide-details="auto"
                       label="Password lama"
+                      type="password"
                       v-model="passwordFormData.old_password"
                       :rules="[required, min(passwordFormData.old_password, 8)]"
                     />
@@ -168,10 +169,12 @@
                 <v-row>
                   <v-col
                     cols="12"
+                    md="12"
                     sm="6"
                   >
                     <v-text-field
                       hide-details="auto"
+                      type="password"
                       label="Password baru"
                       v-model="passwordFormData.new_password"
                       :rules="[required, min(passwordFormData.new_password, 8)]"
@@ -181,19 +184,22 @@
                 <v-row>
                   <v-col
                     cols="12"
+                    md="12"
                     sm="6"
                   >
                     <v-text-field
                       hide-details="auto"
+                      type="password"
                       label="Konfirmasi password baru"
                       v-model="passwordFormData.password_confirmation"
-                      :rules="[required, min(passwordFormData.password_confirmation, 8), passwordEqual(passwordFormData.password_confirmation, passwordFormData.password_confirmation)]"
+                      :rules="[required, min(passwordFormData.password_confirmation, 8), passwordEqual(passwordFormData.new_password, passwordFormData.password_confirmation)]"
                     />
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col
                     cols="12"
+                    md="12"
                     sm="6"
                   >
                     <div class="d-flex">
@@ -231,8 +237,8 @@ export default {
 		const editMode = ref(false)
 		const isProfileValid = ref(false)
 		const isPasswordValid = ref(false)
-		const profileForm = ref(null)
-		const passwordForm = ref(null)
+		const profileForm = ref(null as any)
+		const passwordForm = ref(null as any)
 		const profileFormData = ref({
 			first_name: '',
 			last_name: '',
@@ -267,8 +273,9 @@ export default {
 			loadProfile()
 		})
 
-		const saveProfile = async () => {
-			const valid = (await (profileForm.value as any).validate()).valid
+		const saveProfile = () => {
+			profileForm.value.validate()
+			const valid = profileForm.value.isValid
 			if (valid) {
 				const data = {
 					first_name: profileFormData.value.first_name,
@@ -282,9 +289,18 @@ export default {
 			}
 		}
 
-		const savePassword = async () => {
-			console.log(await (profileForm.value as any).validate())
-			console.log(isPasswordValid.value)
+		const savePassword = () => {
+			passwordForm.value.validate()
+			const valid = passwordForm.value.isValid
+			if (valid) {
+				updatePassword({
+					old_password: passwordFormData.value.old_password,
+					new_password: passwordFormData.value.new_password,
+					password_confirmation: passwordFormData.value.password_confirmation,
+				}).then(() => {
+					passwordForm.value.reset()
+				})
+			}
 		}
 		
 		return {
