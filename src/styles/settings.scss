@@ -8,6 +8,9 @@
 // @use 'vuetify/settings' with (
 //   $color-pack: false
 // );
+html {
+  overflow:auto
+}
 
 ::-webkit-scrollbar {
   width: 14px;

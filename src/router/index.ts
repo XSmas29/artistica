@@ -142,15 +142,73 @@ const routes: MyRouteRecord[] = [
 	},
 	{
 		path: '/admin',
-		name: 'admin-dashboard',
 		meta: {
-			pageTitle: 'Dashboard Admin',
+			pageTitle: 'Informasi Pembelian',
 			public: false,
 			admin: true,
 		},
 		component: () => import('@/layouts/admin/Admin.vue'),
 		children: [
-
+			{
+				path: '/admin/dashboard',
+				name: 'admin-dashboard',
+				meta: {
+					pageTitle: 'Dashboard',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Dashboard.vue'),
+			},
+			{
+				path: '/admin/users',
+				name: 'admin-users',
+				meta: {
+					pageTitle: 'Pengguna',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Users.vue'),
+			},
+			{
+				path: '/admin/products',
+				name: 'admin-products',
+				meta: {
+					pageTitle: 'Produk',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Products.vue'),
+			},
+			{
+				path: '/admin/categories',
+				name: 'admin-categories',
+				meta: {
+					pageTitle: 'Kategori',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Categories.vue'),
+			},
+			{
+				path: '/admin/materials',
+				name: 'admin-materials',
+				meta: {
+					pageTitle: 'Material',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Materials.vue'),
+			},
+			{
+				path: '/admin/transactions',
+				name: 'admin-transactions',
+				meta: {
+					pageTitle: 'Transaksi',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Transactions.vue'),
+			},
 		]
 	}
 ]

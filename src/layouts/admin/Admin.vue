@@ -1,13 +1,30 @@
 <template>
   <v-app>
-    <app-bar />
-    <View />
-    <Footer />
+    <v-layout>
+      <nav-bar />
+      <app-bar />
+      <admin-view />
+      <admin-footer />
+    </v-layout>
   </v-app>
 </template>
 
-<script lang="ts" setup>
+<script lang="ts">
 import AppBar from './AppBar.vue'
-import View from './View.vue'
-import Footer from './Footer.vue'
+import NavBar from './NavBar.vue'
+import AdminView from './View.vue'
+import AdminFooter from './Footer.vue'
+
+export default {
+	components: {
+		AppBar,
+		NavBar,
+		AdminView,
+		AdminFooter,
+	},
+	data() {
+		return {
+		}
+	},
+}
 </script>

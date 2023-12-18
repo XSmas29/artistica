@@ -120,7 +120,6 @@
                     <v-card-actions>
                       <v-spacer />
                       <v-btn
-                        color="primary"
                         @click="dialogLogout = false"
                         text="Batal"
                       />  
@@ -231,6 +230,7 @@ export default {
 				})
 			})
 		}
+    
 		const goTo = (name: string) => {
 			router.push({ name })
 		}

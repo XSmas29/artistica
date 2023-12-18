@@ -1,11 +1,12 @@
 <template>
   <v-footer
-    height="100"
+    app
+    height="55"
     color="primary"
-    class="text-center d-flex flex-column mt-4"
+    class="text-center d-flex flex-column"
   >
-    <div>
-      @2021 Artistica Jewelry
+    <div class="mt-2">
+      @2003 Artistica Jewelry
     </div>
   </v-footer>
 </template>
