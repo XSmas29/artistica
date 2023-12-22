@@ -18,6 +18,17 @@ type ProductImages = {
   variant: {
     id: number
     name: string
+    attribute_values: {
+      id: number
+      attribute: {
+        id: number
+        name: string
+      }
+      option: {
+        id: number
+        name: string
+      }
+    }
   }
 }
 export {

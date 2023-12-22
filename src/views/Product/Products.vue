@@ -338,6 +338,7 @@
         <v-card
           class="ma-1"  
           flat
+          min-height="100%"
         >
           <v-overlay
             :model-value="loadingProductList"
@@ -378,7 +379,8 @@
                     }"
                   >
                     <v-img
-                      :src="item.images[0]?.path"
+                      :src="item.images[0] ? item.images[0].path : productPlaceholder"
+                      :lazy-src="productPlaceholder"
                       cover
                       class="text-white"
                       aspect-ratio="1"
@@ -450,7 +452,8 @@
                 }"
               >
                 <v-img
-                  :src="item.images[0]?.path"
+                  :src="item.images[0] ? item.images[0].path : productPlaceholder"
+                  :lazy-src="productPlaceholder"
                   cover
                   class="text-white"
                   aspect-ratio="1"
@@ -504,9 +507,10 @@ import { storeToRefs } from 'pinia'
 import useProduct from '@composables/useProduct'
 import useCategory from '@composables/useCategory'
 import useMaterial from '@composables/useMaterial'
-import { formatCurrency } from '@utils/filter'
+import { formatCurrency, priceRange } from '@utils/filter'
 import { useDebounceFn } from '@vueuse/core'
 import { useDisplay } from 'vuetify'
+import { productPlaceholder } from '@/utils/global'
 
 export default {
 	setup() {
@@ -608,20 +612,6 @@ export default {
 			debouncedLoadProduct(true)
 		}
 
-		const priceRange = (variants: any) => {
-			if (variants.length === 1) {
-				return formatCurrency(variants[0].price)
-			} else {
-				const price_min = variants.reduce((prev: any, curr: any) => prev.price < curr.price ? prev : curr)
-				const price_max = variants.reduce((prev: any, curr: any) => prev.price > curr.price ? prev : curr)
-				if (price_min.price === price_max.price) {
-					return formatCurrency(price_min.price)
-				}
-				
-				return `${formatCurrency(price_min.price)} - ${formatCurrency(price_max.price)}`
-			}
-		}
-
 		const resetFilter = () => {
 			productListFilter.value = {
 				search: '',
@@ -635,6 +625,7 @@ export default {
 		}
 		
 		return {
+			productPlaceholder,
 			smAndDown,
 
 			loadingProductList,

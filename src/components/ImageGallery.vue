@@ -19,7 +19,7 @@
           label
           variant="flat"
         >
-          {{ item.variant.name }}
+          {{ formatVariantName(item.variant.attribute_values) }}
         </v-chip>
       </div>
     </v-carousel-item>
@@ -51,7 +51,7 @@
             cover
             width="60"
             aspect-ratio="1"
-            :src="item.raw.path"
+            :src="item.raw ? item.raw.path : productPlaceholder"
           />
         </v-card>
         <v-spacer />
@@ -70,6 +70,9 @@
 <script lang="ts">
 import { ProductImages } from '@utils/types'
 import { ref } from 'vue'
+import { productPlaceholder } from '@utils/global'
+import { formatVariantName } from '@utils/filter'
+
 export default {
 	props: {
 		images: {
@@ -96,7 +99,9 @@ export default {
 			itemPerPage,
 			page,
       
-			checkPage
+			checkPage,
+			productPlaceholder,
+			formatVariantName,
 		}
 	}
 }

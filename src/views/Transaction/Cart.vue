@@ -40,7 +40,8 @@
               <div class="d-flex">
                 <div>
                   <v-img
-                    :src="item.variant.images[0] ? item.variant.images[0].path : item.variant.product.images[0] ? item.variant.product.images[0].path : null"
+                    :src="item.variant.images[0] ? item.variant.images[0].path : item.variant.product.images[0] ? item.variant.product.images[0].path : productPlaceholder"
+                    :lazy-src="productPlaceholder"
                     width="100"
                     class="rounded mt-1"
                   />
@@ -189,6 +190,7 @@ import { onMounted } from 'vue'
 import { useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
 import { formatCurrency } from '@utils/filter'
+import { productPlaceholder } from '@/utils/global'
 
 export default {
 	setup() {
@@ -246,7 +248,9 @@ export default {
 			increaseQuantity,
 			deleteCart,
 			formatCurrency,
-			formatVariantName
+			formatVariantName,
+
+			productPlaceholder,
 		}
 	}
 }

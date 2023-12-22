@@ -27,6 +27,15 @@ const products = gql`
         variants {
           id
           price
+          stock
+          sku
+          attribute_values {
+            id
+            option {
+              id
+              name
+            }
+          }
         }
       }
     }

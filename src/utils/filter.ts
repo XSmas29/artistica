@@ -8,6 +8,28 @@ export const formatCurrency = (value: number, currency = 'IDR') => {
 	return formatter.format(value)
 }
 
+export const formatVariantName = (val: any) => {
+	return val.map((item: any) => item.option.name).join(', ')
+}
+
+export const priceRange = (variants: any) => {
+	if (variants.length === 1) {
+		return formatCurrency(variants[0].price)
+	} else {
+		const price_min = variants.reduce((prev: any, curr: any) => prev.price < curr.price ? prev : curr)
+		const price_max = variants.reduce((prev: any, curr: any) => prev.price > curr.price ? prev : curr)
+		if (price_min.price === price_max.price) {
+			return formatCurrency(price_min.price)
+		}
+		
+		return `${formatCurrency(price_min.price)} - ${formatCurrency(price_max.price)}`
+	}
+}
+
+export const totalStock = (variants: any) => {
+	return variants.reduce((prev: any, curr: any) => prev + curr.stock, 0)
+}
+
 export const formatETD = (value: string) => {
 	const date = Intl.DateTimeFormat('id-ID', {
 		month: 'short',

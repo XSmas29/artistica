@@ -9,6 +9,7 @@
         <div>
           <v-img
             :src="logo"
+            :lazy-src="logo"
             max-height="70"
           />
         </div>

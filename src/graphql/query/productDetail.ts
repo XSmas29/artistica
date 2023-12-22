@@ -22,10 +22,6 @@ const productDetail = gql`
         stock
         attribute_values {
           id
-          attribute {
-            id
-            name
-          }
           option {
             id
             name
@@ -37,6 +33,17 @@ const productDetail = gql`
         path
         variant {
           id
+          attribute_values {
+            id
+            attribute {
+              id
+              name
+            }
+            option {
+              id
+              name
+            }
+          }
         }
       }
       category {

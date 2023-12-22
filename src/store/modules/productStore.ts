@@ -5,6 +5,10 @@ export const useProductStore = defineStore('product', {
 			limit: 12,
 			page: 1,
 		},
+		productListPaginationAdmin: {
+			limit: 10,
+			page: 1,
+		},
 		productListFilter: {
 			category_ids: [] as number[],
 			material_ids: [] as number[],
