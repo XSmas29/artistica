@@ -26,21 +26,32 @@
               {{ product.name }}
             </v-card-title>
             <v-card-text>
-              <v-chip-group
+              <template
                 v-if="!product.single_variant"
-                class="my-2"
-                v-model="selectedVariant"
-                @update:model-value="checkQuantity"
               >
-                <v-chip
-                  v-for="(item, i) in product.variants"
+                <div 
+                  v-for="(attr, i) in product.attributes"
                   :key="i"
-                  label
-                  variant="outlined"
                 >
-                  {{ item.name }}
-                </v-chip>
-              </v-chip-group>
+                  <h4>{{ attr.name }}</h4>
+                  <v-chip-group
+                    class="mb-2"
+                    v-model="selectedOption[i]"
+                    mandatory
+                    @update:model-value="checkQuantity"
+                  >
+                    <v-chip
+                      v-for="(option, j) in attr.options"
+                      :key="j"
+                      label
+                      variant="tonal"
+                      color="accent"
+                    >
+                      {{ option.name }}
+                    </v-chip>
+                  </v-chip-group>
+                </div>
+              </template>
               <p class="text-h6 mb-3 font-weight-light">
                 {{ formatCurrency(product.variants[selectedVariant].price) }}
               </p>
@@ -206,7 +217,7 @@
   </XyzTransition>
 </template>
 <script lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import useProduct from '@composables/useProduct'
 import { useRoute } from 'vue-router'
 import ImageGallery from '@components/ImageGallery.vue'
@@ -227,7 +238,11 @@ export default {
 
 		onMounted(() => {
 			const id = +(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
-			getProductDetail(id)
+			getProductDetail(id).then(() => {
+				product.value.attributes.forEach(() => {
+					selectedOption.value.push(0)
+				})
+			})
 		})
 
 		const reduceQuantity = () => {
@@ -270,7 +285,28 @@ export default {
 			dialogAddCart.value = true
 		}
     
-		const selectedVariant = ref(0)
+		const selectedOption = ref([] as number[])
+		const selectedVariant = computed(() => {
+			if (!product.value.single_variant) {
+				let index = -1
+				product.value.variants.forEach((variant: any, i: number) => {
+					let match = true
+					variant.attribute_values.forEach((attr: any, j: number) => {
+						if (product.value.attributes[j].options[selectedOption.value[j]] && product.value.attributes[j].options && attr.option.id !== product.value.attributes[j].options[selectedOption.value[j]].id) {
+							match = false
+						}
+					})
+
+					if (match) {
+						index = i
+					}
+				})
+        
+				return index
+			} else {
+				return 0
+			}
+		})
     
 		return {
 			loadingProductDetail,
@@ -279,6 +315,7 @@ export default {
 			quantity,
 			dialogAddCart,
 			isLoggedIn,
+			selectedOption,
 
 			formatCurrency,
 			reduceQuantity,

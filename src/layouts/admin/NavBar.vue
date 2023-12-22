@@ -9,7 +9,7 @@
         lines="one"
         prepend-icon="mdi-account-circle"
         size
-        :title="userData.first_name"
+        :title="userData.first_name ?? 'Admin'"
       />
     </template>
     <v-divider />
@@ -29,7 +29,6 @@
       <div class="pa-2">
         <v-btn
           block
-          lines="one"
           prepend-icon="mdi-logout"
           flat
           color="error"
@@ -42,7 +41,6 @@
     <v-dialog
       v-model="dialogLogout"
       persistent
-      activator="parent"
       width="auto"
     >
       <v-card

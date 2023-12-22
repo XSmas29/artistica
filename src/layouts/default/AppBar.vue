@@ -194,14 +194,14 @@
           :value="6"
           text="Support"
         />
-        <v-tab 
+        <!-- <v-tab 
           :value="7"
           text="Support Silversmith"
         />
         <v-tab 
           :value="8"
           text="Blog"
-        />
+        /> -->
       </v-tabs>
     </template>
   </v-app-bar>

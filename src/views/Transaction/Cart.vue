@@ -26,7 +26,7 @@
                 {{ item.variant.product.name }}
               </v-card-title>
               <v-card-title v-else>
-                {{ item.variant.product.name }} | {{ item.variant.name }}
+                {{ item.variant.product.name }} | {{ formatVariantName(item.variant.attribute_values) }}
               </v-card-title>
             </router-link>
             <!-- <v-img
@@ -40,7 +40,7 @@
               <div class="d-flex">
                 <div>
                   <v-img
-                    :src="item.variant.images[0] ? item.variant.images[0].path : item.variant.product.images[0].path"
+                    :src="item.variant.images[0] ? item.variant.images[0].path : item.variant.product.images[0] ? item.variant.product.images[0].path : null"
                     width="100"
                     class="rounded mt-1"
                   />
@@ -170,8 +170,9 @@
             >
               <v-btn
                 block
-                variant="tonal"
                 size="large"
+                flat
+                color="accent"
               >
                 Beli
               </v-btn>
@@ -232,6 +233,10 @@ export default {
 			cartItems.value.splice(index, 1)
 		}
 
+		const formatVariantName = (val: any) => {
+			return val.map((item: any) => item.option.name).join(', ')
+		}
+
 		return {
 			cartItems,
 			loadingCartItems,
@@ -240,7 +245,8 @@ export default {
 			reduceQuantity,
 			increaseQuantity,
 			deleteCart,
-			formatCurrency
+			formatCurrency,
+			formatVariantName
 		}
 	}
 }

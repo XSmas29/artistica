@@ -6,7 +6,6 @@ const cartData = gql`
       quantity
       variant {
         id
-        name
         price
         stock
         images {
@@ -21,6 +20,17 @@ const cartData = gql`
             path
           }
           single_variant
+        }
+        attribute_values {
+          id
+          attribute {
+            id
+            name
+          }
+          option {
+            id
+            name
+          }
         }
       }
     }

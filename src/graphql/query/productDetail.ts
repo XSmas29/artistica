@@ -8,19 +8,36 @@ const productDetail = gql`
       description
       slug
       single_variant
-      images {
+      attributes {
         id
-        path
-        variant {
+        name
+        options {
           id
           name
         }
       }
       variants {
         id
-        name
         price
         stock
+        attribute_values {
+          id
+          attribute {
+            id
+            name
+          }
+          option {
+            id
+            name
+          }
+        }
+      }
+      images {
+        id
+        path
+        variant {
+          id
+        }
       }
       category {
         id
