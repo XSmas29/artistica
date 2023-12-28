@@ -3,6 +3,7 @@ import { cartData, productDetail, products } from '@graphql/queries'
 import { toast } from '@helpers/utils'
 import { ref } from 'vue'
 import { filterProducts, pagination, sort } from './types'
+import { addProduct } from '@graphql/mutations'
 
 const useUser = () => {
 	const productList = ref([] as any[])
@@ -14,6 +15,8 @@ const useUser = () => {
 
 	const product = ref({}) as any
 	const loadingProductDetail = ref(false)
+
+	const loadingCreateProduct = ref(false)
 
 	const getProductList = async (filter: filterProducts, pagination: pagination, sort: sort) => {
 		loadingProductList.value = true
@@ -89,6 +92,27 @@ const useUser = () => {
 		})
 	}
 
+	const createProduct = async (data: any) => {
+		loadingCreateProduct.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: addProduct,
+				variables: {
+					data,
+				},
+			}).then(({ data }: any) => {
+				toast.success(data.addProduct.message)
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingCreateProduct.value = false
+			})
+		})
+	}
+
 	return {
 		productList,
 		productCount,
@@ -102,6 +126,9 @@ const useUser = () => {
 		cartItems,
 		loadingCartItems,
 		getCartData,
+
+		loadingCreateProduct,
+		createProduct,
 	}
 }
 

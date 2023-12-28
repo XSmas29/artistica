@@ -177,7 +177,17 @@ const routes: MyRouteRecord[] = [
 					public: false,
 					admin: true,
 				},
-				component: () => import('@/views/Admin/Products.vue'),
+				component: () => import('@views/Admin/Product/Products.vue'),
+			},
+			{
+				path: '/admin/products/add',
+				name: 'admin-product-add',
+				meta: {
+					pageTitle: 'Tambah Produk',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Product/AddProduct.vue'),
 			},
 			{
 				path: '/admin/categories',

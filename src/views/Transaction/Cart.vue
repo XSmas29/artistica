@@ -189,7 +189,7 @@ import useProduct from '@/composables/useProduct'
 import { onMounted } from 'vue'
 import { useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
-import { formatCurrency } from '@utils/filter'
+import { formatCurrency, formatVariantName } from '@utils/filter'
 import { productPlaceholder } from '@/utils/global'
 
 export default {
@@ -233,10 +233,6 @@ export default {
 		const deleteCart = (index: number) => {
 			cartData.value.splice(index, 1)
 			cartItems.value.splice(index, 1)
-		}
-
-		const formatVariantName = (val: any) => {
-			return val.map((item: any) => item.option.name).join(', ')
 		}
 
 		return {

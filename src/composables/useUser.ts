@@ -1,11 +1,9 @@
 import { apolloClient } from '@/vue-apollo'
 import { ref } from 'vue'
-import { login, register as signUp, verifyUser } from '@graphql/mutations'
+import { login, register as signUp, verifyUser, editProfile, editPassword } from '@graphql/mutations'
 import { checkVerifyCode, profileInfo, refreshToken } from '@graphql/queries'
 import { toast } from '@/helpers/utils'
 import { useAuthStore } from '@/store/modules'
-import editProfile from '@graphql/mutation/editProfile'
-import editPassword from '@graphql/mutation/editPassword'
 
 const useUser = () => {
 	const authStore = useAuthStore()

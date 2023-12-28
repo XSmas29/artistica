@@ -4,11 +4,23 @@
     xyz="fade left-5"
   >
     <v-card flat>
-      <v-card-title class="d-flex align-center pe-2">
+      <div class="d-flex justify-end">
+        <router-link
+          :to="{ name: 'admin-product-add' }"
+        >
+          <v-btn
+            flat
+            color="success"
+          >
+            <v-icon>mdi-plus</v-icon>
+            Tambah Produk
+          </v-btn>
+        </router-link>
+      </div>
+      <v-card-title class="d-flex align-center px-0">
         Daftar Produk
 
         <v-spacer />
-
         <v-text-field
           v-model="productListFilter.search"
           prepend-inner-icon="mdi-magnify"
@@ -50,55 +62,47 @@
           />
         </template>
         <template #[`item.no`]="{ index }">
-          <td>{{ ((productListPaginationAdmin.page - 1) * productListPaginationAdmin.limit) + index + 1 }}</td>
+          {{ ((productListPaginationAdmin.page - 1) * productListPaginationAdmin.limit) + index + 1 }}
         </template>
         <template #[`item.image`]="{ item }">
-          <td>
-            <v-card
-              rounded
-              class="my-1"
-              flat
-            >
-              <v-img
-                :src="item.images[0] ? item.images[0].path : productPlaceholder"
-                width="75"
-                height="75"
-                :lazy-src="productPlaceholder"
-              />
-            </v-card>
-          </td>
+          <v-card
+            rounded
+            class="my-1"
+            flat
+          >
+            <v-img
+              :src="item.images[0] ? item.images[0].path : productPlaceholder"
+              width="75"
+              height="75"
+              :lazy-src="productPlaceholder"
+            />
+          </v-card>
         </template>
         <template #[`item.name`]="{ item }">
-          <td class="text-body-1 font-weight-medium">
+          <p class="text-body-1 font-weight-medium">
             {{ item.name }}
-          </td>
+          </p>
         </template>
         <template #[`item.price`]="{ item }">
-          <td>
-            {{ priceRange(item.variants) }}
-          </td>
+          {{ priceRange(item.variants) }}
         </template>
         <template #[`item.stock`]="{ item }">
-          <td>
-            {{ totalStock(item.variants) }}
-          </td>
+          {{ totalStock(item.variants) }}
         </template>
         <template #[`item.expand`]="{ item }">
-          <td>
-            <v-btn
-              v-if="!item.single_variant"
-              icon
-              flat
-              @click="expandedList.includes(item.id) ? expandedList.splice(expandedList.indexOf(item.id), 1) : expandedList.push(item.id)"
-            >
-              <v-icon v-if="expandedList.includes(item.id)">
-                mdi-chevron-up
-              </v-icon>
-              <v-icon v-else>
-                mdi-chevron-down
-              </v-icon>
-            </v-btn>
-          </td>
+          <v-btn
+            v-if="!item.single_variant"
+            icon
+            flat
+            @click="expandedList.includes(item.id) ? expandedList.splice(expandedList.indexOf(item.id), 1) : expandedList.push(item.id)"
+          >
+            <v-icon v-if="expandedList.includes(item.id)">
+              mdi-chevron-up
+            </v-icon>
+            <v-icon v-else>
+              mdi-chevron-down
+            </v-icon>
+          </v-btn>
         </template>
         <template #expanded-row="{ item }">
           <tr
