@@ -50,6 +50,11 @@
         @update:items-per-page="loadProduct(true)"
         @update:page="loadProduct(false)"
       >
+        <template #[`header.action`]="{ column }">
+          <div class="text-end">
+            {{ column.title }}
+          </div>
+        </template>
         <template #bottom>
           <v-data-table-footer
             :items-per-page-options="[10, 25, 50]"
@@ -65,18 +70,13 @@
           {{ ((productListPaginationAdmin.page - 1) * productListPaginationAdmin.limit) + index + 1 }}
         </template>
         <template #[`item.image`]="{ item }">
-          <v-card
-            rounded
-            class="my-1"
-            flat
-          >
-            <v-img
-              :src="item.images[0] ? item.images[0].path : productPlaceholder"
-              width="75"
-              height="75"
-              :lazy-src="productPlaceholder"
-            />
-          </v-card>
+          <v-img
+            :src="item.images[0] ? item.images[0].path : productPlaceholder"
+            width="75"
+            height="75"
+            :lazy-src="productPlaceholder"
+            class="rounded-lg my-1"
+          />
         </template>
         <template #[`item.name`]="{ item }">
           <p class="text-body-1 font-weight-medium">
@@ -132,6 +132,64 @@
             </td>
           </tr>
         </template>
+        <template #[`item.action`]="{ item }">
+          <div class="text-end">
+            <v-btn
+              icon
+              flat
+              density="comfortable"
+            >
+              <v-icon
+                size="35"
+                color="warning"
+              >
+                mdi-pencil-circle
+              </v-icon>
+            </v-btn>
+            <v-dialog
+              max-width="500"
+            >
+              <template #activator="{ props }">
+                <v-btn
+                  icon
+                  flat
+                  density="comfortable"
+                  v-bind="props"
+                >
+                  <v-icon
+                    color="error"
+                    size="35"
+                  >
+                    mdi-delete-circle
+                  </v-icon>
+                </v-btn>
+              </template>
+              <template #default="{ isActive }">
+                <v-card
+                  title="Hapus Produk?"
+                >
+                  <v-card-text>
+                    Yakin mau menghapus produk <b>{{ item.name }}</b>?
+                  </v-card-text>
+                  
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn
+                      text="Hapus"
+                      color="error"
+                      :loading="loadingRemoveProduct"
+                      @click="deleteProduct(item.id)"
+                    />
+                    <v-btn
+                      text="Batal"
+                      @click="isActive.value = false"
+                    />
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </div>
+        </template>
       </v-data-table-server>
     </v-card>
   </XyzTransition>
@@ -147,7 +205,10 @@ import { useDebounceFn } from '@vueuse/core'
 
 export default {
 	setup() {
-		const { getProductList, loadingProductList, productList, productCount } = useProduct()
+		const { 
+			getProductList, loadingProductList, productList, productCount,
+			removeProduct, loadingRemoveProduct,
+		} = useProduct()
 		const { productListPaginationAdmin, productListFilter, productListSort } = storeToRefs(useProductStore())
 
 		const loadProduct = async (resetPage: boolean) => {
@@ -204,12 +265,21 @@ export default {
 			loadProduct(true)
 		})
 
+		const deleteProduct = (id: number) => {
+			removeProduct(id).then(() => {
+				loadProduct(true)
+			})
+		}
+
 		return {
 			priceRange,
 			totalStock,
 			formatCurrency,
 			loadProduct,
 			debouncedLoadProduct,
+      
+			deleteProduct,
+			loadingRemoveProduct,
 
 			getProductList,
 			loadingProductList,
