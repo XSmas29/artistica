@@ -7,28 +7,37 @@
         :width="width"
         :height="height"
         rounded="lg"
-        :class="{ 'on-hover': isHovering }"
+
+        :class="{ 'on-hover': isHovering, 'files': state.file }"
       >
         <div
-          v-if="state.files.length > 0"
-          class="files"
+          v-if="state.file"
         >
-          <div
-            v-for="(file, index) in state.files"
-            :key="index"
+          <v-img
+            :src="thumbnail"
+            aspect-ratio="1/1"
+            :width="width"
+            :height="height"
+            v-bind="props"
           >
-            <v-img
-              :src="thumbnail"
-              cover
-              aspect-ratio="1/1"
-              :width="width"
-              :height="height"
-            />
-            <!-- <span
-              class="delete-file"
-              @click="handleClickDeleteFile(index)"
-            >Delete</span> -->
-          </div>
+            <div
+              v-if="isHovering"
+              class="d-flex align-center justify-center"
+              style="height: 100%"
+            >
+              <v-btn
+                icon
+                density="comfortable"
+                @click="handleClickDeleteFile"
+              >
+                <v-icon
+                  size="30"
+                >
+                  mdi-close-circle
+                </v-icon>
+              </v-btn>
+            </div>
+          </v-img>
         </div>
         <div
           v-else
@@ -46,7 +55,15 @@
               Drop the files here ...
             </p>
             <p v-else>
-              Upload file
+              <v-img>
+                <v-icon
+                  class="mb-1"
+                  size="22"
+                >
+                  mdi-cloud-upload
+                </v-icon>
+              </v-img>
+              Upload
             </p>
           </div>
         </div>
@@ -55,10 +72,12 @@
   </v-hover>
 </template>
 <script lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useDropzone } from 'vue3-dropzone'
+import { toast } from '@helpers/utils'
 
 export default {
+	emits: ['update:modelValue'],
 	props: {
 		width: {
 			type: String,
@@ -68,29 +87,48 @@ export default {
 			type: String,
 			default: '100%',
 		},
-		rules: {
-			type: Array,
-			default: () => [],
+		modelValue: {
+			type: Object,
+			default: () => null,
 		},
 	},
-	setup() {
+	setup(props, { emit }) {
 		const thumbnail = ref(null as any)
     
 		const onDrop = (acceptFiles: any, rejectReasons: any) => {
-			console.log(acceptFiles)
-			console.log(rejectReasons)
-			state.value.files = acceptFiles
-			thumbnail.value = URL.createObjectURL(acceptFiles[0])
+			if (rejectReasons.length > 0) {
+        
+				rejectReasons.forEach((reason: any) => {
+					reason.errors.forEach((error: any) => {
+						toast.error(error.message)
+					})
+				})
+			}
+			else {
+				console.log(acceptFiles)
+				state.value.file = acceptFiles[0]
+				thumbnail.value = URL.createObjectURL(acceptFiles[0])
+			}
 		}
 
 		const state = ref({
-			files: [] as any[],
+			file: null as any,
 		})
 
-		const { getRootProps, getInputProps, ...rest } = useDropzone({ onDrop })
+		watch(() => state.value.file, file => {
+			emit('update:modelValue', file)
+		})
 
-		const handleClickDeleteFile = (index: number) => {
-			state.value.files.splice(index, 1)
+		const dropzoneOptions = ref({
+			onDrop: onDrop,
+			accept: 'image/*',
+			maxSize: 3000000,
+		})
+
+		const { getRootProps, getInputProps, ...rest } = useDropzone(dropzoneOptions.value)
+
+		const handleClickDeleteFile = () => {
+			state.value.file = null
 		}
 		
 		return {
@@ -110,10 +148,15 @@ export default {
   background: rgba(0,0,0,0.1);
 }
 
-.dropzone, .files {
+.dropzone {
   width: 100%;
   height: 100%;
   font-size: 12px;
+}
+
+.files {
+  border-radius: 8px;
+  border: 1px solid rgba(0,0,0,0.2);
 }
 
 .border {
@@ -130,8 +173,8 @@ export default {
   transition: all 0.3s ease;
 
   &.isDragActive {
-    border: 2px dashed #ffb300;
-    background: rgb(255 167 18 / 20%);
+    border: 2px dashed rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.1);
   }
 }
 
@@ -147,14 +190,6 @@ export default {
 
   &:first-child {
     margin-top: 0;
-  }
-
-  .delete-file {
-    background: red;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 8px;
-    cursor: pointer;
   }
 }
 </style>

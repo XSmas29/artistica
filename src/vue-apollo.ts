@@ -1,13 +1,17 @@
-import { ApolloClient, createHttpLink, from, InMemoryCache } from '@apollo/client/core'
+import { ApolloClient, from, InMemoryCache } from '@apollo/client/core'
 import VueApollo from 'vue-apollo'
 import { jwtDecode } from 'jwt-decode'
 import useUser from '@composables/useUser'
 import { setContext } from '@apollo/client/link/context'
+import { createUploadLink } from 'apollo-upload-client'
 
 // HTTP connection to the API
-const httpLink = createHttpLink({
+const httpLink = createUploadLink({
 	// You should use an absolute URL here
 	uri: import.meta.env.VITE_GRAPHQL_HTTP_URL,
+	headers: {
+		'Apollo-Require-Preflight': 'true',
+	},
 })
 
 // const authMiddleware = new ApolloLink((operation, forward) => {
