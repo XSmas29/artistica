@@ -20,14 +20,21 @@
                 sm="10"
               >
                 <div
-                  class="d-flex flex-wrap"
+                  class="d-flex"
+                  style="overflow-x: scroll;"
                 >
-                  <vue-dropzone
-                    ref="productDropzone"
-                    width="120"
-                    height="120"
-                    :rules="[required]"
-                  />
+                  <div
+                    v-for="i in 5"
+                    :key="i"
+                    class="ma-1"
+                  >
+                    <vue-dropzone
+                      ref="productDropzone"
+                      width="100"
+                      height="100"
+                      v-model="product.images[i-1]"
+                    />
+                  </div>
                 </div>
               </v-col>
             </v-row>
@@ -251,7 +258,6 @@
                   <v-text-field
                     v-model="variantItems[index].sku"
                     variant="outlined"
-                    density="compact"
                     hide-details
                     :rules="[required]"
                   />
@@ -260,7 +266,6 @@
                   <v-text-field
                     v-model="variantItems[index].price"
                     variant="outlined"
-                    density="compact"
                     hide-details
                     prefix="IDR"
                     type="number"
@@ -272,15 +277,21 @@
                   <v-text-field
                     v-model="variantItems[index].stock"
                     variant="outlined"
-                    density="compact"
                     hide-details
                     type="number"
                     hide-spin-buttons
                     :rules="[required]"
                   />
                 </template>
-                <template #[`item.image`]="{ }">
-                  <div />
+                <template #[`item.image`]="{ index }">
+                  <div class="my-2">
+                    <vue-dropzone
+                      ref="productDropzone"
+                      width="64"
+                      height="64"
+                      v-model="variantItems[index].image"
+                    />
+                  </div>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -400,6 +411,7 @@ import useCategory from '@/composables/useCategory'
 import useProduct from '@/composables/useProduct'
 import { required } from '@helpers/validations'
 import router from '@/router'
+import { toast } from '@helpers/utils'
 
 export default {
 	components: {
@@ -507,13 +519,6 @@ export default {
 			material_id: null as any,
 			images: [] as any[]
 		})
-		const onFileAdded = (file: File) => {
-			console.log(file)
-		}
-
-		const onFileRemoved = (file: File) => {
-			console.log(file)
-		}
 
 		const addProduct = () => {
 			addProductForm.value.validate()
@@ -521,25 +526,32 @@ export default {
 			console.log(variant_attributes.value)
 			console.log(variantItems.value)
 			if (addProductForm.value.isValid) {
-        
-				const formattedVariantItems = variantItems.value.map((item: any) => {
-					return {
-						sku: item.sku,
-						price: +item.price,
-						stock: +item.stock,
-						image: null,
-					}
-				})
-
-				const data = {
-					product: product.value,
-					attributes: variant_attributes.value,
-					variants: formattedVariantItems,
+				if (product.value.images.length === 0) {
+					toast.error('Foto produk minimal 1')
 				}
-				console.log(data)
-				createProduct(data).then(() => {
-					router.push({ name: 'admin-products' })
-				})
+				else {
+					const formattedVariantItems = variantItems.value.map((item: any) => {
+						return {
+							sku: item.sku,
+							price: +item.price,
+							stock: +item.stock,
+							image: item.image,
+						}
+					})
+
+					product.value.images = product.value.images.filter((img: any) => img)
+
+					const data = {
+						product: product.value,
+						attributes: variant_attributes.value,
+						variants: formattedVariantItems,
+					}
+					console.log(data)
+					createProduct(data).then(() => {
+						router.push({ name: 'admin-products' })
+					})
+				}
+				
 			}
 		}
 
@@ -549,8 +561,6 @@ export default {
 		})
 
 		return {
-			onFileAdded,
-			onFileRemoved,
 			addVariantAttribute,
 			addProduct,
 
