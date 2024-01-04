@@ -190,6 +190,16 @@ const routes: MyRouteRecord[] = [
 				component: () => import('@/views/Admin/Product/AddProduct.vue'),
 			},
 			{
+				path: '/admin/products/:id/edit',
+				name: 'admin-product-edit',
+				meta: {
+					pageTitle: 'Edit Produk',
+					public: false,
+					admin: true,
+				},
+				component: () => import('@/views/Admin/Product/EditProduct.vue'),
+			},
+			{
 				path: '/admin/categories',
 				name: 'admin-categories',
 				meta: {

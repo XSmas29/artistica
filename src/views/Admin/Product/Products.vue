@@ -139,19 +139,23 @@
               location="top"
             >
               <template #activator="{ props }">
-                <v-btn
-                  icon
-                  flat
-                  density="comfortable"
-                  v-bind="props"
+                <router-link
+                  :to="{ name: 'admin-product-edit', params: { id: item.id } }"
                 >
-                  <v-icon
-                    size="35"
-                    color="warning"
+                  <v-btn
+                    icon
+                    flat
+                    density="comfortable"
+                    v-bind="props"
                   >
-                    mdi-pencil-circle
-                  </v-icon>
-                </v-btn>
+                    <v-icon
+                      size="35"
+                      color="warning"
+                    >
+                      mdi-pencil-circle
+                    </v-icon>
+                  </v-btn>
+                </router-link>
               </template>
             </v-tooltip>
             
