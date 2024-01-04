@@ -134,18 +134,27 @@
         </template>
         <template #[`item.action`]="{ item }">
           <div class="text-end">
-            <v-btn
-              icon
-              flat
-              density="comfortable"
+            <v-tooltip
+              text="Edit Produk"
+              location="top"
             >
-              <v-icon
-                size="35"
-                color="warning"
-              >
-                mdi-pencil-circle
-              </v-icon>
-            </v-btn>
+              <template #activator="{ props }">
+                <v-btn
+                  icon
+                  flat
+                  density="comfortable"
+                  v-bind="props"
+                >
+                  <v-icon
+                    size="35"
+                    color="warning"
+                  >
+                    mdi-pencil-circle
+                  </v-icon>
+                </v-btn>
+              </template>
+            </v-tooltip>
+            
             <v-dialog
               max-width="500"
             >
@@ -162,6 +171,11 @@
                   >
                     mdi-delete-circle
                   </v-icon>
+                  <v-tooltip
+                    text="Hapus Produk"
+                    location="top"
+                    activator="parent"
+                  />
                 </v-btn>
               </template>
               <template #default="{ isActive }">
