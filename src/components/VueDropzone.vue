@@ -8,10 +8,10 @@
         :height="height"
         rounded="lg"
 
-        :class="{ 'on-hover': isHovering, 'files': state.file }"
+        :class="{ 'on-hover': isHovering, 'files': state }"
       >
         <div
-          v-if="state.file"
+          v-if="state"
         >
           <v-img
             :src="thumbnail"
@@ -19,7 +19,16 @@
             :width="width"
             :height="height"
             v-bind="props"
+            :lazy-src="productPlaceholder"
           >
+            <template #placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular
+                  color="grey-lighten-4"
+                  indeterminate
+                />
+              </div>
+            </template>
             <div
               v-if="isHovering"
               class="d-flex align-center justify-center"
@@ -55,14 +64,12 @@
               Drop the files here ...
             </p>
             <p v-else>
-              <v-img>
-                <v-icon
-                  class="mb-1"
-                  size="22"
-                >
-                  mdi-cloud-upload
-                </v-icon>
-              </v-img>
+              <v-icon
+                class="mb-1"
+                size="22"
+              >
+                mdi-cloud-upload
+              </v-icon>
               Upload
             </p>
           </div>
@@ -72,9 +79,10 @@
   </v-hover>
 </template>
 <script lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useDropzone } from 'vue3-dropzone'
 import { toast } from '@helpers/utils'
+import { productPlaceholder } from '@/utils/global'
 
 export default {
 	emits: ['update:modelValue'],
@@ -88,7 +96,7 @@ export default {
 			default: '100%',
 		},
 		modelValue: {
-			type: Object,
+			type: Object as () => Record<string, any> | null,
 			default: () => null,
 		},
 	},
@@ -106,18 +114,31 @@ export default {
 			}
 			else {
 				console.log(acceptFiles)
-				state.value.file = acceptFiles[0]
+				state.value = acceptFiles[0]
 				thumbnail.value = URL.createObjectURL(acceptFiles[0])
 			}
 		}
 
-		const state = ref({
-			file: null as any,
+		// const state = ref({
+		// 	file: null as any,
+		// })
+    
+		const state = computed({
+			get() {
+				return props.modelValue
+			},
+			set(value) {
+				emit('update:modelValue', value)
+			},
 		})
 
-		watch(() => state.value.file, file => {
-			emit('update:modelValue', file)
+		watch(state, file => {
+			if (file) thumbnail.value = URL.createObjectURL(props.modelValue as File)
 		})
+
+		// watch(() => state.value, file => {
+		// 	emit('update:modelValue', file)
+		// })
 
 		const dropzoneOptions = ref({
 			onDrop: onDrop,
@@ -128,7 +149,7 @@ export default {
 		const { getRootProps, getInputProps, ...rest } = useDropzone(dropzoneOptions.value)
 
 		const handleClickDeleteFile = () => {
-			state.value.file = null
+			state.value = null
 		}
 		
 		return {
@@ -138,6 +159,7 @@ export default {
 			state,
 			handleClickDeleteFile,
 			thumbnail,
+			productPlaceholder,
 		}
 	},
 }
