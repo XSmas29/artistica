@@ -20,8 +20,18 @@ const productDetail = gql`
         id
         price
         stock
+        sku
+        image {
+          id
+          path
+        }
+        
         attribute_values {
           id
+          attribute {
+            id
+            name
+          }
           option {
             id
             name
@@ -31,20 +41,7 @@ const productDetail = gql`
       images {
         id
         path
-        variant {
-          id
-          attribute_values {
-            id
-            attribute {
-              id
-              name
-            }
-            option {
-              id
-              name
-            }
-          }
-        }
+        
       }
       category {
         id

@@ -143,7 +143,7 @@ export default {
 		const dropzoneOptions = ref({
 			onDrop: onDrop,
 			accept: 'image/*',
-			maxSize: 3000000,
+			maxSize: 2000000,
 		})
 
 		const { getRootProps, getInputProps, ...rest } = useDropzone(dropzoneOptions.value)
