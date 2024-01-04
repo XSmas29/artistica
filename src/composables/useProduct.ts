@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import { filterProducts, pagination, sort } from './types'
 import { addProduct, deleteProduct } from '@graphql/mutations'
 
-const useUser = () => {
+const useProduct = () => {
 	const productList = ref([] as any[])
 	const productCount = ref(0)
 	const loadingProductList = ref(false)
@@ -13,7 +13,7 @@ const useUser = () => {
 	const cartItems = ref([] as any[])
 	const loadingCartItems = ref(false)
 
-	const product = ref({}) as any
+	const productData = ref({}) as any
 	const loadingProductDetail = ref(false)
 
 	const loadingCreateProduct = ref(false)
@@ -59,7 +59,7 @@ const useUser = () => {
 					id,
 				},
 			}).then(({ data }: any) => {
-				product.value = data.productDetail
+				productData.value = data.productDetail
 				resolve(data)
 			}).catch((error: any) => {
 				reject(error)
@@ -141,7 +141,7 @@ const useUser = () => {
 		loadingProductList,
 		getProductList,
 
-		product,
+		productData,
 		loadingProductDetail,
 		getProductDetail,
 
@@ -157,4 +157,4 @@ const useUser = () => {
 	}
 }
 
-export default useUser
+export default useProduct

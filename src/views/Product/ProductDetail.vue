@@ -11,26 +11,26 @@
         md="5"
       >
         <image-gallery
-          :images="product.images"
+          :images="productData.images"
         />
       </v-col>
       <v-col
         cols="12"
         md="7"
       >
-        <template v-if="product && product.variants">
+        <template v-if="productData && productData.variants">
           <v-card
             flat
           >
             <v-card-title>
-              {{ product.name }}
+              {{ productData.name }}
             </v-card-title>
             <v-card-text>
               <template
-                v-if="!product.single_variant"
+                v-if="!productData.single_variant"
               >
                 <div 
-                  v-for="(attr, i) in product.attributes"
+                  v-for="(attr, i) in productData.attributes"
                   :key="i"
                 >
                   <h4>{{ attr.name }}</h4>
@@ -53,10 +53,10 @@
                 </div>
               </template>
               <p class="text-h6 mb-3 font-weight-light">
-                {{ formatCurrency(product.variants[selectedVariant].price) }}
+                {{ formatCurrency(productData.variants[selectedVariant].price) }}
               </p>
               <p class="text-subtitle-2 mb-1">
-                Stok: {{ product.variants[selectedVariant].stock }}
+                Stok: {{ productData.variants[selectedVariant].stock }}
               </p>
               <v-responsive
                 max-width="128px"
@@ -106,7 +106,7 @@
                       color="primary"
                       prepend-icon="mdi-cash"
                       flat
-                      :disabled="product.variants[selectedVariant].stock <= 0"
+                      :disabled="productData.variants[selectedVariant].stock <= 0"
                     >
                       Beli sekarang
                     </v-btn>
@@ -122,7 +122,7 @@
                       prepend-icon="mdi-cart"
                       flat
                       @click="addToCart"
-                      :disabled="product.variants[selectedVariant].stock <= 0"
+                      :disabled="productData.variants[selectedVariant].stock <= 0"
                     >
                       Masukkan keranjang
                     </v-btn>
@@ -206,7 +206,7 @@
               </v-row>
               <v-divider class="mb-6" />
               <p
-                v-html="product.description"
+                v-html="productData.description"
                 class="mb-8"
               />
             </v-card-text>
@@ -232,14 +232,14 @@ export default {
 		const route = useRoute()
 		const { isLoggedIn } = storeToRefs(useAuthStore())
 		const { cartData } = storeToRefs(useCartStore())
-		const { getProductDetail, loadingProductDetail, product } = useProduct()
+		const { getProductDetail, loadingProductDetail, productData } = useProduct()
 		const quantity = ref(1)
 		const dialogAddCart = ref(false)
 
 		onMounted(() => {
 			const id = +(Array.isArray(route.params.id) ? route.params.id[0] : route.params.id)
 			getProductDetail(id).then(() => {
-				product.value.attributes.forEach(() => {
+				productData.value.attributes.forEach(() => {
 					selectedOption.value.push(0)
 				})
 			})
@@ -252,7 +252,7 @@ export default {
 		}
 
 		const increaseQuantity = () => {
-			if (quantity.value < product.value.variants[selectedVariant.value].stock) {
+			if (quantity.value < productData.value.variants[selectedVariant.value].stock) {
 				quantity.value += 1
 			}
 		}
@@ -260,15 +260,15 @@ export default {
 		const checkQuantity = () => {
 			if (quantity.value < 1) {
 				quantity.value = 1
-			} else if (quantity.value > product.value.variants[selectedVariant.value].stock) {
-				quantity.value = product.value.variants[selectedVariant.value].stock
+			} else if (quantity.value > productData.value.variants[selectedVariant.value].stock) {
+				quantity.value = productData.value.variants[selectedVariant.value].stock
 			}
 		}
 
 		const addToCart = () => {
-			if (cartData.value.filter((item: any) => item.variant_id === product.value.variants[selectedVariant.value].id).length > 0) {
+			if (cartData.value.filter((item: any) => item.variant_id === productData.value.variants[selectedVariant.value].id).length > 0) {
 				cartData.value = cartData.value.map((item: any) => {
-					if (item.variant_id === product.value.variants[selectedVariant.value].id) {
+					if (item.variant_id === productData.value.variants[selectedVariant.value].id) {
 						item.quantity += quantity.value
 					}
 					
@@ -276,8 +276,8 @@ export default {
 				})
 			} else {
 				cartData.value.push({
-					product_id: product.value.id,
-					variant_id: product.value.variants[selectedVariant.value].id,
+					product_id: productData.value.id,
+					variant_id: productData.value.variants[selectedVariant.value].id,
 					quantity: quantity.value
 				})
 			}
@@ -287,12 +287,12 @@ export default {
     
 		const selectedOption = ref([] as number[])
 		const selectedVariant = computed(() => {
-			if (!product.value.single_variant) {
+			if (!productData.value.single_variant) {
 				let index = -1
-				product.value.variants.forEach((variant: any, i: number) => {
+				productData.value.variants.forEach((variant: any, i: number) => {
 					let match = true
 					variant.attribute_values.forEach((attr: any, j: number) => {
-						if (product.value.attributes[j].options[selectedOption.value[j]] && product.value.attributes[j].options && attr.option.id !== product.value.attributes[j].options[selectedOption.value[j]].id) {
+						if (productData.value.attributes[j].options[selectedOption.value[j]] && productData.value.attributes[j].options && attr.option.id !== productData.value.attributes[j].options[selectedOption.value[j]].id) {
 							match = false
 						}
 					})
@@ -310,7 +310,7 @@ export default {
     
 		return {
 			loadingProductDetail,
-			product,
+			productData,
 			selectedVariant,
 			quantity,
 			dialogAddCart,
