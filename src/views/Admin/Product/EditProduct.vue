@@ -195,6 +195,7 @@
                       variant="outlined"
                       dense
                       hide-details="auto"
+                      @update:model-value="reloadVariantItems"
                       :rules="[required]"
                     />
                   </v-col>
@@ -392,6 +393,7 @@
           <v-btn
             color="success"
             variant="flat"
+            @click="updateProduct"
           >
             <v-icon class="me-1">
               mdi-floppy
@@ -412,6 +414,8 @@ import useMaterial from '@/composables/useMaterial'
 import useProduct from '@/composables/useProduct'
 import { useRoute } from 'vue-router'
 import mime from 'mime'
+import { toast } from '@helpers/utils'
+import router from '@/router'
 
 // import router from '@/router'
 // import { toast } from '@helpers/utils'
@@ -498,7 +502,7 @@ export default {
 			// eslint-disable-next-line vue/no-side-effects-in-computed-properties
 			variantItems.value = items
 			variantTableItems.value = items
-			fillItemData(variantItems.value, productData.value.variants)
+			
 		}
 
 		const fillItemData = async (items: any[], variants: any[]) => {
@@ -550,7 +554,10 @@ export default {
 
 		const { getCategoryList, loadingCategoryList, categoryList } = useCategory()
 		const { getMaterialList, loadingMaterialList, materialList } = useMaterial()
-		const { getProductDetail, loadingProductDetail, productData } = useProduct()
+		const { 
+			getProductDetail, loadingProductDetail, productData,
+			editProduct, loadingEditProduct,
+		} = useProduct()
 
 		const loadProduct = () => {
 			getProductDetail(+route.params.id).then(async () => {
@@ -563,7 +570,13 @@ export default {
 					}
 				})
 				reloadVariantItems()
-				
+				if (productData.value.single_variant) {
+					variantItems.value[0].sku = productData.value.variants[0].sku
+					variantItems.value[0].price = productData.value.variants[0].price
+					variantItems.value[0].stock = productData.value.variants[0].stock
+				} 
+				else fillItemData(variantItems.value, productData.value.variants)
+
 				console.log(variantItems.value)
 
 				// variantItems.value = productData.value.variants
@@ -610,11 +623,49 @@ export default {
 			reloadVariantItems()
 		}
 
+		const editProductForm = ref(null as any)
+
+		const updateProduct = () => {
+			editProductForm.value.validate()
+			console.log(product.value)
+			console.log(variant_attributes.value)
+			console.log(variantItems.value)
+			if (editProductForm.value.isValid) {
+				if (product.value.images.length === 0) {
+					toast.error('Foto produk minimal 1')
+				}
+				else {
+					const formattedVariantItems = variantItems.value.map((item: any) => {
+						return {
+							sku: item.sku,
+							price: +item.price,
+							stock: +item.stock,
+							image: item.image,
+						}
+					})
+
+					product.value.images = product.value.images.filter((img: any) => img)
+
+					const data = {
+						product: product.value,
+						attributes: variant_attributes.value,
+						variants: formattedVariantItems,
+					}
+					console.log(data)
+					editProduct(+route.params.id, data).then(() => {
+						router.push({ name: 'admin-products' })
+					})
+				}
+				
+			}
+		}
+
 		return {
 			required,
 			addVariantAttribute,
 			removeVariantAttribute,
 			reloadVariantItems,
+			updateProduct,
 
 			loadingCategoryList,
 			categoryList,
@@ -624,6 +675,8 @@ export default {
 
 			loadingProductDetail,
 			productData,
+
+			loadingEditProduct,
       
 			product,
 			variant_attributes,
@@ -631,7 +684,7 @@ export default {
 			variantItems,
 			variantTableHeaders,
 			variantTableItems,
-      
+			editProductForm,
 		}
 	},
 }

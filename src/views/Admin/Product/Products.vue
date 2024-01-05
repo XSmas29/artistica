@@ -61,7 +61,10 @@
             :total-items="productCount"
             :page-text="
               (((productListPaginationAdmin.page - 1) * productListPaginationAdmin.limit) + 1) + '-' + 
-                productListPaginationAdmin.page * productListPaginationAdmin.limit
+                (productListPaginationAdmin.page * productListPaginationAdmin.limit > productCount
+                  ? productCount
+                  : productListPaginationAdmin.page * productListPaginationAdmin.limit
+                )
                 + ' dari ' + productCount
             "
           />
