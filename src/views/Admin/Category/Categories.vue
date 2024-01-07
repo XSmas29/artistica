@@ -159,7 +159,7 @@
                       <v-btn
                         color="success"
                         variant="flat"
-                        @click="updateCategory(item.id).then(() => isActive.value = false)"
+                        @click="updateCategory(item.id, isActive)"
                         :loading="loadingEditCategory"
                         :disabled="loadingEditCategory"
                       >
@@ -233,7 +233,7 @@
 </template>
 <script lang="ts">
 import useCategory from '@/composables/useCategory'
-import { onMounted, ref } from 'vue'
+import { onMounted, Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCategoryStore } from '@/store/modules'
 import { useDebounceFn } from '@vueuse/core'
@@ -311,12 +311,13 @@ export default {
 			})
 		}
 
-		const updateCategory = async (id: number) => {
+		const updateCategory = async (id: number, isActive: Ref<Boolean>) => {
 			editCategoryForm.value.validate()
 			if (editCategoryForm.value.isValid) {
 				editCategory(id, editCategoryFormData.value).then(() => {
 					loadCategory(true)
 					editCategoryForm.value.reset()
+					isActive.value = false
 				})
 			}
 		}

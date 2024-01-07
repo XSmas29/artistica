@@ -159,7 +159,7 @@
                       <v-btn
                         color="success"
                         variant="flat"
-                        @click="updateMaterial(item.id).then(() => isActive.value = false)"
+                        @click="updateMaterial(item.id, isActive)"
                         :loading="loadingEditMaterial"
                         :disabled="loadingEditMaterial"
                       >
@@ -234,7 +234,7 @@
 <script lang="ts">
 import { required } from '@helpers/validations'
 import useMaterial from '@composables/useMaterial'
-import { onMounted, ref } from 'vue'
+import { onMounted, Ref, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useMaterialStore } from '@/store/modules'
 import { useDebounceFn } from '@vueuse/core'
@@ -290,12 +290,14 @@ export default {
 			}
 		}
 
-		const updateMaterial = async (id: number) => {
+		const updateMaterial = async (id: number, isActive: Ref<Boolean>) => {
+			
 			editMaterialForm.value.validate()
 			if (editMaterialForm.value.isValid) {
 				editMaterial(id, editMaterialFormData.value).then(() => {
 					loadMaterial(false)
 					editMaterialForm.value.reset()
+					isActive.value = false
 				})
 			}
 		}
