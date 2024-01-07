@@ -7,21 +7,27 @@ import { ref } from 'vue'
 const useMaterial = () => {
 	const loadingMaterialList = ref(false)
 	const materialList = ref([] as any[])
+	const materialCount = ref(0)
 
 	const loadingCreateMaterial = ref(false)
 	const loadingRemoveMaterial = ref(false)
 	const loadingEditMaterial = ref(false)
 
-	const getMaterialList = async () => {
+	const getMaterialList = async (filter?: any, pagination?: any) => {
 		loadingMaterialList.value = true
 
 		return new Promise((resolve, reject) => {
 			apolloClient.query({
 				query: materials,
 				fetchPolicy: 'no-cache',
+				variables: {
+					pagination,
+					filter,
+				},
 			}).then(({ data }: any) => {
 				resolve(data)
-				materialList.value = data.materials
+				materialList.value = data.materials.materials
+				materialCount.value = data.materials.count
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
@@ -97,6 +103,7 @@ const useMaterial = () => {
 
 	return {
 		materialList,
+		materialCount,
 		loadingMaterialList,
 		getMaterialList,
 
