@@ -1,5 +1,5 @@
 import { apolloClient } from '@/vue-apollo'
-import { addCategory } from '@graphql/mutations'
+import { addCategory, deleteCategory } from '@graphql/mutations'
 import { categories } from '@graphql/queries'
 import { toast } from '@helpers/utils'
 import { ref } from 'vue'
@@ -10,6 +10,7 @@ const useCategory = () => {
 	const categoryCount = ref(0)
 
 	const loadingCreateCategory = ref(false)
+	const loadingRemoveCategory = ref(false)
 
 	const getCategoryList = async (filter?: any, pagination?: any) => {
 		loadingCategoryList.value = true
@@ -56,6 +57,28 @@ const useCategory = () => {
 		})
 	}
 
+	const removeCategory = async (id: number) => {
+		loadingRemoveCategory.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: deleteCategory,
+				variables: {
+					id,
+				},
+			}).then(({ data }: any) => {
+				resolve(data)
+				toast.success(data.deleteCategory.message)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingRemoveCategory.value = false
+			})
+		})
+	
+	}
+
 	return {
 		categoryCount,
 		categoryList,
@@ -64,6 +87,9 @@ const useCategory = () => {
 
 		loadingCreateCategory,
 		createCategory,
+
+		loadingRemoveCategory,
+		removeCategory,
 	}
 }
 

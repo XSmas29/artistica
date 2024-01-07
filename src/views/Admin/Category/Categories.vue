@@ -175,8 +175,8 @@
                     <v-btn
                       text="Hapus"
                       color="error"
-                      :loading="loadingRemoveProduct"
-                      @click="deleteProduct(item.id)"
+                      :loading="loadingRemoveCategory"
+                      @click="deleteCategory(item.id)"
                     />
                     <v-btn
                       text="Batal"
@@ -205,6 +205,7 @@ export default {
 		const { 
 			getCategoryList, loadingCategoryList, categoryList, categoryCount,
 			createCategory, loadingCreateCategory,
+			removeCategory, loadingRemoveCategory,
 		} = useCategory()
 		const { categoryListFilterAdmin, categoryListPaginationAdmin } = storeToRefs(useCategoryStore())
 
@@ -258,6 +259,12 @@ export default {
 			}
 		}
 
+		const deleteCategory = (id: number) => {
+			removeCategory(id).then(() => {
+				loadCategory(true)
+			})
+		}
+
 		return {
 			loadCategory,
 			debouncedLoadCategory,
@@ -277,6 +284,9 @@ export default {
 
 			loadingCreateCategory,
 			addCategory,
+
+			loadingRemoveCategory,
+			deleteCategory,
 		}
 	}
 }
