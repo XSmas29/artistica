@@ -167,7 +167,7 @@ const routes: MyRouteRecord[] = [
 					public: false,
 					admin: true,
 				},
-				component: () => import('@/views/Admin/Users.vue'),
+				component: () => import('@/views/Admin/User/Users.vue'),
 			},
 			{
 				path: '/admin/products',
