@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
-    permanent
-    :rail="smAndDown"
+    :permanent="!smAndDown"
+    v-model="showNavBar"
   >
     <template #prepend>
       <v-list-item
@@ -9,7 +9,7 @@
         lines="one"
         prepend-icon="mdi-account-circle"
         size
-        :title="userData.first_name ?? 'Admin'"
+        :title="userData ? userData.first_name : 'Admin'"
       />
     </template>
     <v-divider />
@@ -69,7 +69,7 @@
 <script lang="ts">
 import { useAuthStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
+import { inject, Ref, ref } from 'vue'
 import { useDisplay } from 'vuetify'
 import useUser from '@composables/useUser'
 import router from '@/router'
@@ -118,6 +118,8 @@ export default {
 			},
 		])
 		
+		const showNavBar = inject('showNavBar') as Ref<boolean>
+
 		const {signOut, loadingLogout } = useUser()
 		const dialogLogout = ref(false)
 
@@ -138,6 +140,7 @@ export default {
 			dialogLogout,
 			loadingLogout,
 			logout,
+			showNavBar,
 		}
 	},
 }

@@ -20,6 +20,7 @@ import NavBar from './NavBar.vue'
 import AdminView from './View.vue'
 import AdminFooter from './Footer.vue'
 import { useDisplay } from 'vuetify'
+import { provide, ref } from 'vue'
 
 export default {
 	components: {
@@ -30,6 +31,8 @@ export default {
 	},
 	setup() {
 		const { mdAndDown } = useDisplay()
+		const showNavBar = ref(false)
+		provide('showNavBar', showNavBar)
 		
 		return {
 			mdAndDown,
