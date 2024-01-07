@@ -6,6 +6,7 @@ import editProfile from '@/graphql/mutation/editProfile'
 import addProduct from '@/graphql/mutation/addProduct'
 import deleteProduct from '@/graphql/mutation/deleteProduct'
 import updateProduct from '@/graphql/mutation/updateProduct'
+import addCategory from '@/graphql/mutation/addCategory'
 
 export {
 	register,
@@ -16,4 +17,5 @@ export {
 	addProduct,
 	deleteProduct,
 	updateProduct,
+	addCategory,
 }

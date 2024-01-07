@@ -5,17 +5,58 @@
   >
     <v-card flat>
       <div class="d-flex justify-end">
-        <!-- <router-link
-          :to="{ name: 'admin-category-add' }"
+        <v-dialog
+          max-width="500"
+          v-model="addCategoryDialog"
         >
-          <v-btn
-            flat
-            color="success"
-          >
-            <v-icon>mdi-plus</v-icon>
-            Tambah Kategori
-          </v-btn>
-        </router-link> -->
+          <template #default="{ isActive }">
+            <v-form ref="addCategoryForm">
+              <v-card
+                title="Form Tambah Kategori"
+                :loading="loadingCreateCategory"
+              >
+                <v-card-text>
+                  <v-text-field
+                    v-model="addCategoryFormData.name"
+                    label="Nama Kategori"
+                    outlined
+                    dense
+                    :rules="[required]"
+                    class="mb-2 my-4"
+                  />
+                </v-card-text>
+                <v-card-actions class="mb-1">
+                  <v-spacer />
+                  <v-btn
+                    color="success"
+                    variant="flat"
+                    :loading="loadingCreateCategory"
+                    @click="addCategory"
+                  >
+                    <v-icon class="me-1">
+                      mdi-floppy
+                    </v-icon>
+                    Simpan Kategori
+                  </v-btn>
+                  <v-btn
+                    text="Batal"
+                    @click="isActive.value = false"
+                  />
+                </v-card-actions>
+              </v-card>
+            </v-form>
+          </template>
+          <template #activator="{ props }">
+            <v-btn
+              flat
+              color="success"
+              v-bind="props"
+            >
+              <v-icon>mdi-plus</v-icon>
+              Tambah Kategori
+            </v-btn>
+          </template>
+        </v-dialog>
       </div>
       <v-card-title class="d-flex align-center px-0">
         Daftar Kategori
@@ -157,11 +198,22 @@ import { onMounted, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCategoryStore } from '@/store/modules'
 import { useDebounceFn } from '@vueuse/core'
+import { required } from '@helpers/validations'
 
 export default {
 	setup() {
-		const { getCategoryList, loadingCategoryList, categoryList, categoryCount } = useCategory()
+		const { 
+			getCategoryList, loadingCategoryList, categoryList, categoryCount,
+			createCategory, loadingCreateCategory,
+		} = useCategory()
 		const { categoryListFilterAdmin, categoryListPaginationAdmin } = storeToRefs(useCategoryStore())
+
+		const addCategoryFormData = ref({
+			name: '',
+		})
+
+		const addCategoryForm = ref(null as any)
+		const addCategoryDialog = ref(false)
 
 		const headerList = ref([
 			{
@@ -195,9 +247,21 @@ export default {
 			loadCategory(resetPage)
 		}, 500)
 
+		const addCategory = async () => {
+			addCategoryForm.value.validate()
+			if (addCategoryForm.value.isValid) {
+				createCategory(addCategoryFormData.value).then(() => {
+					loadCategory(true)
+					addCategoryForm.value.reset()
+					addCategoryDialog.value = false
+				})
+			}
+		}
+
 		return {
 			loadCategory,
 			debouncedLoadCategory,
+			required,
       
 			loadingCategoryList,
 			categoryList,
@@ -207,6 +271,12 @@ export default {
 
 			categoryListFilterAdmin,
 			categoryListPaginationAdmin,
+			addCategoryFormData,
+			addCategoryForm,
+			addCategoryDialog,
+
+			loadingCreateCategory,
+			addCategory,
 		}
 	}
 }
