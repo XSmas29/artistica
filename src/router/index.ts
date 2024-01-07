@@ -207,7 +207,7 @@ const routes: MyRouteRecord[] = [
 					public: false,
 					admin: true,
 				},
-				component: () => import('@/views/Admin//Category/Categories.vue'),
+				component: () => import('@/views/Admin/Category/Categories.vue'),
 			},
 			{
 				path: '/admin/materials',
@@ -217,7 +217,7 @@ const routes: MyRouteRecord[] = [
 					public: false,
 					admin: true,
 				},
-				component: () => import('@/views/Admin/Materials.vue'),
+				component: () => import('@/views/Admin/Material/Materials.vue'),
 			},
 			{
 				path: '/admin/transactions',
