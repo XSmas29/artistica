@@ -114,30 +114,69 @@
         </template>
         <template #[`item.action`]="{ item }">
           <div class="text-end">
-            <v-tooltip
-              text="Edit Kategori"
-              location="top"
+            <v-dialog
+              max-width="500"
             >
               <template #activator="{ props }">
-                <router-link
-                  :to="{ name: 'admin-product-edit', params: { id: item.id } }"
+                <v-btn
+                  icon
+                  flat
+                  density="comfortable"
+                  v-bind="props"
+                  @click="editCategoryFormData.name = item.name"
                 >
-                  <v-btn
-                    icon
-                    flat
-                    density="comfortable"
-                    v-bind="props"
+                  <v-icon
+                    size="35"
+                    color="warning"
                   >
-                    <v-icon
-                      size="35"
-                      color="warning"
-                    >
-                      mdi-pencil-circle
-                    </v-icon>
-                  </v-btn>
-                </router-link>
+                    mdi-pencil-circle
+                  </v-icon>
+                  <v-tooltip
+                    text="Edit Kategori"
+                    location="top"
+                    activator="parent"
+                  />
+                </v-btn>
               </template>
-            </v-tooltip>
+              <template #default="{ isActive }">
+                <v-form ref="editCategoryForm">
+                  <v-card
+                    title="Form Edit Kategori"
+                  >
+                    <v-card-text>
+                      <v-text-field
+                        v-model="editCategoryFormData.name"
+                        label="Nama Kategori"
+                        outlined
+                        dense
+                        :rules="[required]"
+                        class="mb-2 my-4"
+                      />
+                    </v-card-text>
+                    
+                    <v-card-actions>
+                      <v-spacer />
+                      <v-btn
+                        color="success"
+                        variant="flat"
+                        @click="updateCategory(item.id).then(() => isActive.value = false)"
+                        :loading="loadingEditCategory"
+                        :disabled="loadingEditCategory"
+                      >
+                        <v-icon class="me-1">
+                          mdi-floppy
+                        </v-icon>
+                        Simpan
+                      </v-btn>
+                      <v-btn
+                        text="Batal"
+                        @click="isActive.value = false"
+                      />
+                    </v-card-actions>
+                  </v-card>
+                </v-form>
+              </template>
+            </v-dialog>
             
             <v-dialog
               max-width="500"
@@ -206,12 +245,19 @@ export default {
 			getCategoryList, loadingCategoryList, categoryList, categoryCount,
 			createCategory, loadingCreateCategory,
 			removeCategory, loadingRemoveCategory,
+			editCategory, loadingEditCategory,
 		} = useCategory()
 		const { categoryListFilterAdmin, categoryListPaginationAdmin } = storeToRefs(useCategoryStore())
 
 		const addCategoryFormData = ref({
 			name: '',
 		})
+
+		const editCategoryFormData = ref({
+			name: '',
+		})
+
+		const editCategoryForm = ref(null as any)
 
 		const addCategoryForm = ref(null as any)
 		const addCategoryDialog = ref(false)
@@ -265,6 +311,16 @@ export default {
 			})
 		}
 
+		const updateCategory = async (id: number) => {
+			editCategoryForm.value.validate()
+			if (editCategoryForm.value.isValid) {
+				editCategory(id, editCategoryFormData.value).then(() => {
+					loadCategory(true)
+					editCategoryForm.value.reset()
+				})
+			}
+		}
+
 		return {
 			loadCategory,
 			debouncedLoadCategory,
@@ -282,11 +338,17 @@ export default {
 			addCategoryForm,
 			addCategoryDialog,
 
+			editCategoryFormData,
+			editCategoryForm,
+
 			loadingCreateCategory,
 			addCategory,
 
 			loadingRemoveCategory,
 			deleteCategory,
+
+			loadingEditCategory,
+			updateCategory,
 		}
 	}
 }
