@@ -30,6 +30,16 @@ export const totalStock = (variants: any) => {
 	return variants.reduce((prev: any, curr: any) => prev + curr.stock, 0)
 }
 
+export const formatDate = (value: string) => {
+	const date = Intl.DateTimeFormat('id-ID', {
+		month: 'long',
+		day: 'numeric',
+		year: 'numeric',
+	})
+
+	return date.format(new Date(value))
+}
+
 export const formatETD = (value: string) => {
 	const date = Intl.DateTimeFormat('id-ID', {
 		month: 'short',
