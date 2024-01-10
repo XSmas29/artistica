@@ -1,13 +1,15 @@
 import { apolloClient } from '@/vue-apollo'
 import { ref } from 'vue'
 import { login, register as signUp, verifyUser, editProfile, editPassword } from '@graphql/mutations'
-import { checkVerifyCode, profileInfo, refreshToken } from '@graphql/queries'
+import { checkVerifyCode, profileInfo, refreshToken, users } from '@graphql/queries'
 import { toast } from '@/helpers/utils'
 import { useAuthStore } from '@/store/modules'
 
 const useUser = () => {
 	const authStore = useAuthStore()
 	const user = ref(null as any)
+	const userList = ref([] as any[])
+	const userCount = ref(0)
 
 	const loadingRegister = ref(false)
 	const loadingVerify = ref(false)
@@ -18,6 +20,7 @@ const useUser = () => {
 	const loadingProfile = ref(false)
 	const loadingEditProfile = ref(false)
 	const loadingEditPassword = ref(false)
+	const loadingUserList = ref(false)
 
 	const register = async (email: string) => {
 		loadingRegister.value = true
@@ -204,6 +207,29 @@ const useUser = () => {
 		})
 	}
 
+	const getUserList = async (filter: any, pagination: any) => {
+		loadingUserList.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: users,
+				fetchPolicy: 'no-cache',
+				variables: {
+					filter,
+					pagination,
+				},
+			}).then(({ data }: any) => {
+				userList.value = data.users.users
+				userCount.value = data.users.count
+				resolve(data)
+			}).catch((error: any) => {
+				reject(error)
+			}).finally(() => {
+				loadingUserList.value = false
+			})
+		})
+	}
+
 	return {
 		loadingRegister,
 		register,
@@ -233,6 +259,10 @@ const useUser = () => {
 		refreshAuthToken,
 		loadingAuth,
 		
+		getUserList,
+		loadingUserList,
+		userList,
+		userCount,
 	}
 }
 

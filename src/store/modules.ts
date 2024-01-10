@@ -4,6 +4,7 @@ import { useProductStore } from './modules/productStore'
 import { useCartStore } from './modules/cartStore'
 import { useCategoryStore } from './modules/categoryStore'
 import { useMaterialStore } from './modules/materialStore'
+import { useUserStore } from './modules/userStore'
 
 export {
 	useAuthStore,
@@ -12,4 +13,5 @@ export {
 	useCartStore,
 	useCategoryStore,
 	useMaterialStore,
+	useUserStore,
 }

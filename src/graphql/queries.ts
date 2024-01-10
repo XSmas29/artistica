@@ -10,6 +10,7 @@ import provinces from '@/graphql/query/provinces'
 import cities from '@/graphql/query/cities'
 import deliveryProviders from '@/graphql/query/deliveryProviders'
 import deliveryServices from '@/graphql/query/deliveryServices'
+import users from '@/graphql/query/users'
 
 export {
 	checkVerifyCode,
@@ -24,4 +25,5 @@ export {
 	cities,
 	deliveryProviders,
 	deliveryServices,
+	users,
 }
