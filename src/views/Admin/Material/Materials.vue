@@ -248,6 +248,7 @@ export default {
 			editMaterial, loadingEditMaterial,
 			removeMaterial, loadingRemoveMaterial,
 		} = useMaterial()
+    
 		const addMaterialForm = ref(null as any)
 		const editMaterialForm = ref(null as any)
 

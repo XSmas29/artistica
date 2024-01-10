@@ -116,6 +116,12 @@ export default {
 				icon: 'mdi-cart',
 				link: '/admin/transactions',
 			},
+			{
+				title: 'Chat',
+				value: 'chats',
+				icon: 'mdi-forum-outline',
+				link: '/admin/chat',
+			},
 		])
 		
 		const showNavBar = inject('showNavBar') as Ref<boolean>

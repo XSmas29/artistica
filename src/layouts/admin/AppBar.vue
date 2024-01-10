@@ -33,6 +33,7 @@ export default {
 			route,
 			smAndDown,
 			toggleNavbar,
+			showNavBar
 		}
 	},
 }
