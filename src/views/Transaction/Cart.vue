@@ -40,7 +40,7 @@
               <div class="d-flex">
                 <div>
                   <v-img
-                    :src="item.variant.images[0] ? item.variant.images[0].path : item.variant.product.images[0] ? item.variant.product.images[0].path : productPlaceholder"
+                    :src="item.variant.image ? item.variant.image.path : item.variant.product.images[0] ? item.variant.product.images[0].path : productPlaceholder"
                     :lazy-src="productPlaceholder"
                     width="100"
                     class="rounded mt-1"

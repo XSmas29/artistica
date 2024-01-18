@@ -12,6 +12,7 @@ import updateCategory from './mutation/updateCategory'
 import addMaterial from './mutation/addMaterial'
 import deleteMaterial from './mutation/deleteMaterial'
 import updateMaterial from './mutation/updateMaterial'
+import addTransactionMT from './mutation/addTransactionMT'
 
 export {
 	register,
@@ -28,4 +29,5 @@ export {
 	addMaterial,
 	deleteMaterial,
 	updateMaterial,
+	addTransactionMT,
 }

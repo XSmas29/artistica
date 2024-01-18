@@ -118,20 +118,36 @@
               {{ formatCurrency(subtotal + deliveryCost) }}
             </div>
           </div>
-          <div class="pa-2">
-            <router-link
-              :to="{ name: 'purchase-information' }"
-              style="text-decoration: none; color: inherit;"
-            >
-              <v-btn
+          <div
+            class="px-2 mt-6"
+            v-if="canCheckout()"
+          >
+            <!-- <v-btn
                 block
                 variant="tonal"
                 size="large"
                 :disabled="!canCheckout()"
               >
                 Checkout
-              </v-btn>
-            </router-link>
+              </v-btn> -->
+            <v-btn
+              block
+              size="large"
+              variant="tonal"
+              @click="addTransactionMT"
+              :disabled="loadingCreateTransaction"
+              :loading="loadingCreateTransaction"
+            >
+              Pay with MidTrans
+            </v-btn>
+            <div class="d-flex my-1 align-center">
+              <v-divider />
+              <p class="mx-4">
+                or
+              </p>
+              <v-divider />
+            </div>
+            <paypal-button />
           </div>
         </v-card>
       </v-col>
@@ -147,12 +163,17 @@ import { computed, onMounted, ref } from 'vue'
 import PersonalInformation from '@components/transaction/PersonalInformation.vue'
 import DeliveryInformation from '@components/transaction/DeliveryInformation.vue'
 import { useDisplay } from 'vuetify/lib/framework.mjs'
+import PaypalButton from '@components/PaypalButton.vue'
+import useMidtrans from '@/composables/useMidtrans'
+
 export default {
 	components: {
 		PersonalInformation,
 		DeliveryInformation,
+		PaypalButton,
 	},
 	setup() {
+		const { loadingCreateTransaction, createTransaction } = useMidtrans()
 		const {smAndDown} = useDisplay()
 		const { cartItems, loadingCartItems, getCartData } = useProduct()
 		const { cartData } = storeToRefs(useCartStore())
@@ -205,6 +226,13 @@ export default {
 			getCartData(cartData.value)
 		}
 
+		const addTransactionMT = () => {
+			createTransaction({
+				gross_amount: 10000,
+				order_id: '123',
+			})
+		}
+
 		return {
 			formatCurrency,
 			cartItems,
@@ -222,6 +250,8 @@ export default {
 			deliveryCost,
 
 			canCheckout,
+			addTransactionMT,
+			loadingCreateTransaction,
 		}
 	}
 }

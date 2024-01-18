@@ -8,7 +8,7 @@ const cartData = gql`
         id
         price
         stock
-        images {
+        image {
           id
           path
         }
