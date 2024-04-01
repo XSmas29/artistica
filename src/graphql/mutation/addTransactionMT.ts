@@ -2,10 +2,10 @@ import gql from 'graphql-tag'
 
 const addTransactionMT = gql`
   mutation addTransactionMT(
-    $transaction_detail: TransactionDetail!
-    $item_details: [ItemDetail!]
-    $customer_detail: CustomerDetail
-    $credit_card: CreditCard
+    $transaction_detail: TransactionDetailMT!
+    $item_details: [ItemDetailMT!]
+    $customer_detail: CustomerDetailMT
+    $credit_card: CreditCardMT
   ) {
     addTransactionMT(
       transaction_detail: $transaction_detail

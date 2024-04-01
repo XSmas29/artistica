@@ -51,10 +51,12 @@ const authMiddleware = setContext(async (_, { headers }) => {
 
 		if (currToken.exp * 1000 < Date.now()) {
 			const { refreshAuthToken } = useUser()
-			await refreshAuthToken(localStorage.getItem('refresh_token') || '')
+			const refresh_token = localStorage.getItem('refresh_token')
+			refreshAuthToken(refresh_token || '')
+
 		}
 	}
-
+	
 	return {
 		headers: {
 			...headers,

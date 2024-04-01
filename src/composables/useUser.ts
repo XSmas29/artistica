@@ -185,9 +185,10 @@ const useUser = () => {
 
 	const refreshAuthToken = async (refresh_token: string) => {
 		loadingAuth.value = true
-		localStorage.removeItem('token')
-		localStorage.removeItem('refresh_token')
-		
+
+		// localStorage.removeItem('token')
+		// localStorage.removeItem('refresh_token')
+
 		return new Promise((resolve, reject) => {
 			apolloClient.query({
 				query: refreshToken,
@@ -198,6 +199,7 @@ const useUser = () => {
 			}).then(({ data }: any) => {
 				localStorage.setItem('token', data.refreshToken.token)
 				localStorage.setItem('refresh_token', data.refreshToken.refresh_token)
+
 				resolve(data)
 			}).catch((error: any) => {
 				reject(error)

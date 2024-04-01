@@ -1,7 +1,7 @@
 // Composables
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { MyRouteRecord } from './types'
-import useUser from '@/composables/useUser'
+import useUser from '@composables/useUser'
 import { aboutBreadcrumb, cartBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
 
 const routes: MyRouteRecord[] = [
@@ -260,12 +260,12 @@ router.beforeEach(async (to, from, next) => {
 	
 	const hasToken = localStorage.getItem('token')
 	if (!hasToken && !to.meta.public) return next({ name: 'login' })
-	if (hasToken) {
+	else if (hasToken) {
 		const {getProfileInfo} = useUser()
 		const userData = await getProfileInfo()
-		
+			
 		if (to.name === 'login' || to.name === 'register') return next({ name: 'home' })
-		if (userData.is_admin && !to.meta.admin) return next({ name: 'admin-dashboard' })
+		else if (userData.is_admin && !to.meta.admin) return next({ name: 'admin-dashboard' })
 	}
 
 	// else if (to.meta.public) {
@@ -275,12 +275,12 @@ router.beforeEach(async (to, from, next) => {
 	return next()
 })
 
-router.afterEach(async () => {
-	// const hasToken = localStorage.getItem('token')
-	// if (hasToken) {
-	// 	const {getProfileInfo} = useUser()
-	// 	await getProfileInfo()
-	// }
-})
+// router.afterEach(async () => {
+// 	// const hasToken = localStorage.getItem('token')
+// 	// if (hasToken) {
+// 	// 	const {getProfileInfo} = useUser()
+// 	// 	await getProfileInfo()
+// 	// }
+// })
 
 export default router

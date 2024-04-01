@@ -54,7 +54,7 @@
               >
                 <delivery-information
                   v-model="deliveryInfoData"
-                  :destination="personalInfoData.city"
+                  :destination="personalInfoData.city.city_id"
                   ref="deliveryInfo"
                 />
                 <v-stepper-actions
@@ -158,6 +158,7 @@
 import useProduct from '@/composables/useProduct'
 import { formatCurrency } from '@utils/filter'
 import { useCartStore } from '@/store/modules'
+import { useAuthStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
 import { computed, onMounted, ref } from 'vue'
 import PersonalInformation from '@components/transaction/PersonalInformation.vue'
@@ -177,6 +178,7 @@ export default {
 		const {smAndDown} = useDisplay()
 		const { cartItems, loadingCartItems, getCartData } = useProduct()
 		const { cartData } = storeToRefs(useCartStore())
+		const { userData } = storeToRefs(useAuthStore())
 		const purchaseStep = ref(0)
 		const stepItems = ['Informasi Pembeli', 'Pengiriman']
 		const personalInfoData = ref({
@@ -185,8 +187,8 @@ export default {
 			email: '',
 			phone: '',
 			address: '',
-			city: '',
-			province: '',
+			city: {} as any,
+			province: {} as any,
 			postal_code: '',
 		})
 		const deliveryInfoData = ref({
@@ -227,10 +229,55 @@ export default {
 		}
 
 		const addTransactionMT = () => {
-			createTransaction({
-				gross_amount: 10000,
-				order_id: '123',
+			const transaction_details = {
+				order_id: `ORDER-${userData!.value!.id}-${Date.now()}`,
+				gross_amount: subtotal.value + deliveryCost.value,
+			}
+			const item_details = cartItems.value.map(item => {
+				return {
+					id: item.variant.id.toString(),
+					price: item.variant.price,
+					quantity: item.quantity,
+					name: item.variant.product.name,
+				}
 			})
+			console.log(deliveryInfoData.value)
+			item_details.push({
+				id: 'delivery',
+				price: deliveryCost.value,
+				quantity: 1,
+				name: `${deliveryInfoData.value.provider_code} | ${deliveryInfoData.value.service.service}`,
+			})
+			const customer_details = {
+				first_name: personalInfoData.value.first_name,
+				last_name: personalInfoData.value.last_name,
+				email: personalInfoData.value.email,
+				phone: personalInfoData.value.phone,
+				billing_address: {
+					first_name: personalInfoData.value.first_name,
+					last_name: personalInfoData.value.last_name,
+					email: personalInfoData.value.email,
+					phone: personalInfoData.value.phone,
+					address: personalInfoData.value.address,
+					city: personalInfoData.value.city.city_name,
+					postal_code: personalInfoData.value.postal_code,
+					country_code: 'IDN',
+				},
+				shipping_address: {
+					first_name: personalInfoData.value.first_name,
+					last_name: personalInfoData.value.last_name,
+					email: personalInfoData.value.email,
+					phone: personalInfoData.value.phone,
+					address: personalInfoData.value.address,
+					city: personalInfoData.value.city.city_name,
+					postal_code: personalInfoData.value.postal_code,
+					country_code: 'IDN',
+				},
+			}
+
+			console.log(transaction_details, item_details, customer_details)
+
+			createTransaction(transaction_details, item_details, customer_details)
 		}
 
 		return {

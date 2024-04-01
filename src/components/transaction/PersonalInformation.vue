@@ -73,11 +73,11 @@
           label="Provinsi"
           :loading="loadingProvinces"
           :items="provincesList"
-          item-value="province_id"
           item-title="province"
           v-model="infoFormData.province"
           :rules="[required]"
           @update:model-value="loadCities"
+          return-object
         />
       </v-col>
       <v-col
@@ -89,11 +89,11 @@
           label="Kota"
           :loading="loadingCities"
           :items="citiesList"
-          item-value="city_id"
           item-title="city_name"
           v-model="infoFormData.city"
           :rules="[required]"
           :disabled="!infoFormData.province"
+          return-object
         />
       </v-col>
       <v-col
@@ -157,12 +157,11 @@ export default {
 
 		onMounted(() => {
 			getProvinces()
-			console.log(props.modelValue)
 		})
 
 		const loadCities = (province: any) => {
 			infoFormData.value.city = null
-			getCities(+province)
+			getCities(+province.province_id)
 			validate()
 		}
 

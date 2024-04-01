@@ -25,7 +25,7 @@ export default {
 						shape: 'rect',
 						label: 'pay',
 						disableMaxWidth: true,
-						height: 45,
+						height: 42,
 						tagline: false,
 					},
 					createOrder: function (data: any, actions: any) {
