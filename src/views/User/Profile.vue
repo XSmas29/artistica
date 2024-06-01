@@ -208,6 +208,8 @@
                         color="success"
                         text="Simpan"
                         size="small"
+                        :loading="loadingEditPassword"
+                        :disabled="loadingEditPassword"
                         @click="savePassword"
                       />
                     </div>
@@ -258,7 +260,7 @@ export default {
 		}
 		const { getProfileInfo, 
 			updateProfile, loadingEditProfile,
-			updatePassword, loadingUpdatePassword,
+			updatePassword, loadingEditPassword,
 		} = useUser()
 
 		const loadProfile = () => {
@@ -313,6 +315,7 @@ export default {
 			passwordFormData,
 			isPasswordValid,
 			loadingEditProfile,
+			loadingEditPassword,
 
 			resetProfile,
 			saveProfile,
