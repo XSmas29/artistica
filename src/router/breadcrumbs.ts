@@ -58,6 +58,12 @@ const aboutBreadcrumb = {
 	disabled: false,
 }
 
+const customDesignBreadcrumb = {
+	title: 'Custom Design',
+	to: { name: 'custom-design' },
+	disabled: false,
+}
+
 export {
 	homeBreadCrumb,
 	registerBreadcrumb,
@@ -69,4 +75,5 @@ export {
 	cartBreadcrumb,
 	purchaseInfoBreadcrumb,
 	aboutBreadcrumb,
+	customDesignBreadcrumb,
 }

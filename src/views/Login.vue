@@ -37,9 +37,11 @@
                   label="Password"
                   flat
                   v-model="formData.password"
-                  type="password"
+                  :type="type"
                   hint="Minimal 8 karakter"
                   :rules="[required]"
+                  append-inner-icon="mdi-eye"
+                  @click:append-inner="togglePassword"
                 />
               </v-col>
             </v-row>
@@ -84,6 +86,12 @@ export default {
 			email: '',
 			password: '',
 		})
+		const type = ref('password')
+		const togglePassword = () => {
+			console.log('tes')
+			if (type.value === 'password') type.value = 'text'
+			else type.value = 'password'
+		}
 		const isLoginValid = ref(false)
 		const loginForm = ref(null)
 		const { signIn, loadingLogin } = useUser()
@@ -104,6 +112,8 @@ export default {
 			loginForm,
 			required,
 			validEmail,
+			type,
+			togglePassword,
 		}
 	},
 }

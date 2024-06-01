@@ -19,7 +19,7 @@
       <p class="text-body-1 my-4">
         Artistica Jewelry is a legally registered company in Indonesia. 
         We are a member of the Ministry of Cooperatives Small & Medium Enterprises of the Republic of Indonesia; Ministry of Trade and Industry, and other legal asociations.
-        Artistica Jewelry manufacture Precious Metals, 925 Silver & Brass / Bronze jewelry. 
+        Artistica Jewelry design Precious Metals, 925 Silver & Brass / Bronze jewelry. 
         Our jewelries are combination of a good quality materials & finishings with Diamonds, Semiprecious Stones, Cubic Zirconia, Crystals, Shells, and many more. 
         We have variety stones in our warehouse or you can make your own stone shape with our stone cutter. 
         For stones which are out of stock, we can help to source it. 

@@ -184,8 +184,8 @@
         />
         <v-tab 
           :value="4"
-          text="Custom Manufacture"
-          @click="goTo('custom-manufacture')"
+          text="Custom Design"
+          @click="goTo('custom-design')"
         />
         <v-tab
           :value="5"

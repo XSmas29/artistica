@@ -2,7 +2,7 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { MyRouteRecord } from './types'
 import useUser from '@composables/useUser'
-import { aboutBreadcrumb, cartBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
+import { aboutBreadcrumb, cartBreadcrumb, customDesignBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
 
 const routes: MyRouteRecord[] = [
 	{
@@ -81,6 +81,16 @@ const routes: MyRouteRecord[] = [
 					breadcrumbs: [homeBreadCrumb, aboutBreadcrumb],
 				},
 				component: () => import('@views/About.vue'),
+			},
+			{
+				path: '/custom-design',
+				name: 'custom-design',
+				meta: {
+					pageTitle: 'Custom Design',
+					public: true,
+					breadcrumbs: [homeBreadCrumb, customDesignBreadcrumb],
+				},
+				component: () => import('@views/CustomDesign.vue'),
 			},
 			{
 				path: '/products',
