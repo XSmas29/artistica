@@ -17,7 +17,7 @@ const routes: MyRouteRecord[] = [
 					public: true,
 					breadcrumbs: [homeBreadCrumb],
 				},
-				component: () => import('@views/Home.vue'),
+				component: () => import('@views/Public/Home.vue'),
 			},
 			{
 				path: '/register',
@@ -30,7 +30,7 @@ const routes: MyRouteRecord[] = [
 						registerBreadcrumb,
 					],
 				},
-				component: () => import('@views/Register.vue'),
+				component: () => import('@views/Public/Register.vue'),
 			},
 			{
 				path: '/verify',
@@ -43,7 +43,7 @@ const routes: MyRouteRecord[] = [
 						verifyBreadcrumb,
 					],
 				},
-				component: () => import('@views/Register2.vue'),
+				component: () => import('@views/Public/Register2.vue'),
 			},
 			{
 				path: '/login',
@@ -56,7 +56,7 @@ const routes: MyRouteRecord[] = [
 						loginBreadcrumb,
 					],
 				},
-				component: () => import('@views/Login.vue'),
+				component: () => import('@views/Public/Login.vue'),
 			},
 			{
 				path: '/profile',
@@ -70,7 +70,7 @@ const routes: MyRouteRecord[] = [
 						profileBreadcrumb,
 					],
 				},
-				component: () => import('@views/Profile.vue'),
+				component: () => import('@views/User/Profile.vue'),
 			},
 			{
 				path: '/about',
@@ -80,7 +80,7 @@ const routes: MyRouteRecord[] = [
 					public: true,
 					breadcrumbs: [homeBreadCrumb, aboutBreadcrumb],
 				},
-				component: () => import('@views/About.vue'),
+				component: () => import('@views/Public/About.vue'),
 			},
 			{
 				path: '/custom-design',
@@ -90,7 +90,7 @@ const routes: MyRouteRecord[] = [
 					public: true,
 					breadcrumbs: [homeBreadCrumb, customDesignBreadcrumb],
 				},
-				component: () => import('@views/CustomDesign.vue'),
+				component: () => import('@views/Public/CustomDesign.vue'),
 			},
 			{
 				path: '/products',
@@ -103,7 +103,7 @@ const routes: MyRouteRecord[] = [
 						productListBreadcrumb,
 					],
 				},
-				component: () => import('@views/Product/Products.vue'),
+				component: () => import('@views/Public/Products.vue'),
 			},
 			{
 				path: '/products/:id',
@@ -117,7 +117,7 @@ const routes: MyRouteRecord[] = [
 						productDetailBreadcrumb,
 					],
 				},
-				component: () => import('@views/Product/ProductDetail.vue'),
+				component: () => import('@views/Public/ProductDetail.vue'),
 			},
 			{
 				path: '/cart',
@@ -147,7 +147,37 @@ const routes: MyRouteRecord[] = [
 					],
 				},
 				component: () => import('@views/Transaction/PurchaseInformation.vue'),
-			}
+			},
+			{
+				path: '/payment/success',
+				name: 'payment-success',
+				meta: {
+					pageTitle: 'Payment Successful',
+					public: false,
+					breadcrumbs: []
+				},
+				component: () => import('@/views/Transaction/PaymentSuccess.vue'),
+			},
+			{
+				path: '/payment/failed',
+				name: 'payment-failed',
+				meta: {
+					pageTitle: 'Payment Failed',
+					public: false,
+					breadcrumbs: []
+				},
+				component: () => import('@/views/Transaction/PaymentFailed.vue'),
+			},
+			{
+				path: '/transactions',
+				name: 'transactions',
+				meta: {
+					pageTitle: 'Riwayat Transaksi',
+					public: false,
+					breadcrumbs: []
+				},
+				component: () => import('@/views/User/Transactions.vue'),
+			},
 		],
 	},
 	{
