@@ -276,7 +276,6 @@ export default {
 			}
 
 			console.log(transaction_details, item_details, customer_details)
-
 			createTransaction(transaction_details, item_details, customer_details)
 		}
 

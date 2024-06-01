@@ -214,6 +214,8 @@ import { useAuthStore, usePageStore, useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
 import useUser from '@/composables/useUser'
 import router from '@/router'
+import { goTo } from '@helpers/utils'
+
 export default {
 	setup() {
 		const logo = ref(new URL('@assets/logo_main.png', import.meta.url).href)
@@ -230,10 +232,6 @@ export default {
 					location.reload()
 				})
 			})
-		}
-    
-		const goTo = (name: string) => {
-			router.push({ name })
 		}
 		
 		return {

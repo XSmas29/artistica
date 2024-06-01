@@ -1,3 +1,4 @@
+import router from '@/router'
 import { apolloClient } from '@/vue-apollo'
 import { addTransactionMT } from '@graphql/mutations'
 import { toast } from '@helpers/utils'
@@ -22,24 +23,27 @@ const useMidtrans = () => {
 	) => {
 		loadingCreateTransaction.value = true
 
+		const tokenData = await apolloClient.mutate({
+			mutation: addTransactionMT,
+			variables: {
+				transaction_detail,
+				item_details,
+				customer_detail,
+				credit_card,
+			},
+		})
+		
 		return new Promise((resolve, reject) => {
-			apolloClient.mutate({
-				mutation: addTransactionMT,
-				variables: {
-					transaction_detail,
-					item_details,
-					customer_detail,
-					credit_card,
-				},
-			}).then(({ data }: any) => {
-				resolve(data)
-				snap.pay(data.addTransactionMT.token)
-			}).catch((error: any) => {
-				reject(error)
-				toast.error(error.message)
-			}).finally(() => {
-				loadingCreateTransaction.value = false
-			})
+			snap.pay(tokenData.data.addTransactionMT.token)
+				.then(({ data }: any) => {
+					resolve(data)
+					router.push({ name: 'payment-success' })
+				}).catch((error: any) => {
+					reject(error)
+					toast.error(error.message)
+				}).finally(() => {
+					loadingCreateTransaction.value = false
+				})
 		})
 	}
 	
