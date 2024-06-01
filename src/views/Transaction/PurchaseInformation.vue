@@ -187,8 +187,8 @@ export default {
 			email: '',
 			phone: '',
 			address: '',
-			city: {} as any,
-			province: {} as any,
+			city: null as any,
+			province: null as any,
 			postal_code: '',
 		})
 		const deliveryInfoData = ref({
