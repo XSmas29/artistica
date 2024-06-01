@@ -92,10 +92,30 @@
                   </v-list-item-title>
                 </v-list-item>
               </router-link>
+              <router-link
+                :to="{ name: 'transactions' }"
+                style="text-decoration: none; color: inherit;"
+              >
+                <v-list-item
+                  color="primary"
+                  key="1"
+                  value="1"
+                >
+                  <template #prepend>
+                    <v-icon
+                      size="30"
+                      icon="mdi-history"
+                    />
+                  </template>
+                  <v-list-item-title>
+                    Riwayat Transaksi
+                  </v-list-item-title>
+                </v-list-item>
+              </router-link>
               <v-list-item
                 color="primary"
-                key="1"
-                value="1"
+                key="2"
+                value="2"
               >
                 <template #prepend>
                   <v-icon

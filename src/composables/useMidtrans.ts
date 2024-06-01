@@ -41,6 +41,7 @@ const useMidtrans = () => {
 				}).catch((error: any) => {
 					reject(error)
 					toast.error(error.message)
+					router.push({ name: 'payment-failed' })
 				}).finally(() => {
 					loadingCreateTransaction.value = false
 				})
