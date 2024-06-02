@@ -16,8 +16,15 @@ type filterProducts = {
   search: string | null,
 }
 
+enum transactionStatus {
+  PENDING = 0,
+  IN_PROGRESS = 1,
+  COMPLETED = 2,
+}
+
 export {
 	pagination,
 	sort,
 	filterProducts,
+	transactionStatus,
 }

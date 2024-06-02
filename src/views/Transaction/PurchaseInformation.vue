@@ -164,14 +164,16 @@ import { computed, onMounted, ref } from 'vue'
 import PersonalInformation from '@components/transaction/PersonalInformation.vue'
 import DeliveryInformation from '@components/transaction/DeliveryInformation.vue'
 import { useDisplay } from 'vuetify/lib/framework.mjs'
-import PaypalButton from '@components/PaypalButton.vue'
+
+// import PaypalButton from '@components/PaypalButton.vue'
 import useMidtrans from '@/composables/useMidtrans'
 
 export default {
 	components: {
 		PersonalInformation,
 		DeliveryInformation,
-		PaypalButton,
+
+		// PaypalButton,
 	},
 	setup() {
 		const { loadingCreateTransaction, createTransaction } = useMidtrans()
@@ -231,6 +233,7 @@ export default {
 		const addTransactionMT = () => {
 			const transaction_details = {
 				order_id: `ORDER-${userData!.value!.id}-${Date.now()}`,
+				total_product_cost: subtotal.value,
 				gross_amount: subtotal.value + deliveryCost.value,
 			}
 			const item_details = cartItems.value.map(item => {
@@ -242,12 +245,21 @@ export default {
 				}
 			})
 			console.log(deliveryInfoData.value)
-			item_details.push({
+
+			// item_details.push({
+			// 	id: 'delivery',
+			// 	price: deliveryCost.value,
+			// 	quantity: 1,
+			// 	name: `${deliveryInfoData.value.provider_code} | ${deliveryInfoData.value.service.service}`,
+			// })
+
+			const shipping_details = {
 				id: 'delivery',
 				price: deliveryCost.value,
 				quantity: 1,
 				name: `${deliveryInfoData.value.provider_code} | ${deliveryInfoData.value.service.service}`,
-			})
+			}
+
 			const customer_details = {
 				first_name: personalInfoData.value.first_name,
 				last_name: personalInfoData.value.last_name,
@@ -276,7 +288,7 @@ export default {
 			}
 
 			console.log(transaction_details, item_details, customer_details)
-			createTransaction(transaction_details, item_details, customer_details)
+			createTransaction(transaction_details, item_details, shipping_details, customer_details)
 		}
 
 		return {
