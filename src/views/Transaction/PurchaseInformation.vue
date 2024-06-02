@@ -119,7 +119,7 @@
             </div>
           </div>
           <div
-            class="px-2 mt-6"
+            class="px-2 mt-6 mb-2"
             v-if="canCheckout()"
           >
             <!-- <v-btn
@@ -140,14 +140,14 @@
             >
               Pay with MidTrans
             </v-btn>
-            <div class="d-flex my-1 align-center">
+            <!-- <div class="d-flex my-1 align-center">
               <v-divider />
               <p class="mx-4">
                 or
               </p>
               <v-divider />
             </div>
-            <paypal-button />
+            <paypal-button /> -->
           </div>
         </v-card>
       </v-col>
