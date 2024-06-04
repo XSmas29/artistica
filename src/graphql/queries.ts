@@ -11,7 +11,7 @@ import cities from '@/graphql/query/cities'
 import deliveryProviders from '@/graphql/query/deliveryProviders'
 import deliveryServices from '@/graphql/query/deliveryServices'
 import users from '@/graphql/query/users'
-
+import transactionStatuses from './query/transactionStatuses'
 export {
 	checkVerifyCode,
 	profileInfo,
@@ -26,4 +26,5 @@ export {
 	deliveryProviders,
 	deliveryServices,
 	users,
+	transactionStatuses,
 }

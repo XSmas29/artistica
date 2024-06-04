@@ -267,7 +267,7 @@ const routes: MyRouteRecord[] = [
 					public: false,
 					admin: true,
 				},
-				component: () => import('@/views/Admin/Transactions.vue'),
+				component: () => import('@views/Admin/Transaction/Transactions.vue'),
 			},
 		]
 	}
