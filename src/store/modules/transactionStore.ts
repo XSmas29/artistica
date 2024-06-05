@@ -2,23 +2,19 @@ import { defineStore } from 'pinia'
 
 export const useTransactionStore = defineStore('transaction', {
 	state: () => ({
-		transactionListSort: {
+		transactionListSortAdmin: {
 			id: 1,
 			name: 'Tanggal Pembelian (Terbaru)',
 			field: 'created_at',
 			sort: 'ASC',
 			icon: 'mdi-sort-ascending',
 		},
-		transactionListFilter: {
+		transactionListFilterAdmin: {
 			status_ids: [] as number[],
 		},
-	}),
-	getters: {
-		getTransactionListSort(state) {
-			return state.transactionListSort
+		transactionListPaginationAdmin: {
+			limit: 10,
+			page: 1,
 		},
-		getTransactionListFilter(state) {
-			return state.transactionListFilter
-		},
-	},
+	})
 })

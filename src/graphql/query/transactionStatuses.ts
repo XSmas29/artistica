@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 const transactionStatuses = gql`
-  query {
+  query transactionStatuses {
     transactionStatuses {
       id
       status
