@@ -67,7 +67,7 @@
 </template>
 <script lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { formatCurrency, formatETD } from '@utils/filter'
+import { formatCurrency, formatETD } from '@helpers/utils'
 import { required } from '@helpers/validations'
 import useDelivery from '@composables/useDelivery'
 export default {

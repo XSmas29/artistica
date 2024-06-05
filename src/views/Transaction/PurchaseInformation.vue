@@ -156,7 +156,7 @@
 </template>
 <script lang="ts">
 import useProduct from '@/composables/useProduct'
-import { formatCurrency } from '@utils/filter'
+import { formatCurrency } from '@helpers/utils'
 import { useCartStore } from '@/store/modules'
 import { useAuthStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'

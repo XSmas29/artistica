@@ -189,8 +189,7 @@ import useProduct from '@/composables/useProduct'
 import { onMounted } from 'vue'
 import { useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
-import { formatCurrency, formatVariantName } from '@utils/filter'
-import { productPlaceholder } from '@/utils/global'
+import { formatCurrency, formatVariantName, productPlaceholder } from '@helpers/utils'
 
 export default {
 	setup() {

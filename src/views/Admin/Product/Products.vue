@@ -220,8 +220,7 @@ import useProduct from '@/composables/useProduct'
 import { storeToRefs } from 'pinia'
 import { useProductStore } from '@/store/modules'
 import { onMounted, ref } from 'vue'
-import { priceRange, totalStock, formatCurrency } from '@/utils/filter'
-import { productPlaceholder } from '@/utils/global'
+import { priceRange, totalStock, formatCurrency, productPlaceholder } from '@helpers/utils'
 import { useDebounceFn } from '@vueuse/core'
 
 export default {

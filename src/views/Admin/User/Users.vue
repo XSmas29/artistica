@@ -191,7 +191,7 @@ import { storeToRefs } from 'pinia'
 import useUser from '@composables/useUser'
 import { useDebounceFn } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
-import { formatDate } from '@utils/filter'
+import { formatDate } from '@helpers/utils'
 
 export default {
 	setup() {

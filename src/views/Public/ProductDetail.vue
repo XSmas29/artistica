@@ -221,7 +221,7 @@ import { computed, onMounted, ref } from 'vue'
 import useProduct from '@composables/useProduct'
 import { useRoute } from 'vue-router'
 import ImageGallery from '@components/ImageGallery.vue'
-import { formatCurrency } from '@utils/filter'
+import { formatCurrency } from '@helpers/utils'
 import { useAuthStore, useCartStore } from '@/store/modules'
 import { storeToRefs } from 'pinia'
 export default {

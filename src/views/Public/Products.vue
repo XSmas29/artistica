@@ -507,10 +507,9 @@ import { storeToRefs } from 'pinia'
 import useProduct from '@composables/useProduct'
 import useCategory from '@composables/useCategory'
 import useMaterial from '@composables/useMaterial'
-import { formatCurrency, priceRange } from '@utils/filter'
+import { formatCurrency, priceRange, productPlaceholder } from '@helpers/utils'
 import { useDebounceFn } from '@vueuse/core'
 import { useDisplay } from 'vuetify'
-import { productPlaceholder } from '@/utils/global'
 
 export default {
 	setup() {

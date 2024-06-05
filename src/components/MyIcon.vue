@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import {IconSize} from '@utils/types'
+import {IconSize} from '@helpers/types'
 import { PropType } from 'vue'
 export default {
 	components: {

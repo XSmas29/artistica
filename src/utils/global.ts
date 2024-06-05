@@ -1,1 +1,0 @@
-export const productPlaceholder = new URL('@assets/default-product.jpg', import.meta.url).href

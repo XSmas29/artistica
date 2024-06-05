@@ -68,10 +68,9 @@
   </v-data-iterator>
 </template>
 <script lang="ts">
-import { ProductImages } from '@utils/types'
+import { ProductImages } from '@helpers/types'
 import { ref } from 'vue'
-import { productPlaceholder } from '@utils/global'
-import { formatVariantName } from '@utils/filter'
+import { productPlaceholder, formatVariantName } from '@helpers/utils'
 
 export default {
 	props: {
