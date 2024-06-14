@@ -14,6 +14,8 @@ import deleteMaterial from './mutation/deleteMaterial'
 import updateMaterial from './mutation/updateMaterial'
 import addTransactionMT from './mutation/addTransactionMT'
 import addTransaction from './mutation/addTransaction'
+import updateTransactionStatus from './mutation/updateTransactionStatus'
+
 export {
 	register,
 	verifyUser,
@@ -31,4 +33,5 @@ export {
 	updateMaterial,
 	addTransactionMT,
 	addTransaction,
+	updateTransactionStatus,
 }

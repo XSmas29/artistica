@@ -1,4 +1,5 @@
 import { apolloClient } from '@/vue-apollo'
+import { updateTransactionStatus } from '@graphql/mutations'
 import { transactionStatuses, transactions, transactionDetail as transDetail } from '@graphql/queries'
 import { toast } from '@helpers/utils'
 import { ref } from 'vue'
@@ -13,6 +14,8 @@ const useTransaction = () => {
 
 	const loadingTransactionDetail = ref(false)
 	const transactionDetail = ref({} as any)
+
+	const loadingEditTransactionStatus = ref(false)
 
 	const getTransactionStatusList = async () => {
 		loadingTransactionStatusList.value = true
@@ -83,6 +86,29 @@ const useTransaction = () => {
 		})
 	}
 
+	const editTransactionStatus = async (transaction_id: string, status_id: number) => {
+		loadingEditTransactionStatus.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: updateTransactionStatus,
+				variables: {
+					transaction_id,
+					status_id,
+				},
+			}).then(({ data }: any) => {
+				resolve(data)
+				toast.success(data.updateTransactionStatus.message)
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingEditTransactionStatus.value = false
+			})
+		})
+	
+	}
+
 	return {
 		loadingTransactionStatusList,
 		transactionStatusList,
@@ -96,6 +122,9 @@ const useTransaction = () => {
 		loadingTransactionDetail,
 		transactionDetail,
 		getTransactionDetail,
+
+		loadingEditTransactionStatus,
+		editTransactionStatus,
 	}
 }
 
