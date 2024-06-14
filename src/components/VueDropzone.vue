@@ -82,7 +82,7 @@
 import { computed, ref, watch } from 'vue'
 import { useDropzone } from 'vue3-dropzone'
 import { toast } from '@helpers/utils'
-import { productPlaceholder } from '@/utils/global'
+import { productPlaceholder } from '@helpers/utils'
 
 export default {
 	emits: ['update:modelValue'],
