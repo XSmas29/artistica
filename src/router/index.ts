@@ -269,16 +269,6 @@ const routes: MyRouteRecord[] = [
 				},
 				component: () => import('@views/Admin/Transaction/Transactions.vue'),
 			},
-			{
-				path: '/admin/transactions/:id',
-				name: 'admin-transaction-detail',
-				meta: {
-					pageTitle: 'Transaksi',
-					public: false,
-					admin: true,
-				},
-				component: () => import('@views/Admin/Transaction/Transactions.vue'),
-			},
 		]
 	}
 ]
