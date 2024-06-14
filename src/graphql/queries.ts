@@ -13,6 +13,7 @@ import deliveryServices from '@/graphql/query/deliveryServices'
 import users from '@/graphql/query/users'
 import transactionStatuses from './query/transactionStatuses'
 import transactions from './query/transactions'
+import transactionDetail from './query/transactionDetail'
 
 export {
 	checkVerifyCode,
@@ -30,4 +31,5 @@ export {
 	users,
 	transactionStatuses,
 	transactions,
+	transactionDetail
 }

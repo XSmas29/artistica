@@ -1,5 +1,5 @@
 import { apolloClient } from '@/vue-apollo'
-import { transactionStatuses, transactions } from '@graphql/queries'
+import { transactionStatuses, transactions, transactionDetail as transDetail } from '@graphql/queries'
 import { toast } from '@helpers/utils'
 import { ref } from 'vue'
 
@@ -10,6 +10,9 @@ const useTransaction = () => {
 	const loadingTransactionList = ref(false)
 	const transactionList = ref([] as any[])
 	const transactionCount = ref(0)
+
+	const loadingTransactionDetail = ref(false)
+	const transactionDetail = ref({} as any)
 
 	const getTransactionStatusList = async () => {
 		loadingTransactionStatusList.value = true
@@ -56,7 +59,28 @@ const useTransaction = () => {
 				loadingTransactionList.value = false
 			})
 		})
-  
+	}
+
+	const getTransactionDetail = async (transaction_id: string) => {
+		loadingTransactionDetail.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.query({
+				query: transDetail,
+				variables: {
+					transaction_id,
+				},
+				fetchPolicy: 'no-cache',
+			}).then(({ data }: any) => {
+				resolve(data)
+				transactionDetail.value = data.transactionDetail
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+			}).finally(() => {
+				loadingTransactionDetail.value = false
+			})
+		})
 	}
 
 	return {
@@ -68,6 +92,10 @@ const useTransaction = () => {
 		transactionList,
 		transactionCount,
 		getTransactionList,
+
+		loadingTransactionDetail,
+		transactionDetail,
+		getTransactionDetail,
 	}
 }
 
