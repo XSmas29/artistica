@@ -382,14 +382,56 @@
             <v-col
               cols="12"
               md="4"
+              class="pe-0"
             >
               <div>
+                <!-- jika status pesanan adalah 'Menunggu Pembayaran' -->
                 <v-btn
                   block
-                  variant="tonal"
-                  color="secondary"
+                  variant="flat"
+                  color="success"
+                  @click="confirmEditTransactionStatus"
+                  v-if="transactionDetail.status.id === 2"
                 >
                   Kirim Pesanan
+                </v-btn>
+                <v-btn
+                  block
+                  variant="flat"
+                  color="grey"
+                  disabled
+                  v-else-if="transactionDetail.status.id === 3"
+                >
+                  Menunggu Pesanan Sampai
+                </v-btn>
+                <v-btn
+                  block
+                  variant="flat"
+                  color="grey"
+                  disabled
+                  size="small"
+                  v-else-if="transactionDetail.status.id === 4"
+                >
+                  Menunggu Konfirmasi Pembeli
+                </v-btn>
+                <v-btn
+                  block
+                  variant="flat"
+                  color="grey"
+                  disabled
+                  size="small"
+                  v-else-if="transactionDetail.status.id === 5"
+                >
+                  Menunggu Komplain Selesai
+                </v-btn>
+                <v-btn
+                  block
+                  variant="flat"
+                  color="grey"
+                  disabled
+                  v-else-if="transactionDetail.status.id === 6"
+                >
+                  Pesanan Sudah Selesai
                 </v-btn>
               </div>
             </v-col>
@@ -400,9 +442,39 @@
         <v-spacer />
         <v-btn
           text="Close"
-          variant="text"
+          color="error"
+          variant="tonal"
           @click="dialogTransactionDetail = false"
         />
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+  <v-dialog
+    v-model="dialogConfirmEditTransactionStatus"
+    max-width="400"
+  >
+    <v-card>
+      <v-card-title>
+        Konfirmasi Kirim Pesanan
+      </v-card-title>
+      <v-card-text>
+        Apakah Anda yakin ingin mengubah status pesanan ini menjadi sedang dikirim?
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn
+          color="error"
+          @click="dialogConfirmEditTransactionStatus = false"
+        >
+          Tidak
+        </v-btn>
+        <v-btn
+          color="success"
+          @click="confirmYesEditTransactionStatus"
+          :loading="loadingEditTransactionStatus"
+        >
+          Ya
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -422,6 +494,7 @@ export default {
 			getTransactionStatusList, loadingTransactionStatusList, transactionStatusList,
 			getTransactionList, loadingTransactionList, transactionList, transactionCount,
 			getTransactionDetail, loadingTransactionDetail, transactionDetail,
+			editTransactionStatus, loadingEditTransactionStatus,
 		} = useTransaction()
 		const { transactionListFilterAdmin, transactionListSortAdmin, transactionListPaginationAdmin } = storeToRefs(useTransactionStore())
 
@@ -501,6 +574,19 @@ export default {
 			getTransactionDetail(id)
 		}
 
+		const dialogConfirmEditTransactionStatus = ref(false)
+		const confirmEditTransactionStatus = () => {
+			dialogConfirmEditTransactionStatus.value = true
+		}
+
+		const confirmYesEditTransactionStatus = async () => {
+			// 3 = Sedang Dikirim
+			await editTransactionStatus(transactionDetail.value.id, 3)
+			dialogConfirmEditTransactionStatus.value = false
+			dialogTransactionDetail.value = false
+			loadTransaction(true)
+		}
+
 		return {
 			transactionListFilterAdmin,
 
@@ -528,6 +614,12 @@ export default {
 			transactionDetail,
       
 			productPlaceholder,
+
+			dialogConfirmEditTransactionStatus,
+			confirmEditTransactionStatus,
+
+			loadingEditTransactionStatus,
+			confirmYesEditTransactionStatus,
 		}
 	}
 }
