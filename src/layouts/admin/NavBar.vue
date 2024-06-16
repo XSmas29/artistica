@@ -131,9 +131,7 @@ export default {
 
 		const logout = () => {
 			signOut().then(() => {
-				router.push({ name: 'home' }).then(() => {
-					location.reload()
-				})
+				router.push({ name: 'home' })
 			})
 		}
 		

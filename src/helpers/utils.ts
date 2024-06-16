@@ -34,6 +34,25 @@ const formatVariantName = (val: any): string => {
 	return val.map((item: any) => item.option.name).join(', ')
 }
 
+const transactionStatusColor = (status_id: number): string => {
+	switch (status_id) {
+	case 1:
+		return 'grey'
+	case 2:
+		return 'orange'
+	case 3:
+		return 'blue'
+	case 4:
+		return 'cyan'
+	case 5:
+		return 'error'
+	case 6:
+		return 'success'
+	default:
+		return 'grey'
+	}
+}
+
 const priceRange = (variants: any): string => {
 	if (variants.length === 1) {
 		return formatCurrency(variants[0].price)
@@ -105,4 +124,5 @@ export {
 	formatDate,
 	formatDateTime,
 	formatETD,
+	transactionStatusColor,
 }

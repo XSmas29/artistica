@@ -20,6 +20,10 @@ const transactions = gql`
         created_at
         total_price
         shipping_cost
+        status {
+          id
+          status
+        }
       }
     }
   }
