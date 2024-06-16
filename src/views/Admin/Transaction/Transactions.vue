@@ -123,6 +123,16 @@
         <template #[`item.created_at`]="{ item }">
           {{ formatDateTime(item.created_at) }}
         </template>
+        <template #[`item.status`]="{ item }">
+          <v-chip
+            :color="transactionStatusColor(item.status.id)"
+            variant="tonal"
+            label
+            class="text-capitalize"
+          >
+            {{ item.status.status }}
+          </v-chip>
+        </template>
         <template #[`item.action`]="{ item }">
           <div class="text-end">
             <v-tooltip
@@ -196,7 +206,14 @@
                     :
                   </p>
                   <p class="flex-shrink-1">
-                    {{ transactionDetail.status.status }}
+                    <v-chip
+                      variant="tonal"
+                      class="text-uppercase"
+                      label
+                      :color="transactionStatusColor(transactionDetail.status.id)"
+                    >
+                      {{ transactionDetail.status.status }}
+                    </v-chip>
                   </p>
                 </div>
                 <div class="d-flex text-subtitle-1">
@@ -485,8 +502,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted, ref } from 'vue'
 import useTransaction from '@/composables/useTransaction'
 import { useDebounceFn } from '@vueuse/core'
-import { formatDateTime, getInitials } from '@helpers/utils'
-import { formatCurrency, productPlaceholder } from '@helpers/utils'
+import { formatDateTime, getInitials, formatCurrency, productPlaceholder, transactionStatusColor } from '@helpers/utils'
 
 export default {
 	setup() {
@@ -496,7 +512,7 @@ export default {
 			getTransactionDetail, loadingTransactionDetail, transactionDetail,
 			editTransactionStatus, loadingEditTransactionStatus,
 		} = useTransaction()
-		const { transactionListFilterAdmin, transactionListSortAdmin, transactionListPaginationAdmin } = storeToRefs(useTransactionStore())
+		const { transactionListFilterAdmin, transactionListSortAdmin, transactionListPaginationAdmin, transactionListSortOptions } = storeToRefs(useTransactionStore())
 
 		const loadTransaction = async (resetPage: boolean) => {
 			if (resetPage) transactionListPaginationAdmin.value.page = 1
@@ -544,26 +560,14 @@ export default {
 				title: 'Tanggal Pembelian',
 			},
 			{
+				text: 'Status',
+				value: 'status',
+				title: 'Status',
+			},
+			{
 				text: 'Aksi',
 				value: 'action',
 				title: 'Aksi',
-			},
-		])
-
-		const transactionListSortOptions = ref([
-			{
-				id: 1,
-				name: 'Tanggal Pembelian (Terbaru)',
-				field: 'created_at',
-				sort: 'ASC',
-				icon: 'mdi-sort-ascending',
-			},
-			{
-				id: 2,
-				name: 'Tanggal Pembelian (Terlama)',
-				field: 'created_at',
-				sort: 'DESC',
-				icon: 'mdi-sort-descending',
 			},
 		])
 		
@@ -607,6 +611,7 @@ export default {
 			getInitials,
 			formatCurrency,
 			formatDateTime,
+			transactionStatusColor,
 
 			dialogTransactionDetail,
 			openTransactionDetail,
