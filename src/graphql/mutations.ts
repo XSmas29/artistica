@@ -15,6 +15,7 @@ import updateMaterial from './mutation/updateMaterial'
 import addTransactionMT from './mutation/addTransactionMT'
 import addTransaction from './mutation/addTransaction'
 import updateTransactionStatus from './mutation/updateTransactionStatus'
+import addCustomTransaction from './mutation/addCustomTransaction'
 
 export {
 	register,
@@ -34,4 +35,5 @@ export {
 	addTransactionMT,
 	addTransaction,
 	updateTransactionStatus,
+	addCustomTransaction,
 }

@@ -14,6 +14,7 @@ import users from '@/graphql/query/users'
 import transactionStatuses from './query/transactionStatuses'
 import transactions from './query/transactions'
 import transactionDetail from './query/transactionDetail'
+import chats from './query/chats'
 
 export {
 	checkVerifyCode,
@@ -31,5 +32,6 @@ export {
 	users,
 	transactionStatuses,
 	transactions,
-	transactionDetail
+	transactionDetail,
+	chats,
 }
