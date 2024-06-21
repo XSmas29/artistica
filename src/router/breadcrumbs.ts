@@ -64,6 +64,12 @@ const customDesignBreadcrumb = {
 	disabled: false,
 }
 
+const chatBreadcrumb = {
+	title: 'Chat',
+	to: { name: 'chat' },
+	disabled: false,
+}
+
 export {
 	homeBreadCrumb,
 	registerBreadcrumb,
@@ -76,4 +82,5 @@ export {
 	purchaseInfoBreadcrumb,
 	aboutBreadcrumb,
 	customDesignBreadcrumb,
+	chatBreadcrumb,
 }
