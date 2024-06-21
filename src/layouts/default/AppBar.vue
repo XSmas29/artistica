@@ -112,6 +112,26 @@
                   </v-list-item-title>
                 </v-list-item>
               </router-link>
+              <router-link
+                :to="{ name: 'chat' }"
+                style="text-decoration: none; color: inherit;"
+              >
+                <v-list-item
+                  color="primary"
+                  key="1"
+                  value="1"
+                >
+                  <template #prepend>
+                    <v-icon
+                      size="30"
+                      icon="mdi-chat-outline"
+                    />
+                  </template>
+                  <v-list-item-title>
+                    Chat Saya
+                  </v-list-item-title>
+                </v-list-item>
+              </router-link>
               <v-list-item
                 color="primary"
                 key="2"

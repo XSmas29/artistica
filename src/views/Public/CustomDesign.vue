@@ -8,13 +8,14 @@
         Sebelum mengajukan pesanan kustom, silakan baca syarat & ketentuan berikut:
       </h3>
       <p class="text-body-1 my-4">
-        1. Anda harus mengisi formulir pesanan kustom dibawah ini terlebih dahulu sebelum bisa berkonsultasi dengan admin.<br>
-        2. Untuk pengembalian, resize, dan perbaikan maksimal 7 hari setelah barang diterima.<br>
+        1. Anda harus mengisi formulir pesanan kustom dibawah ini terlebih dahulu<br>
+        2. Setelah mengisi formulir, anda akan menuju ke halaman chat untuk berkonsultasi dengan admin untuk memastikan desain dan harga dari pesanan anda.<br>
+        3. Untuk pengembalian, resize, dan perbaikan maksimal 7 hari setelah barang diterima.<br>
         <!-- 3. Untuk barang kustom, pembeli harus membayar DP 50% di awal, dan pelunasan setelah barang selesai dibuat.<br> -->
       </p>
       <hr class="my-6">
       <v-form
-        ref="infoForm"
+        ref="customTransactionForm"
         v-model="isCustomValid"
         @submit.prevent
         fast-fail
@@ -51,7 +52,7 @@
                 <v-text-field
                   label="Nama Perhiasan"
                   hide-details="auto"
-                  v-model="customFormData.name"
+                  v-model="customFormData.product_name"
                   :rules="[required]"
                 />
               </v-col>
@@ -64,7 +65,7 @@
                 <v-textarea
                   label="Deskripsi"
                   hide-details="auto"
-                  v-model="customFormData.description"
+                  v-model="customFormData.product_description"
                   :rules="[required]"
                 />
               </v-col>
@@ -90,9 +91,9 @@
             <v-btn
               color="success"
               variant="flat"
-              @click="addCustomProduct"
-              :disabled="loadingCreateCustomProduct"
-              :loading="loadingCreateCustomProduct"
+              @click="addCustomTransaction"
+              :disabled="loadingCreateCustomTransaction"
+              :loading="loadingCreateCustomTransaction"
             >
               <v-icon class="me-1">
                 mdi-floppy
@@ -109,25 +110,59 @@
 import { ref } from 'vue'
 import VueDropzone from '@/components/VueDropzone.vue'
 import { required } from '@helpers/validations'
+import useCustomTransaction from '@/composables/useCustomTransaction'
+import router from '@/router'
+import { toast } from '@helpers/utils'
 
 export default {
 	components: {
 		VueDropzone,
 	},
 	setup() {
-		const isCustomValid = ref(false)
+		const {
+			loadingCreateCustomTransaction,
+			createCustomTransaction,
+		} = useCustomTransaction()
 
+		const customTransactionForm = ref(null as any)
+		const isCustomValid = ref(false)
+    
 		const customFormData = ref({
 			images: [] as any[],
-			name: '',
-			description: '',
-			amount: null as number | null,
+			product_name: '',
+			product_description: '',
+			amount: '',
 		})
 
+		const addCustomTransaction = async () => {
+			customTransactionForm.value.validate()
+			if (customTransactionForm.value.isValid) {
+				if (customFormData.value.images.length === 0) {
+					toast.error('Foto Desain minimal 1')
+				}
+				else {
+					console.log(customFormData.value)
+					createCustomTransaction({
+						...customFormData.value,
+						amount: +customFormData.value.amount,
+					}).then(() => {
+						customTransactionForm.value.reset()
+						router.push({ name: 'chat' })
+					})
+				}
+			}
+
+			// await createCustomTransaction(customFormData.value)
+		}
+
 		return {
+			customTransactionForm,
 			isCustomValid,
 			customFormData,
 			required,
+
+			loadingCreateCustomTransaction,
+			addCustomTransaction,
 		}
 	},
 }
