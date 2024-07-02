@@ -5,6 +5,7 @@ const addChatMessage = gql`
     addChatMessage(data: $data) {
       success
       message
+      data
     }
   }
 `
