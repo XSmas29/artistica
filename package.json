@@ -35,12 +35,13 @@
     "pinia": "^2.0.0",
     "pinia-plugin-persistedstate": "^3.2.0",
     "roboto-fontface": "*",
+    "socket.io-client": "^4.7.5",
     "vue": "^3.2.0",
     "vue-apollo": "^3.1.1",
     "vue-router": "^4.0.0",
     "vue-toastification": "^2.0.0-rc.5",
     "vue3-dropzone": "^2.2.1",
-    "vuetify": "^3.4.8",
+    "vuetify": "~3.5.0",
     "webfontloader": "^1.0.0"
   },
   "devDependencies": {
