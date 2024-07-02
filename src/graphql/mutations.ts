@@ -16,6 +16,7 @@ import addTransactionMT from './mutation/addTransactionMT'
 import addTransaction from './mutation/addTransaction'
 import updateTransactionStatus from './mutation/updateTransactionStatus'
 import addCustomTransaction from './mutation/addCustomTransaction'
+import addChatMessage from './mutation/addChatMessage'
 
 export {
 	register,
@@ -36,4 +37,5 @@ export {
 	addTransaction,
 	updateTransactionStatus,
 	addCustomTransaction,
+	addChatMessage,
 }

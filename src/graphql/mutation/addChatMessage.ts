@@ -1,0 +1,12 @@
+import gql from 'graphql-tag'
+
+const addChatMessage = gql`
+  mutation addChatMessage($data: ChatMessageData!) {
+    addChatMessage(data: $data) {
+      success
+      message
+    }
+  }
+`
+
+export default addChatMessage
