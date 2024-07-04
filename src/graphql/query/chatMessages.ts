@@ -6,9 +6,21 @@ const chatMessages = gql`
       id
       created_at
       image
-      isRead
       message
       is_my_message
+      quotation_price
+      is_quotation_active
+      chat {
+        custom_transaction {
+          id
+          product_name
+          images {
+            id
+            path
+          }
+          amount
+        }
+      }
     }
   }
 `
