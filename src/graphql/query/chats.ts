@@ -5,6 +5,20 @@ const chats = gql`
     chats {
       id
       title
+      custom_transaction {
+        id
+        status {
+          id
+          status
+        }
+        images {
+          id
+          path
+        }
+        product_name
+        product_description
+        amount
+      }
     }
   }
 `
