@@ -280,6 +280,17 @@ const routes: MyRouteRecord[] = [
 				},
 				component: () => import('@views/Admin/Transaction/Transactions.vue'),
 			},
+			{
+				path: '/admin/chat',
+				name: 'admin-chat',
+				meta: {
+					pageTitle: 'Chats',
+					public: false,
+					admin: true,
+					breadcrumbs: [homeBreadCrumb, chatBreadcrumb],
+				},
+				component: () => import('@views/Admin/Chat/Chat.vue'),
+			},
 		]
 	}
 ]

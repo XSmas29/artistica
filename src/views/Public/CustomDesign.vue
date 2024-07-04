@@ -85,7 +85,6 @@
                 />
               </v-col>
             </v-row>
-            <div />
           </v-card-text>
           <v-card-actions>
             <v-btn

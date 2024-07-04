@@ -46,6 +46,15 @@ const min = (value: string, min: number) => {
 	return value.length >= min || `Minimal ${min} karakter`
 }
 
+const positiveInteger = (value: string) => {
+	if (isEmpty(value)) {
+		return true
+	}
+
+	return +value > 0 || 'Harus lebih besar dari 0'
+	
+}
+
 const passwordEqual = (value: string, target: string) => {
 	if (isEmpty(value)) {
 		return true
@@ -60,4 +69,5 @@ export {
 	isEmpty,
 	min,
 	passwordEqual,
+	positiveInteger,
 }
