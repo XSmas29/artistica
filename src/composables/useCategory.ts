@@ -28,10 +28,10 @@ const useCategory = () => {
 				resolve(data)
 				categoryList.value = data.categories.categories
 				categoryCount.value = data.categories.count
+				loadingCategoryList.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCategoryList.value = false
 			})
 		})
@@ -49,10 +49,10 @@ const useCategory = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.addCategory.message)
+				loadingCreateCategory.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCreateCategory.value = false
 			})
 		})
@@ -70,10 +70,10 @@ const useCategory = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.deleteCategory.message)
+				loadingRemoveCategory.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingRemoveCategory.value = false
 			})
 		})
@@ -92,10 +92,10 @@ const useCategory = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.updateCategory.message)
+				loadingEditCategory.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingEditCategory.value = false
 			})
 		})

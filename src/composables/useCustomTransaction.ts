@@ -18,10 +18,10 @@ const useCustomTransaction = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.addCustomTransaction.message)
+				loadingCreateCustomTransaction.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCreateCustomTransaction.value = false
 			})
 		})

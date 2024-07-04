@@ -24,10 +24,10 @@ const useDelivery = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				provincesList.value = data.provinces
+				loadingProvinces.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingProvinces.value = false
 			})
 		})
@@ -46,10 +46,10 @@ const useDelivery = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				citiesList.value = data.cities
+				loadingCities.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCities.value = false
 			})
 		})
@@ -65,10 +65,10 @@ const useDelivery = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				providersList.value = data.deliveryProviders
+				loadingProviders.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingProviders.value = false
 			})
 		})
@@ -87,10 +87,10 @@ const useDelivery = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				servicesList.value = data.deliveryServices
+				loadingServices.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingServices.value = false
 			})
 		})

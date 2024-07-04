@@ -28,10 +28,10 @@ const useMaterial = () => {
 				resolve(data)
 				materialList.value = data.materials.materials
 				materialCount.value = data.materials.count
+				loadingMaterialList.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingMaterialList.value = false
 			})
 		})
@@ -49,10 +49,10 @@ const useMaterial = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.addMaterial.message)
+				loadingCreateMaterial.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCreateMaterial.value = false
 			})
 		})
@@ -70,10 +70,10 @@ const useMaterial = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.deleteMaterial.message)
+				loadingRemoveMaterial.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingRemoveMaterial.value = false
 			})
 		})
@@ -92,10 +92,10 @@ const useMaterial = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.updateMaterial.message)
+				loadingEditMaterial.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingEditMaterial.value = false
 			})
 		})

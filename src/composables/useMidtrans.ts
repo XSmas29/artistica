@@ -77,11 +77,11 @@ const useMidtrans = () => {
 				.then(({ data }: any) => {
 					resolve(data)
 					router.push({ name: 'payment-success' })
+					loadingCreateTransaction.value = false
 				}).catch((error: any) => {
 					reject(error)
 					toast.error(error.message)
 					router.push({ name: 'payment-failed' })
-				}).finally(() => {
 					loadingCreateTransaction.value = false
 				})
 		})

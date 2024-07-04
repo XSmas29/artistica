@@ -34,10 +34,10 @@ const useUser = () => {
 			}).then(({ data }: any) => {
 				toast.success(data.register.message)
 				resolve(data)
+				loadingRegister.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingRegister.value = false
 			})
 		})
@@ -56,10 +56,10 @@ const useUser = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				user.value = data.checkVerifyCode
+				loadingUser.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingUser.value = false
 			})
 		})
@@ -78,10 +78,10 @@ const useUser = () => {
 			}).then(({ data }: any) => {
 				toast.success(data.verifyUser.message)
 				resolve(data)
+				loadingVerify.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingVerify.value = false
 			})
 		})
@@ -98,10 +98,10 @@ const useUser = () => {
 				resolve(data.profileInfo)
 				user.value = data.profileInfo
 				authStore.set(data.profileInfo)
+				loadingProfile.value = false
 			}).catch((error: any) => {
 				reject(error)
 				authStore.reset()
-			}).finally(() => {
 				loadingProfile.value = false
 			})
 		})
@@ -119,10 +119,10 @@ const useUser = () => {
 			}).then(({ data }: any) => {
 				toast.success(data.editProfile.message)
 				resolve(data)
+				loadingEditProfile.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingEditProfile.value = false
 			})
 		})
@@ -140,14 +140,13 @@ const useUser = () => {
 			}).then(({ data }: any) => {
 				toast.success(data.editPassword.message)
 				resolve(data)
+				loadingEditPassword.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingEditPassword.value = false
 			})
 		})
-	
 	}
 
 	const signIn = async (email: string, password: string) => {
@@ -165,10 +164,10 @@ const useUser = () => {
 				localStorage.setItem('token', data.login.token)
 				localStorage.setItem('refresh_token', data.login.refresh_token)
 				resolve(data)
+				loadingLogin.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingLogin.value = false
 			})
 		})
@@ -199,11 +198,10 @@ const useUser = () => {
 			}).then(({ data }: any) => {
 				localStorage.setItem('token', data.refreshToken.token)
 				localStorage.setItem('refresh_token', data.refreshToken.refresh_token)
-
 				resolve(data)
+				loadingAuth.value = false
 			}).catch((error: any) => {
 				reject(error)
-			}).finally(() => {
 				loadingAuth.value = false
 			})
 		})
@@ -224,9 +222,9 @@ const useUser = () => {
 				userList.value = data.users.users
 				userCount.value = data.users.count
 				resolve(data)
+				loadingUserList.value = false
 			}).catch((error: any) => {
 				reject(error)
-			}).finally(() => {
 				loadingUserList.value = false
 			})
 		})

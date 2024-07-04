@@ -24,10 +24,10 @@ const useChat = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				chatList.value = data.chats
+				loadingChatList.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingChatList.value = false
 			})
 		})
@@ -45,10 +45,10 @@ const useChat = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.addChatMessage.message)
+				loadingCreateChatMessage.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCreateChatMessage.value = false
 			})
 		})
@@ -66,11 +66,12 @@ const useChat = () => {
 				fetchPolicy: 'no-cache',
 			}).then(({ data }: any) => {
 				resolve(data)
+				loadingChatMessages.value = false
 				chatMessageList.value = data.chatMessages
+				loadingChatMessages.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingChatMessages.value = false
 			})
 		})

@@ -38,12 +38,11 @@ const useProduct = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				productList.value = data.products.products
-				console.log(data.products.products)
 				productCount.value = data.products.count
+				loadingProductList.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingProductList.value = false
 			})
 		})
@@ -62,10 +61,10 @@ const useProduct = () => {
 			}).then(({ data }: any) => {
 				productData.value = data.productDetail
 				resolve(data)
+				loadingProductDetail.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingProductDetail.value = false
 			})
 		})
@@ -85,10 +84,10 @@ const useProduct = () => {
 				cartItems.value = data.cartData
 				console.log(cartItems)
 				resolve(data)
+				loadingCartItems.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCartItems.value = false
 			})
 		})
@@ -106,10 +105,10 @@ const useProduct = () => {
 			}).then(({ data }: any) => {
 				toast.success(data.addProduct.message)
 				resolve(data)
+				loadingCreateProduct.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingCreateProduct.value = false
 			})
 		})
@@ -128,10 +127,10 @@ const useProduct = () => {
 			}).then(({ data }: any) => {
 				toast.success(data.updateProduct.message)
 				resolve(data)
+				loadingEditProduct.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingEditProduct.value = false
 			})
 		})
@@ -149,10 +148,10 @@ const useProduct = () => {
 			}).then(({ data }: any) => {
 				toast.success(data.deleteProduct.message)
 				resolve(data)
+				loadingRemoveProduct.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingRemoveProduct.value = false
 			})
 		})

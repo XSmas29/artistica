@@ -27,10 +27,10 @@ const useTransaction = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				transactionStatusList.value = data.transactionStatuses
+				loadingTransactionStatusList.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingTransactionStatusList.value = false
 			})
 		})
@@ -55,10 +55,10 @@ const useTransaction = () => {
 				resolve(data)
 				transactionList.value = data.transactions.transactions
 				transactionCount.value = data.transactions.count
+				loadingTransactionList.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingTransactionList.value = false
 			})
 		})
@@ -77,10 +77,10 @@ const useTransaction = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				transactionDetail.value = data.transactionDetail
+				loadingTransactionDetail.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingTransactionDetail.value = false
 			})
 		})
@@ -99,10 +99,10 @@ const useTransaction = () => {
 			}).then(({ data }: any) => {
 				resolve(data)
 				toast.success(data.updateTransactionStatus.message)
+				loadingEditTransactionStatus.value = false
 			}).catch((error: any) => {
 				reject(error)
 				toast.error(error.message)
-			}).finally(() => {
 				loadingEditTransactionStatus.value = false
 			})
 		})
