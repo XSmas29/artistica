@@ -200,6 +200,183 @@
         >
           <template #append-inner>
             <v-dialog
+              max-width="800"
+              v-model="dialogQuotation"
+            >
+              <template #default="{ isActive }">
+                <v-card>
+                  <v-card-title>
+                    <div class="d-flex">
+                      <div>Kirim Penawaran Harga</div>
+                      <v-spacer />
+                      <v-btn
+                        variant="tonal"
+                        color="error"
+                        @click="isActive.value = false"
+                      >
+                        <v-icon size="28">
+                          mdi-close
+                        </v-icon>
+                      </v-btn>
+                    </div>
+                  </v-card-title>
+                  <v-divider />
+                  <v-card-text>
+                    <template v-if="loadingCustomTransactionDetail">
+                      <v-skeleton-loader type="image, text, paragraph" />
+                    </template>
+                    <template v-else>
+                      <h3 class="mb-4">
+                        Informasi Pesanan
+                      </h3>
+                      <v-row>
+                        <v-col
+                          cols="12"
+                          md="6"
+                        >
+                          <v-text-field
+                            label="Nama Perhiasan"
+                            hide-details="auto"
+                            v-model="customTransactionData.product_name"
+                            :rules="[required]"
+                            readonly
+                            variant="solo-filled"
+                            flat
+                          />
+                        </v-col>
+                        <v-col
+                          cols="12"
+                          md="6"
+                        >
+                          <v-text-field
+                            type="number"
+                            label="Jumlah"
+                            hide-spin-buttons
+                            hide-details="auto"
+                            v-model="customTransactionData.amount"
+                            :rules="[required]"
+                            readonly
+                            variant="solo-filled"
+                            flat
+                          />
+                        </v-col>
+                      </v-row>
+                      <v-row>
+                        <v-col
+                          cols="12"
+                        >
+                          <v-textarea
+                            label="Deskripsi"
+                            hide-details="auto"
+                            v-model="customTransactionData.product_description"
+                            :rules="[required]"
+                            readonly
+                            variant="solo-filled"
+                            flat
+                          />
+                        </v-col>
+                      </v-row>
+                      <v-divider class="my-4" />
+                      <v-form
+                        ref="createQuotationForm"
+                      >
+                        <v-row>
+                          <v-col
+                            cols="12"
+                            md="6"
+                          >
+                            <div class="d-flex align-center">
+                              <v-text-field
+                                type="number"
+                                label="Harga Per Unit"
+                                hide-spin-buttons
+                                hide-details="auto"
+                                :rules="[required, positiveInteger]"
+                                flat
+                                prefix="IDR"
+                                v-model="quotationPrice"
+                              />
+                              <div class="ms-2">
+                                X {{ customTransactionData.amount }} Unit
+                              </div>
+                            </div>
+                          </v-col>
+                          <v-col
+                            cols="12"
+                            md="6"
+                          >
+                            <v-text-field
+                              type="number"
+                              label="Total Harga Semua Unit"
+                              hide-spin-buttons
+                              hide-details="auto"
+                              :rules="[required]"
+                              readonly
+                              flat
+                              variant="solo-filled"
+                              prefix="IDR"
+                              v-model="quotationTotalPrice"
+                            />
+                          </v-col>
+                        </v-row>
+                      </v-form>
+                    </template>
+                  </v-card-text>
+                  <v-card-actions class="mb-1">
+                    <v-spacer />
+                    <v-dialog
+                      v-model="dialogConfirmSendQuotation"
+                      max-width="400"
+                    >
+                      <v-card>
+                        <v-card-title>
+                          Konfirmasi Kirim Penawaran Harga
+                        </v-card-title>
+                        <v-card-text>
+                          Apakah Anda yakin ingin mengirim penawaran harga ini?
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer />
+                          <v-btn
+                            color="error"
+                            @click="dialogConfirmSendQuotation = false"
+                          >
+                            Tidak
+                          </v-btn>
+                          <v-btn
+                            color="success"
+                            @click="sendQuotationMessage(activeChat.id, +quotationPrice)"
+                            :loading="loadingCreateQuotationMessage"
+                            :disabled="loadingCreateQuotationMessage"
+                          >
+                            Ya
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                    <v-btn
+                      color="success"
+                      variant="flat"
+                      @click="confirmSendQuotation"
+                    >
+                      <v-icon class="me-1">
+                        mdi-send
+                      </v-icon>
+                      Kirim
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+              <template #activator="{ props }">
+                <v-btn
+                  icon="mdi-invoice-text-edit-outline"
+                  variant="plain"
+                  v-bind="props"
+                  @click="getCustomTransactionDetail(activeChat.custom_transaction.id)"
+                />
+              </template>
+            </v-dialog>
+            <v-dialog
               max-width="600"
               v-model="uploadImageDialog"
             >
@@ -278,14 +455,16 @@
 import { inject, ref, Ref, watch, nextTick } from 'vue'
 import { useDisplay } from 'vuetify/lib/framework.mjs'
 import useChat from '@/composables/useChat'
-import { formatDateTime } from '@helpers/utils'
+import useCustomTransaction from '@/composables/useCustomTransaction'
+import { formatDateTime, formatCurrency } from '@helpers/utils'
 import ioClient from '@/helpers/SocketIO'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/store/modules'
 import { useGoTo } from 'vuetify'
-import { required } from '@helpers/validations'
+import { required, positiveInteger } from '@helpers/validations'
 import VueDropzone from '@/components/VueDropzone.vue'
 import ChatInfo from '@/components/chat/ChatInfo.vue'
+import { computed } from 'vue'
 import ChatQuotation from '@/components/chat/ChatQuotation.vue'
 
 export default {
@@ -305,8 +484,17 @@ export default {
 		const {
 			loadingCreateChatMessage, createChatMessage,
 			loadingChatMessages, chatMessageList, getChatMessages,
+			loadingCreateQuotationMessage, createQuotationMessage,
 		} = useChat()
+		const { customTransactionData, loadingCustomTransactionDetail, getCustomTransactionDetail } = useCustomTransaction()
+
 		const uploadImageDialog = ref(false)
+
+		const quotationPrice = ref(0)
+
+		const quotationTotalPrice = computed(() => {
+			return quotationPrice.value * customTransactionData.value.amount
+		})
 
 		const showChatNavBar = inject('showChatNavBar') as Ref<boolean>
 		const toggleNavbar = () => {
@@ -390,8 +578,35 @@ export default {
 			imageMessage.value = ''
 			uploadImageDialog.value = false
 		}
+
+		const dialogConfirmSendQuotation = ref(false)
+		const createQuotationForm = ref(null as any)
+
+		const confirmSendQuotation = async () => {
+			createQuotationForm.value.validate()
+			if (createQuotationForm.value.isValid) {
+				dialogConfirmSendQuotation.value = true
+
+				// const param = {
+				// 	product_name: data.product_name,
+				// 	product_description: data.product_description,
+				// 	amount: +data.amount,
+				// }
+				// await editCustomTransactionBasicInfo(id, param)
+			}
+		}
+
+		const dialogQuotation = ref(false)
+
+		const sendQuotationMessage = async (chatId: number, price: number) => {
+			createQuotationMessage(chatId, price).then(() => {
+				dialogConfirmSendQuotation.value = false
+				dialogQuotation.value = false
+			})
+		}
 		
 		return {
+			formatCurrency,
 			formatDateTime,
 			smAndDown,
 			toggleNavbar,
@@ -406,7 +621,20 @@ export default {
 
 			uploadImageDialog,
 			required,
-      
+			positiveInteger,
+
+			customTransactionData,
+			loadingCustomTransactionDetail,
+			getCustomTransactionDetail,
+			quotationPrice,
+			quotationTotalPrice,
+
+			dialogQuotation,
+			createQuotationForm,
+			loadingCreateQuotationMessage,
+			confirmSendQuotation,
+			dialogConfirmSendQuotation,
+			sendQuotationMessage,
 		}
 	},
 }
