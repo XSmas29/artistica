@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { apolloClient } from '@/vue-apollo'
 import { toast } from '@helpers/utils'
 import { chatMessages, chats } from '@graphql/queries'
-import { addChatMessage } from '@graphql/mutations'
+import { addChatMessage, addQuotationMessage } from '@graphql/mutations'
 
 const useChat = () => {
 
@@ -10,6 +10,7 @@ const useChat = () => {
 	const chatList = ref([] as any)
 
 	const loadingCreateChatMessage = ref(false)
+	const loadingCreateQuotationMessage = ref(false)
 
 	const loadingChatMessages = ref(false)
 	const chatMessageList = ref([] as any)
@@ -77,6 +78,29 @@ const useChat = () => {
 		})
 	}
 
+	const createQuotationMessage = async (id: number, price: number) => {
+		loadingCreateQuotationMessage.value = true
+
+		return new Promise((resolve, reject) => {
+			apolloClient.mutate({
+				mutation: addQuotationMessage,
+				variables: {
+					id,
+					price,
+				},
+			}).then(({ data }: any) => {
+				resolve(data)
+				toast.success(data.addQuotationMessage.message)
+				loadingCreateQuotationMessage.value = false
+			}).catch((error: any) => {
+				reject(error)
+				toast.error(error.message)
+				loadingCreateQuotationMessage.value = false
+			})
+		})
+	
+	}
+
 	return {
 		loadingChatList,
 		chatList,
@@ -88,6 +112,9 @@ const useChat = () => {
 		loadingChatMessages,
 		chatMessageList,
 		getChatMessages,
+
+		loadingCreateQuotationMessage,
+		createQuotationMessage,
 	}
 }
 
