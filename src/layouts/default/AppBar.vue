@@ -229,7 +229,8 @@
         />
         <v-tab
           :value="5"
-          text="Silver Course"
+          text="Course"
+          @click="goTo('course')"
         />
         <v-tab 
           :value="6"
