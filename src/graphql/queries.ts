@@ -17,6 +17,7 @@ import transactionDetail from './query/transactionDetail'
 import chats from './query/chats'
 import chatMessages from './query/chatMessages'
 import customTransactionDetail from './query/customTransactionDetail'
+import courses from './query/courses'
 
 export {
 	checkVerifyCode,
@@ -38,4 +39,5 @@ export {
 	chats,
 	chatMessages,
 	customTransactionDetail,
+	courses,
 }
