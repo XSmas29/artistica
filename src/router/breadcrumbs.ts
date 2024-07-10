@@ -10,6 +10,12 @@ const courseBreadCrumb = {
 	disabled: false,
 }
 
+const courseInformationBreadcrumb = {
+	title: 'Informasi Course',
+	to: { name: 'course-information' },
+	disabled: false,
+}
+
 const registerBreadcrumb = {
 	title: 'Register',
 	to: {name: 'register' },
@@ -90,4 +96,5 @@ export {
 	customDesignBreadcrumb,
 	chatBreadcrumb,
 	courseBreadCrumb,
+	courseInformationBreadcrumb,
 }

@@ -2,7 +2,7 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { MyRouteRecord } from './types'
 import useUser from '@composables/useUser'
-import { aboutBreadcrumb, cartBreadcrumb, chatBreadcrumb, courseBreadCrumb, customDesignBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
+import { aboutBreadcrumb, cartBreadcrumb, chatBreadcrumb, courseBreadCrumb, courseInformationBreadcrumb, customDesignBreadcrumb, homeBreadCrumb, loginBreadcrumb, productDetailBreadcrumb, productListBreadcrumb, profileBreadcrumb, purchaseInfoBreadcrumb, registerBreadcrumb, verifyBreadcrumb } from './breadcrumbs'
 
 const routes: MyRouteRecord[] = [
 	{
@@ -142,6 +142,21 @@ const routes: MyRouteRecord[] = [
 					],
 				},
 				component: () => import('@views/Public/Course.vue'),
+			},
+			{
+				path: 'course/:id',
+				name: 'course-information',
+				meta: {
+					pageTitle: 'Informasi Course',
+					public: false,
+					user: true,
+					breadcrumbs: [
+						homeBreadCrumb, 
+						courseBreadCrumb,
+						courseInformationBreadcrumb,
+					],
+				},
+				component: () => import('@views/User/CourseInformation.vue'),
 			},
 			{
 				path: '/cart',
