@@ -1,7 +1,7 @@
 
 import { io } from 'socket.io-client'
 
-const ioClient = io(import.meta.env.VITE_WEBSOCKET_URL, {
+const ioClient = io(import.meta.env.VITE_HTTP_URL, {
 	transports: ['websocket'],
 	auth: {
 		token: localStorage.getItem('token') || '',
