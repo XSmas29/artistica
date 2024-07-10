@@ -42,7 +42,7 @@
         <v-spacer />
         <v-card
           v-for="(item, i) in items"
-          :key="item.raw"
+          :key="i"
           :variant="((page - 1) * itemsPerPage) + i === carousel ? 'outlined' : 'flat'"
           class="mx-1"
           @click="carousel = ((page - 1) * itemsPerPage) + i"

@@ -97,7 +97,7 @@
                 <v-avatar
                   color="accent"
                 >
-                  <span class="text-body-1">{{ getInitials(item.customer_name) }}</span>
+                  <!-- <span class="text-body-1">{{ getInitials(item.customer_name) }}</span> -->
                 </v-avatar>
               </v-btn>
             </template>
@@ -435,8 +435,8 @@
                     block
                     variant="flat"
                     color="success"
-                    @click="confirmOrderFinished"
                   >
+                    <!-- @click="confirmOrderFinished" -->
                     Selesaikan Pesanan
                   </v-btn>
                   <div
