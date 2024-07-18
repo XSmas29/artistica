@@ -1,6 +1,6 @@
 import router from '@/router'
 import { apolloClient } from '@/vue-apollo'
-import { addTransactionMT, addTransaction } from '@graphql/mutations'
+import { addTransactionMT, addTransaction, addCourseTransaction } from '@graphql/mutations'
 import { toast } from '@helpers/utils'
 import { initSnap, useSnap } from 'midtrans-snap'
 import { ref } from 'vue'
@@ -8,6 +8,7 @@ import { ref } from 'vue'
 const useMidtrans = () => {
 
 	const loadingCreateTransaction = ref(false)
+	const loadingCreateCourseTransaction = ref(false)
 
 	// You need run this once
 	initSnap(import.meta.env.VITE_MIDTRANS_CLIENT_KEY, 'sandbox'/* or 'production' */)
@@ -34,7 +35,7 @@ const useMidtrans = () => {
 			name: item.name,
 		}))
 
-		item_details_MT.push(shipping_detail)
+		if (shipping_detail) item_details_MT.push(shipping_detail)
 
 		const tokenData = await apolloClient.mutate({
 			mutation: addTransactionMT,
@@ -86,12 +87,75 @@ const useMidtrans = () => {
 				})
 		})
 	}
+
+	const createCourseTransaction = async (
+		transaction_detail: any,
+		item_details?: any,
+		customer_detail?: any,
+		credit_card?: any,
+	) => {
+		loadingCreateCourseTransaction.value = true
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		const { total_product_cost, start_date, time_slot, ...transaction_detail_MT } = transaction_detail
+		console.log(transaction_detail_MT)
+
+		const item_details_MT = item_details.map((item: any) => ({
+			id: item.id,
+			price: item.price,
+			quantity: item.quantity,
+			name: item.name,
+		}))
+
+		const tokenData = await apolloClient.mutate({
+			mutation: addTransactionMT,
+			variables: {
+				transaction_detail: transaction_detail_MT,
+				item_details: item_details_MT,
+				customer_detail,
+				credit_card,
+			},
+		})
+
+		await apolloClient.mutate({
+			mutation: addCourseTransaction,
+			variables: {
+				transaction_data: {
+					transaction_id: transaction_detail.order_id,
+					start_date,
+					time_slot
+				},
+				item_data: {
+					course_id: +item_details[0].id,
+					price: +item_details[0].price,
+					quantity: +item_details[0].quantity,
+				},
+			},
+		})
+		
+		return new Promise((resolve, reject) => {
+			snap.pay(tokenData.data.addTransactionMT.token)
+				.then(({ data }: any) => {
+					resolve(data)
+					router.push({ name: 'payment-success' })
+					loadingCreateCourseTransaction.value = false
+				}).catch((error: any) => {
+					reject(error)
+					toast.error(error.message)
+					router.push({ name: 'payment-failed' })
+					loadingCreateCourseTransaction.value = false
+				})
+		})
+	}
 	
 	return {
 		snap,
 
 		loadingCreateTransaction,
 		createTransaction,
+
+		loadingCreateCourseTransaction,
+		createCourseTransaction,
 	}
 }
 
