@@ -23,6 +23,8 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { apolloProvider } from './vue-apollo'
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 library.add(fas)
 library.add(fab)
@@ -47,4 +49,5 @@ app.use(Toast, toastDefault)
 app.use(VueAnimXYZ)
 
 app.component('FaIcon', FontAwesomeIcon)
+app.component('VueDatePicker', VueDatePicker)
 app.mount('#app')

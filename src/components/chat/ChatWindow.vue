@@ -329,7 +329,7 @@ export default {
 			}
 
 			getChatMessages(newValue.id).then(() => {
-				goTo(`#msg-${chatMessageList.value[chatMessageList.value.length - 1].id}`, {container: '#chat-window'})
+				if (chatMessageList.value.length > 0) goTo(`#msg-${chatMessageList.value[chatMessageList.value.length - 1].id}`, {container: '#chat-window'})
 			})
 		})
     
