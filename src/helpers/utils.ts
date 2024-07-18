@@ -21,7 +21,7 @@ const getInitials = (input: string): string => {
 }
 
 const formatCurrency = (value: number, currency = 'IDR'): string => {
-	if (!value) return value.toString()
+	if (!value) return ''
 	const formatter = new Intl.NumberFormat('en-US', {
 		style: 'currency',
 		currency,
